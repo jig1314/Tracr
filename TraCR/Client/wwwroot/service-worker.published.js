@@ -44,5 +44,5 @@ async function onFetch(event) {
         cachedResponse = await cache.match(request);
     }
 
-    return cachedResponse || fetch(event.request);
+    return fetch(event.request) || cachedResponse;
 }
