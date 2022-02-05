@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "eb973e26-d45b-4997-be9a-95e85fbcae83": {
+      "ProjectGuid": "eb973e26-d45b-4997-be9a-95e85fbcae83",
+      "DisplayName": "TraCR.Server",
+      "ColorIndex": 0
+    },
+    "d84eb273-87df-40cc-814f-acca78e85988": {
+      "ProjectGuid": "d84eb273-87df-40cc-814f-acca78e85988",
+      "DisplayName": "TraCR.Client",
+      "ColorIndex": 1
+    },
+    "5945079e-cfc1-427a-990c-168240981c60": {
+      "ProjectGuid": "5945079e-cfc1-427a-990c-168240981c60",
+      "DisplayName": "TraCR.Shared",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}

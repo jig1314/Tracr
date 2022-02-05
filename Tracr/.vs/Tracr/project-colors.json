@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "81034c39-e0df-4d6b-9cb4-34467b36466c": {
+      "ProjectGuid": "81034c39-e0df-4d6b-9cb4-34467b36466c",
+      "DisplayName": "Tracr.Server",
+      "ColorIndex": 0
+    },
+    "b1262afb-89fd-4a94-b777-ecd4b6cdc68e": {
+      "ProjectGuid": "b1262afb-89fd-4a94-b777-ecd4b6cdc68e",
+      "DisplayName": "Tracr.Client",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
