@@ -1,4 +1,4 @@
-﻿namespace TraCR.Server.Models
+﻿namespace TraCR.Shared.Models
 {
     public class User
     {

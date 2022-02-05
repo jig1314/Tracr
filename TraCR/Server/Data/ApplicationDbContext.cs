@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TraCR.Server.Models;
+using TraCR.Shared.Models;
 
 namespace TraCR.Server.Data
 {

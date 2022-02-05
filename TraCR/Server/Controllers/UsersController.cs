@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TraCR.Server.Data;
-using TraCR.Server.Models;
+using TraCR.Shared.Models;
 
 namespace TraCR.Server.Controllers
 {
@@ -18,9 +18,16 @@ namespace TraCR.Server.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<IEnumerable<User>> Get()
+        public async Task<ActionResult<IEnumerable<User>>> Get()
         {
-            return await _context.Users.ToListAsync();
+            try
+            {
+                return await _context.Users.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }
