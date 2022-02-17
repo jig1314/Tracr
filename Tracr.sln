@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tracr.Client", "src\Client\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tracr.Server", "src\Server\Tracr.Server.csproj", "{D761AE1F-DBEE-42A9-9871-23DF3704EBFD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tracr.Tests", "src\Tests\Tracr.Tests.csproj", "{5E90CFE4-83A4-4259-B61C-57E07243702F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,12 @@ Global
 		{D761AE1F-DBEE-42A9-9871-23DF3704EBFD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D761AE1F-DBEE-42A9-9871-23DF3704EBFD}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{D761AE1F-DBEE-42A9-9871-23DF3704EBFD}.Test|Any CPU.Build.0 = Test|Any CPU
+		{5E90CFE4-83A4-4259-B61C-57E07243702F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E90CFE4-83A4-4259-B61C-57E07243702F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E90CFE4-83A4-4259-B61C-57E07243702F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E90CFE4-83A4-4259-B61C-57E07243702F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E90CFE4-83A4-4259-B61C-57E07243702F}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E90CFE4-83A4-4259-B61C-57E07243702F}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
