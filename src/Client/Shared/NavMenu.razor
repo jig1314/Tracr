@@ -1,29 +1,16 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Tracr</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+﻿<Navbar Direction=NavbarDirection.Horizontal Background=NavbarBackground.Dark>
+    
+      <a href="" class="navbar-brand navbar-brand-autodark">
+        <img src="img/TabBlazorLogoWhite.png" alt="Tabler" class="navbar-brand-image me-2">
+        <h2 class="text-muted">TraCR</h2>
+    </a>
+    
+    <NavbarMenu>
+        <NavbarMenuItem Href="" Text="Home">
+            <MenuItemIcon>
+                <Icon class="icon" Elements="@Icons.Home" />
+            </MenuItemIcon>
+        </NavbarMenuItem>
+    </NavbarMenu>
+    <LoginDisplay />
+</Navbar>
