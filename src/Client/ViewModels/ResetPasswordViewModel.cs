@@ -1,47 +1,22 @@
 ﻿using FluentValidation;
-using FluentValidation.Validators;
 using System.Text.RegularExpressions;
 
 namespace Tracr.Client.ViewModels
 {
-    public class RegisterViewModel
+    public class ResetPasswordViewModel
     {
-        public string FirstName { get; set; } = "";
+        public string UserName { get; set; }
 
-        public string LastName { get; set; } = "";
+        public string Password { get; set; }
 
-        public string Email { get; set; } = "";
-
-        public string UserName { get; set; } = "";
-
-        public string Password { get; set; } = "";
-
-        public string ConfirmPassword { get; set; } = "";
+        public string ConfirmPassword { get; set; }
     }
 
-    public class RegisterValidator : AbstractValidator<RegisterViewModel>
+    public class ResetPasswordValidator : AbstractValidator<ResetPasswordViewModel>
     {
-        public RegisterValidator()
+        public ResetPasswordValidator()
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
-
-            RuleFor(x => x.FirstName)
-                .NotEmpty()
-                .WithMessage("Please enter a valid first name.")
-                .Matches("^([A-Z][a-zA-Z]{1,})$")
-                .WithMessage("Please enter a valid first name.");
-
-            RuleFor(x => x.LastName)
-                .NotEmpty()
-                .WithMessage("Please enter a valid last name.")
-                .Matches("^([A-Z][a-zA-Z]{1,})$")
-                .WithMessage("Please enter a valid last name.");
-
-            RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage("Please enter valid email address")
-                .EmailAddress(EmailValidationMode.AspNetCoreCompatible)
-                .WithMessage("Please enter valid email address");
 
             RuleFor(x => x.UserName)
                 .NotEmpty()
@@ -71,6 +46,7 @@ namespace Tracr.Client.ViewModels
             RuleFor(x => x.ConfirmPassword)
                 .NotEmpty().WithMessage("Please re-enter password.")
                 .Equal(x => x.Password).WithMessage("The password and confirmation password do not match.");
+
         }
     }
 }

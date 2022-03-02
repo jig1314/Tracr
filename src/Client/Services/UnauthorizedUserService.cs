@@ -28,5 +28,39 @@ namespace Tracr.Client.Services
                 throw;
             }
         }
+
+        public async Task Login(LoginDto loginDto)
+        {
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync("api/user/login", loginDto);
+                var content = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(content);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync("api/user/resetPassword", resetPasswordDto);
+                var content = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(content);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
