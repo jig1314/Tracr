@@ -5,54 +5,62 @@
 
 <div class="page page-center">
     <div class="container-tight py-4">
-    @if (RegisterViewModel != null && !SubmittingData)
-    {
         <BSForm class="card card-md" Model=@RegisterViewModel OnValidSubmit="RegisterUser">
             <CardBody>
                 <h2 class="card-title text-center mb-4">Create new account</h2>
+                @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                {
+                    <BSAlert Color="BSColor.Danger">
+                        @ErrorMessage
+                    </BSAlert>
+                }
                 <FluentValidator TValidator="RegisterValidator" />
-                <div class="mb-3">
-                    <BSLabel>First Name</BSLabel>
-                    <BSInput InputType="InputType.Text" placeholder="Enter First Name" @bind-Value="RegisterViewModel.FirstName"/>
-                    <BSFeedback For="@(() => RegisterViewModel.FirstName)"/>
-                </div>
-                <div class="mb-3">
-                    <BSLabel>Last Name</BSLabel>
-                    <BSInput InputType="InputType.Text" placeholder="Enter Last Name" @bind-Value="RegisterViewModel.LastName"/>
-                    <BSFeedback For="@(() => RegisterViewModel.LastName)"/>
-                </div>
-                <div class="mb-3">
-                    <BSLabel>Email Address</BSLabel>
-                    <BSInput InputType="InputType.Email" placeholder="Enter Email Address" @bind-Value="RegisterViewModel.Email"/>
-                    <BSFeedback For="@(() => RegisterViewModel.Email)"/>
-                </div>
-                <div class="mb-3">
-                    <BSLabel>Username</BSLabel>
-                    <BSInput InputType="InputType.Text" placeholder="Username" @bind-Value="RegisterViewModel.UserName"/>
-                    <BSFeedback For="@(() => RegisterViewModel.UserName)"/>
-                </div>
-                <div class="mb-3">
-                    <BSLabel>Password</BSLabel>
-                    <BSInput InputType="InputType.Password" placeholder="Password" @bind-Value="RegisterViewModel.Password"/>
-                    <BSFeedback For="@(() => RegisterViewModel.Password)"/>
-                </div>
-                <div class="mb-3">
-                    <BSLabel>Confirm Password</BSLabel>
-                    <BSInput InputType="InputType.Password" placeholder="Confirm Password" @bind-Value="RegisterViewModel.ConfirmPassword"/>
-                    <BSFeedback For="@(() => RegisterViewModel.ConfirmPassword)"/>
-                </div>
-                <div class="form-footer">
-                  <button type="submit" class="btn btn-primary w-100">Create new account</button>
-                </div>
+                @if (RegisterViewModel != null && !SubmittingData)
+                {           
+                    <div class="mb-3">
+                        <BSLabel>First Name</BSLabel>
+                        <BSInput InputType="InputType.Text" placeholder="Enter First Name" @bind-Value="RegisterViewModel.FirstName"/>
+                        <BSFeedback For="@(() => RegisterViewModel.FirstName)"/>
+                    </div>
+                    <div class="mb-3">
+                        <BSLabel>Last Name</BSLabel>
+                        <BSInput InputType="InputType.Text" placeholder="Enter Last Name" @bind-Value="RegisterViewModel.LastName"/>
+                        <BSFeedback For="@(() => RegisterViewModel.LastName)"/>
+                    </div>
+                    <div class="mb-3">
+                        <BSLabel>Email Address</BSLabel>
+                        <BSInput InputType="InputType.Email" placeholder="Enter Email Address" @bind-Value="RegisterViewModel.Email"/>
+                        <BSFeedback For="@(() => RegisterViewModel.Email)"/>
+                    </div>
+                    <div class="mb-3">
+                        <BSLabel>Username</BSLabel>
+                        <BSInput InputType="InputType.Text" placeholder="Username" @bind-Value="RegisterViewModel.UserName"/>
+                        <BSFeedback For="@(() => RegisterViewModel.UserName)"/>
+                    </div>
+                    <div class="mb-3">
+                        <BSLabel>Password</BSLabel>
+                        <BSInput InputType="InputType.Password" placeholder="Password" @bind-Value="RegisterViewModel.Password"/>
+                        <BSFeedback For="@(() => RegisterViewModel.Password)"/>
+                    </div>
+                    <div class="mb-3">
+                        <BSLabel>Confirm Password</BSLabel>
+                        <BSInput InputType="InputType.Password" placeholder="Confirm Password" @bind-Value="RegisterViewModel.ConfirmPassword"/>
+                        <BSFeedback For="@(() => RegisterViewModel.ConfirmPassword)"/>
+                    </div>
+                    <div class="form-footer">
+                      <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                    </div>
+                }
+                else
+                {
+                    <div style="display:flex; justify-content:center;">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                }
             </CardBody>
         </BSForm>
         <div class="text-center text-muted mt-3">
-          Already have account? <a href="login" tabindex="-1">Log in</a>
+            Already have account? <a href="login" tabindex="-1">Log in</a>
         </div>
-    }
-    else
-    {
-        <div class="spinner-border" role="status"></div>
-    }
     </div>
 </div>
