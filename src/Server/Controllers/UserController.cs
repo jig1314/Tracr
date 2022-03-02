@@ -64,5 +64,52 @@ namespace Tracr.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
             }
         }
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Login(LoginDto login)
+        {
+            try
+            {
+                var password = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(login.Password));
+                var result = await _signInManager.PasswordSignInAsync(login.UserName, password, login.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                    return StatusCode(StatusCodes.Status202Accepted);
+
+                throw new Exception($"Login failed! {(result.IsLockedOut ? "Your account is locked! Please reset your password!" : "")}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost("resetPassword")]
+        [AllowAnonymous]
+        public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(resetPasswordDto.UserName);
+
+                if (user == null)
+                    throw new Exception("Username could not be found!");
+
+                var password = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetPasswordDto.NewPassword));
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var result = await _userManager.ResetPasswordAsync(user, code, password);
+
+                if (result.Succeeded)
+                    return StatusCode(StatusCodes.Status202Accepted);
+
+                throw new Exception(string.Join(System.Environment.NewLine, result.Errors.Select(error => error.Description)));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
     }
 }
