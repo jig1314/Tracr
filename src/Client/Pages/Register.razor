@@ -41,6 +41,8 @@
                         <BSLabel>Password</BSLabel>
                         <BSInput InputType="InputType.Password" placeholder="Password" @bind-Value="RegisterViewModel.Password"/>
                         <BSFeedback For="@(() => RegisterViewModel.Password)"/>
+                        <small class="form-text text-muted">Password must be between 6 and 100 characters long.</small>
+                        <small class="form-text text-muted">Password must contain an uppercase and lowercase letter, a number and a special character.</small>
                     </div>
                     <div class="mb-3">
                         <BSLabel>Confirm Password</BSLabel>

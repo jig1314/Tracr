@@ -1,0 +1,53 @@
+﻿@page "/login/"
+@page "/login/{returnUrl}"
+
+<div class="page page-center">
+    <div class="container-tight py-4">
+        <BSForm class="card card-md" Model=@LoginViewModel OnValidSubmit="LoginUser">
+            <CardBody>
+                <h2 class="card-title text-center mb-4">Login to your account</h2>
+                @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                {
+                    <BSAlert Color="BSColor.Danger">
+                        @ErrorMessage
+                    </BSAlert>
+                }
+                <DataAnnotationsValidator />
+                @if (LoginViewModel != null && !SubmittingData)
+                {
+                    <div class="mb-3">
+                        <BSLabel>Username</BSLabel>
+                        <BSInput InputType="InputType.Text" placeholder="Username" @bind-Value="LoginViewModel.UserName"/>
+                        <BSFeedback For="@(() => LoginViewModel.UserName)"/>
+                    </div>
+                    <div class="mb-2">
+                        <BSLabel>
+                            Password
+                            <span class="form-label-description">
+                              <a href="resetPassword">Forgot your password?</a>
+                            </span>
+                        </BSLabel>
+                        <BSInput InputType="InputType.Password" placeholder="Password" @bind-Value="LoginViewModel.Password"/>
+                        <BSFeedback For="@(() => LoginViewModel.Password)"/>
+                    </div>
+                    <div Class="@BS.Form_Check">
+                        <BSInputCheckbox @bind-Value="@LoginViewModel.RememberMe" />
+                        <BSLabel IsCheckLabel="true">Remember me?</BSLabel>
+                    </div>
+                    <div class="form-footer">
+                      <button type="submit" class="btn btn-primary w-100">Log in</button>
+                    </div>
+                }
+                else
+                {
+                    <div style="display:flex; justify-content:center;">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                }
+            </CardBody>
+        </BSForm>
+        <div class="text-center text-muted mt-3">
+            Don't have account yet? <a href="register" tabindex="-1">Register as a new user</a>
+        </div>
+    </div>
+</div>
