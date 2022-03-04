@@ -1,0 +1,100 @@
+﻿@page "/userProfile"
+@page "/userProfile/{pageId}"
+
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row">
+            <h1>My Account</h1>
+        </div>
+        <div class="row">
+            <div class="navbar-col">
+                <Navbar style="position:unset; top: unset; left: unset; bottom: unset;" 
+                    Direction="NavbarDirection.Vertical" Background="NavbarBackground.Transparent">
+                    <NavbarMenu>
+                        <CustomNavbarMenuItem IsActive="@IsNavActive("personalInfo")" Href="userProfile/personalInfo" Text="Personal Info">
+                            <MenuItemIcon>
+                                <Icon class="icon" Elements="@Icons.User" />
+                            </MenuItemIcon>
+                        </CustomNavbarMenuItem>
+                        <CustomNavbarMenuItem IsActive="@IsNavActive("manageProperties")" Href="userProfile/manageProperties" Text="Manage Properties">
+                            <MenuItemIcon>
+                                <Icon class="icon" Elements="@Icons.Home" />
+                            </MenuItemIcon>
+                        </CustomNavbarMenuItem>
+                        <CustomNavbarMenuItem IsActive="@IsNavActive("changePassword")" Href="userProfile/changePassword" Text="Change Password">
+                            <MenuItemIcon>
+                                <Icon class="icon" Elements="@Icons.Lock" />
+                            </MenuItemIcon>
+                        </CustomNavbarMenuItem>
+                        <CustomNavbarMenuItem IsActive="@IsNavActive("deleteAccount")" Href="userProfile/deleteAccount" Text="Delete Account">
+                            <MenuItemIcon>
+                                <Icon class="icon" Elements="@Icons.User_x" />
+                            </MenuItemIcon>
+                        </CustomNavbarMenuItem>
+                    </NavbarMenu>
+                </Navbar>
+            </div>
+            <div class="col-lg-6 pb-5">
+                @ChildContent
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _pageId = "";
+
+    [Parameter]
+    public string PageId
+    {
+        get
+        {
+            return _pageId;
+        }
+        set
+        {
+            _pageId = value;
+            UpdatePage();
+        }
+    }
+
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    protected RenderFragment? ChildContent { get; set; } 
+
+    private void UpdatePage()
+    {
+        switch (PageId)
+        {
+            case "personalInfo":
+                ChildContent = @<div class="container-tight py-4">
+                                    <PersonalInfo />
+                                </div>;
+                break;
+            case "manageProperties":
+                ChildContent = null;
+                break;
+            case "changePassword":
+                ChildContent = @<div class="container-tight py-4">
+                                    <ChangePassword PasswordChanged="@(() => NavigationManager?.NavigateTo("userProfile/personalInfo"))" />
+                                </div>;
+                break;
+            case "deleteAccount":
+                ChildContent = @<div class="container-tight py-4">
+                                    <DeleteAccount />
+                                </div>;
+                break;
+            default:
+                if (NavigationManager != null)
+                    NavigationManager.NavigateTo("userProfile/personalInfo");
+                break;
+            
+        }
+    }
+
+    public bool IsNavActive(string nav)
+    {
+        return PageId == nav;
+    }
+}

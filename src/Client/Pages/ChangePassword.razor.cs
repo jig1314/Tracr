@@ -7,19 +7,19 @@ using Tracr.Shared.DTOs;
 
 namespace Tracr.Client.Pages
 {
-    public partial class ResetPassword : ComponentBase
+    public partial class ChangePassword : ComponentBase
     {
         [Inject]
         public IUnauthorizedUserService? UserService { get; set; }
-
-        [Inject]
-        public NavigationManager? NavigationManager { get; set; }
 
         public ResetPasswordViewModel ResetPasswordViewModel { get; set; } = new ResetPasswordViewModel();
 
         public string ErrorMessage { get; set; } = "";
 
         public bool SubmittingData { get; set; } = false;
+
+        [Parameter]
+        public EventCallback PasswordChanged { get; set; }
 
         protected async Task ResetUserPassword()
         {
@@ -31,14 +31,14 @@ namespace Tracr.Client.Pages
 
             ErrorMessage = "";
 
-            if (NavigationManager == null || UserService == null)
+            if (UserService == null)
                 return;
 
             try
             {
                 SubmittingData = true;
                 await UserService.ResetPassword(resetPasswordDto);
-                NavigationManager.NavigateTo("login");
+                await PasswordChanged.InvokeAsync();
             }
             catch (Exception ex)
             {
