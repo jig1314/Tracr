@@ -14,7 +14,7 @@
                     </CustomAlert>
                 }
                 <FluentValidator TValidator="RegisterValidator" />
-                @if (RegisterViewModel != null && !SubmittingData)
+                @if (!SubmittingData)
                 {           
                     <div class="mb-3">
                         <BSLabel>First Name</BSLabel>

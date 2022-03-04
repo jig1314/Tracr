@@ -10,8 +10,8 @@
             </CustomAlert>
         }
         <FluentValidator TValidator="PersonalInfoValidator" />
-        @if (PersonalInfoViewModel != null && !SubmittingData)
-        {           
+        @if (!SubmittingData)
+        {
             <div class="mb-3">
                 <BSLabel>First Name</BSLabel>
                 <BSInput InputType="InputType.Text" placeholder="Enter First Name" @bind-Value="PersonalInfoViewModel.FirstName"/>
