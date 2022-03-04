@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text;
 using Tracr.Server.Data;
 using Tracr.Server.Models;
@@ -109,6 +111,35 @@ namespace Tracr.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
+
+        [HttpGet("basicInfo")]
+        public async Task<ActionResult<BasicUserInfo>> GetBasicUserInfo()
+        {
+            try
+            {
+                if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "Error retrieving user information");
+                }
+
+                var idUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _context.Users.Where(d => d.Id == idUser).Include(user => user.ApplicationUserDetail).FirstAsync();
+                var userBasicInfo = new BasicUserInfo()
+                {
+                    UserId = idUser,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.ApplicationUserDetail.FirstName,
+                    LastName = user.ApplicationUserDetail.LastName
+                };
+
+                return Ok(userBasicInfo);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving user information");
             }
         }
     }
