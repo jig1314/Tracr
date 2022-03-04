@@ -1,0 +1,36 @@
+﻿@using BlazorStrap.Extensions.FluentValidation
+
+<BSForm class="card card-md" Model=@DeleteAccountViewModel  OnValidSubmit="DeleteUserAccount">
+    <CardBody>
+        <h2 class="card-title text-center mb-4">Delete Account</h2>
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+                @ErrorMessage
+            </CustomAlert>
+        }
+        <FluentValidator TValidator="DeleteAccountValidator" />
+        @if (DeleteAccountViewModel != null && !SubmittingData)
+        {           
+            <div class="mb-3">
+                <CustomAlert Important=true Type="CustomAlertType.Warning" Icon="@Icons.Alert_triangle">
+                    Entering your password will permanently delete your account, and this cannot be recovered.
+                </CustomAlert>
+            </div>
+            <div class="mb-3">
+                <BSLabel>Password</BSLabel>
+                <BSInput InputType="InputType.Password" placeholder="Password" @bind-Value="DeleteAccountViewModel.Password"/>
+                <BSFeedback For="@(() => DeleteAccountViewModel.Password)"/>
+            </div>
+            <div class="form-footer">
+                <BSButton IsSubmit=true Color="BSColor.Danger" Class="btn btn-primary w-100">Permanently Delete Account</BSButton>
+            </div>
+        }
+        else
+        {
+            <div style="display:flex; justify-content:center;">
+                <div class="spinner-border" role="status"></div>
+            </div>
+        }
+    </CardBody>
+</BSForm>

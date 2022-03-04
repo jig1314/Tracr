@@ -1,0 +1,29 @@
+﻿@inherits NavbarMenuItem
+
+<HtmlElement Tag="@HtmlTag"
+             class="@CustomClassNames"
+             @onclick="OnClick"
+             @attributes="@UnmatchedParameters">
+
+    <a class="nav-link" href="@Href">
+
+        @if (MenuItemIcon != null)
+        {
+            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                @MenuItemIcon
+            </span>
+        }
+
+        <span class="nav-link-title">
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                @Text
+            }
+        </span>
+    </a>
+
+</HtmlElement>
