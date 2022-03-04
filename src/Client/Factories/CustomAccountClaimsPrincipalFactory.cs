@@ -24,7 +24,7 @@ namespace Tracr.Client.Factories
                 var httpClient = clientFactory.CreateClient("Tracr.ServerAPI");
                 var identity = (ClaimsIdentity)user.Identity;
 
-                var userBasicInfo = await httpClient.GetFromJsonAsync<BasicUserInfo>($"api/user/basicInfo");
+                var userBasicInfo = await httpClient.GetFromJsonAsync<BasicUserInfoDto>($"api/user/basicInfo");
                 if (userBasicInfo != null)
                 {
                     identity.AddClaim(new Claim("UserFirstName", userBasicInfo.FirstName));
