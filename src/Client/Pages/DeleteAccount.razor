@@ -10,7 +10,7 @@
             </CustomAlert>
         }
         <FluentValidator TValidator="DeleteAccountValidator" />
-        @if (DeleteAccountViewModel != null && !SubmittingData)
+        @if (!SubmittingData)
         {           
             <div class="mb-3">
                 <CustomAlert Important=true Type="CustomAlertType.Warning" Icon="@Icons.Alert_triangle">
