@@ -73,7 +73,7 @@ namespace Tracr.Client.Pages
 
         protected async Task UpdateInformation()
         {
-            if (UserService == null || CachedBasicUserInfo == null)
+            if (UserService == null || CachedBasicUserInfo == null || NavigationManager ==  null)
                 return;
 
             ErrorMessage = "";
@@ -86,7 +86,7 @@ namespace Tracr.Client.Pages
                 CachedBasicUserInfo.LastName = PersonalInfoViewModel.LastName;
 
                 await UserService.UpdateBasicUserInfo(CachedBasicUserInfo);
-                await GetBasicUserData();
+                NavigationManager.NavigateTo($"/userProfile/personalInfo", true);
             }
             catch (Exception ex)
             {
