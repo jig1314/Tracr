@@ -1,6 +1,6 @@
 ﻿namespace Tracr.Shared.DTOs
 {
-    public class BasicUserInfo
+    public class BasicUserInfoDto
     {
         public string UserId { get; set; }
 

@@ -1,0 +1,6 @@
+﻿@media (min-width: 768px) {
+    .navbar-col {
+        border-right: 1px solid #ced0d3;
+        width: unset;
+    }
+}

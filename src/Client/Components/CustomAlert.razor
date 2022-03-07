@@ -1,0 +1,104 @@
+﻿@inherits Alert
+
+@if (!dismissed)
+{
+    <HtmlElement Tag="div"
+                 class="@CustomClassNames"
+                 @onclick="OnClick"
+                 @attributes="@UnmatchedParameters">
+
+        @if (!string.IsNullOrWhiteSpace(Icon))
+        {
+            <div class="d-flex">
+                <div>
+                    <Icon class="icon alert-icon" Elements="@Icon" />
+                </div>
+                <div>
+                    @if (!string.IsNullOrWhiteSpace(Title))
+                    {
+                        @if (Dismissible)
+                        {
+                            if(Important)
+                            {
+                                <button data-dismiss="alert" class="btn-close btn-close-white" @onclick="DismissAlert" />
+                            }
+                            else
+                            {
+                                <button data-dismiss="alert" class="btn-close" @onclick="DismissAlert" />
+                            }
+                        }
+                        if(Important)
+                        {
+                            <h4 style="color: unset;" class="alert-title">@Title</h4>
+                        }
+                        else
+                        {
+                            <h4 class="alert-title">@Title</h4>
+                        }
+                            
+                    }
+
+                    @ChildContent
+                </div>
+            </div>
+            @if (string.IsNullOrWhiteSpace(Title))
+            {
+                @if (Dismissible)
+                {
+                    if(Important)
+                    {
+                        <button data-dismiss="alert" class="btn-close btn-close-white" @onclick="DismissAlert" />
+                    }
+                    else
+                    {
+                        <button data-dismiss="alert" class="btn-close" @onclick="DismissAlert" />
+                    }
+                }
+            }
+        }
+        else
+        {
+            @if (!string.IsNullOrWhiteSpace(Title))
+            {
+                @if (Dismissible)
+                {
+                    if(Important)
+                    {
+                        <button data-dismiss="alert" class="btn-close btn-close-white" @onclick="DismissAlert" />
+                    }
+                    else
+                    {
+                        <button data-dismiss="alert" class="btn-close" @onclick="DismissAlert" />
+                    }
+                }
+                if(Important)
+                {
+                    <h4 style="color: unset;" class="alert-title">@Title</h4>
+                }
+                else
+                {
+                    <h4 class="alert-title">@Title</h4>
+                }
+                            
+            }
+
+            @ChildContent
+
+            @if (string.IsNullOrWhiteSpace(Title))
+            {
+                @if (Dismissible)
+                {
+                    if(Important)
+                    {
+                        <button data-dismiss="alert" class="btn-close btn-close-white" @onclick="DismissAlert" />
+                    }
+                    else
+                    {
+                        <button data-dismiss="alert" class="btn-close" @onclick="DismissAlert" />
+                    }
+                }
+            }
+        }
+        
+    </HtmlElement>
+}

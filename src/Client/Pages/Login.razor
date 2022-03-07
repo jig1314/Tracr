@@ -8,12 +8,12 @@
                 <h2 class="card-title text-center mb-4">Login to your account</h2>
                 @if (!string.IsNullOrWhiteSpace(ErrorMessage))
                 {
-                    <BSAlert Color="BSColor.Danger">
+                    <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
                         @ErrorMessage
-                    </BSAlert>
+                    </CustomAlert>
                 }
                 <DataAnnotationsValidator />
-                @if (LoginViewModel != null && !SubmittingData)
+                @if (!SubmittingData)
                 {
                     <div class="mb-3">
                         <BSLabel>Username</BSLabel>

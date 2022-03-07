@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text;
 using Tracr.Server.Data;
 using Tracr.Server.Models;
@@ -105,6 +107,104 @@ namespace Tracr.Server.Controllers
                     return StatusCode(StatusCodes.Status202Accepted);
 
                 throw new Exception(string.Join(System.Environment.NewLine, result.Errors.Select(error => error.Description)));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
+
+        [HttpGet("basicInfo")]
+        public async Task<ActionResult<BasicUserInfoDto>> GetBasicUserInfo()
+        {
+            try
+            {
+                if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "You are not authorized to retrieve user information");
+                }
+
+                var idUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _context.Users.Where(d => d.Id == idUser).Include(user => user.ApplicationUserDetail).FirstAsync();
+                var userBasicInfo = new BasicUserInfoDto()
+                {
+                    UserId = idUser,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.ApplicationUserDetail.FirstName,
+                    LastName = user.ApplicationUserDetail.LastName
+                };
+
+                return Ok(userBasicInfo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
+
+        [HttpPut("updateBasicInfo")]
+        public async Task<ActionResult<BasicUserInfoDto>> UpdateBasicUserInfo(BasicUserInfoDto basicUserInfoDto)
+        {
+            try
+            {
+                if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "You are not authorized to update account information!");
+                }
+
+                var idUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var applicationUserDetail = await _context.ApplicationUserDetails.FirstAsync(detail => detail.ApplicationUserId == idUser);
+                applicationUserDetail.FirstName = basicUserInfoDto.FirstName;
+                applicationUserDetail.LastName = basicUserInfoDto.LastName;
+
+                _context.Entry(applicationUserDetail).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return StatusCode(StatusCodes.Status202Accepted, applicationUserDetail);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
+
+        [HttpPut("deleteAccount")]
+        public async Task<ActionResult> DeleteAccount(DeleteAccountDto deleteAccountDto)
+        {
+            try
+            {
+                if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "You are not authorized to delete this account!");
+                }
+
+                var idUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _context.Users
+                    .Include(user => user.ApplicationUserDetail)
+                    .FirstAsync(user => user.Id == idUser);
+
+                var password = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(deleteAccountDto.Password));
+                if (!await _userManager.CheckPasswordAsync(user, password))
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "Incorrect password.");
+                }
+
+                _context.ApplicationUserDetails.Remove(user.ApplicationUserDetail);
+
+                await _context.SaveChangesAsync();
+
+                var result = await _userManager.DeleteAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException($"Unexpected error occurred deleting the account for {user.UserName}.", new Exception(string.Join(",", result.Errors.Select(e => $"{e.Code} - {e.Description}"))));
+                }
+
+                await _signInManager.SignOutAsync();
+
+                return StatusCode(StatusCodes.Status202Accepted);
             }
             catch (Exception ex)
             {
