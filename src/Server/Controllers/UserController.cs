@@ -211,5 +211,26 @@ namespace Tracr.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
             }
         }
+
+        [HttpDelete("delete/{userName}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> DeleteUser(string userName)
+        {
+            try
+            {
+                var user = await _context.Users.Include(user => user.ApplicationUserDetail).FirstAsync(user => user.UserName == userName);
+
+                _context.ApplicationUserDetails.Remove(user.ApplicationUserDetail);
+                await _context.SaveChangesAsync();
+
+                await _userManager.DeleteAsync(user);
+
+                return StatusCode(StatusCodes.Status202Accepted);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
     }
 }

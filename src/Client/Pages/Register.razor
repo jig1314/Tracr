@@ -18,38 +18,38 @@
                 {           
                     <div class="mb-3">
                         <BSLabel>First Name</BSLabel>
-                        <BSInput InputType="InputType.Text" placeholder="Enter First Name" @bind-Value="RegisterViewModel.FirstName"/>
+                        <BSInput id="firstNameText" InputType="InputType.Text" placeholder="Enter First Name" @bind-Value="@RegisterViewModel.FirstName" />
                         <BSFeedback For="@(() => RegisterViewModel.FirstName)"/>
                     </div>
                     <div class="mb-3">
                         <BSLabel>Last Name</BSLabel>
-                        <BSInput InputType="InputType.Text" placeholder="Enter Last Name" @bind-Value="RegisterViewModel.LastName"/>
+                        <BSInput id="lastNameText" InputType="InputType.Text" placeholder="Enter Last Name" @bind-Value="@RegisterViewModel.LastName" />
                         <BSFeedback For="@(() => RegisterViewModel.LastName)"/>
                     </div>
                     <div class="mb-3">
                         <BSLabel>Email Address</BSLabel>
-                        <BSInput InputType="InputType.Email" placeholder="Enter Email Address" @bind-Value="RegisterViewModel.Email"/>
+                        <BSInput id="emailText" InputType="InputType.Email" placeholder="Enter Email Address" @bind-Value="@RegisterViewModel.Email" />
                         <BSFeedback For="@(() => RegisterViewModel.Email)"/>
                     </div>
                     <div class="mb-3">
                         <BSLabel>Username</BSLabel>
-                        <BSInput InputType="InputType.Text" placeholder="Username" @bind-Value="RegisterViewModel.UserName"/>
+                        <BSInput id="userNameText" InputType="InputType.Text" placeholder="Username" @bind-Value="@RegisterViewModel.UserName" />
                         <BSFeedback For="@(() => RegisterViewModel.UserName)"/>
                     </div>
                     <div class="mb-3">
                         <BSLabel>Password</BSLabel>
-                        <BSInput InputType="InputType.Password" placeholder="Password" @bind-Value="RegisterViewModel.Password"/>
+                        <BSInput id="passwordText" InputType="InputType.Password" placeholder="Password" @bind-Value="@RegisterViewModel.Password" />
                         <BSFeedback For="@(() => RegisterViewModel.Password)"/>
                         <small class="form-text text-muted">Password must be between 6 and 100 characters long.</small>
                         <small class="form-text text-muted">Password must contain an uppercase and lowercase letter, a number and a special character.</small>
                     </div>
                     <div class="mb-3">
                         <BSLabel>Confirm Password</BSLabel>
-                        <BSInput InputType="InputType.Password" placeholder="Confirm Password" @bind-Value="RegisterViewModel.ConfirmPassword"/>
+                        <BSInput id="confirmPasswordText" InputType="InputType.Password" placeholder="Confirm Password" @bind-Value="@RegisterViewModel.ConfirmPassword" />
                         <BSFeedback For="@(() => RegisterViewModel.ConfirmPassword)"/>
                     </div>
                     <div class="form-footer">
-                      <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                      <button id="submitButton" type="submit" class="btn btn-primary w-100">Create new account</button>
                     </div>
                 }
                 else
