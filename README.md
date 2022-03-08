@@ -24,7 +24,7 @@ https://dev.azure.com/SWE6813-Team1/Tracr/_git/Tracr
 https://dev.azure.com/SWE6813-Team1/Tracr/_backlogs/backlog/Tracr%20Team/Backlog%20items
 
 ## Backlog Ordering Rationale
-TODO
+Our backlog is ordered according to the expected workflow of the user that will be utilizing the Tracr app. For example, backlog items related to creating and managing the user's profile would be ordered first followed by the backlog items related to managing properties and viewing data.
 
 ## Definition of Ready for a Product Backlog Item:
 * Short, concise title
@@ -46,4 +46,6 @@ TODO
 * Dickson Diku - Developer
 
 # Sprint Information
-TODO
+
+## Sprint 1
+All documentation about Sprint 1 can be found in the Sprint 1 folder in this repo. The Documentation.md will provide additional information.
