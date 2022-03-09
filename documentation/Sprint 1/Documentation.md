@@ -16,7 +16,8 @@ Our team recorded our reports from our scrum meetings in an excel workbook. Each
 Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/Tracr/_git/Tracr?version=GBmaster&path=/documentation/Sprint%201/Scrum%201%20Reports.xlsx
 
 ## Sprint 1 Mob Programming Session
-TODO
+The team lead trains and demos the test suite for the suite.  
+Video:https://youtu.be/FF8lfBtibFI
 
 ## BDD Test Cases
 Three BDD tests were developed for Work Item/Test Case 12,16,20 which tests the 3 user stories we developed this sprint. The Test has been automated, integrated into the CI/CD pipeline and successfully run against each environment.  
