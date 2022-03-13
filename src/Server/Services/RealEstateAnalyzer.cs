@@ -17,7 +17,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> CitySummary(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State) && !string.IsNullOrEmpty(param.City))
@@ -35,7 +35,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("CitySummary", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -43,7 +43,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> InvestmentBreakdown(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State) && param.RecurringCost.HasValue
@@ -80,7 +80,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("InvestmentBreakdown", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -88,7 +88,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> LongTermRentals(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State))
@@ -123,7 +123,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("LongTermRentals", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -131,7 +131,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> OccupancyRates(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State))
@@ -157,7 +157,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("OccupancyRates", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -165,7 +165,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> PropertyByAddress(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State))
@@ -201,7 +201,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("PropertyByAddress", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -209,7 +209,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> PropertyMarker(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State) && param.PropertyId.HasValue 
@@ -236,7 +236,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("PropertyMarker", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -245,7 +245,7 @@ namespace Tracr.Server.Services
         public async Task<REAnalyzerResponse> PropertyPerformance(REAnalyzerDTO param)
         {
 
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State) && param.PropertyId.HasValue)
@@ -293,7 +293,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("PropertyPerformance", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -301,7 +301,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> RentalRates(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State) && param.Source.HasValue)
@@ -325,7 +325,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("RentalRates", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -333,7 +333,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> ShortTermRentalListings(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State))
@@ -357,7 +357,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("ShortTermRentalListings", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -365,7 +365,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> ShortTermRentalMarketSummary(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             // verify required fields
             if (!string.IsNullOrEmpty(param.State))
@@ -388,7 +388,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("ShortTermRentalMarketSummary", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -396,7 +396,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> TopAirbnbCities(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             if (!string.IsNullOrEmpty(param.State))
             {
@@ -413,7 +413,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("TopAirbnbCities", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
@@ -421,7 +421,7 @@ namespace Tracr.Server.Services
 
         public async Task<REAnalyzerResponse> TopMarkets(REAnalyzerDTO param)
         {
-            var query = new Dictionary<string, string>();
+            var query = new Dictionary<string, string?>();
 
             if (!string.IsNullOrEmpty(param.State))
             {
@@ -438,7 +438,7 @@ namespace Tracr.Server.Services
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new REAnalyzerResponse(MethodBase.GetCurrentMethod().Name, body, param.State);
+                return new REAnalyzerResponse("TopMarkets", body, param.State);
             }
 
             throw new Exception(response.StatusCode.ToString());
