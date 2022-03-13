@@ -1,4 +1,4 @@
-﻿using Tracr.Shared.Dto;
+﻿using Tracr.Shared.DTOs;
 using Tracr.Server.Models;
 
 

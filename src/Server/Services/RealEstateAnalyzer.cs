@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.WebUtilities;
 using System.Reflection;
 using Tracr.Server.Models;
-using Tracr.Shared.Dto;
+using Tracr.Shared.DTOs;
 
 namespace Tracr.Server.Services
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tracr.Shared.Dto
+namespace Tracr.Shared.DTOs
 {
     public class REAnalyzerDTO
     {     
