@@ -15,6 +15,8 @@ namespace Tracr.Server.Data
 
         public DbSet<ApplicationUserDetail> ApplicationUserDetails { get; set; }
 
+        public DbSet<REAnalyzerResponse> AnalyzerResponse { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -29,6 +31,14 @@ namespace Tracr.Server.Data
                 .IsRequired()
                 .HasForeignKey<ApplicationUserDetail>(e => e.ApplicationUserId)
                 .HasConstraintName("ForeignKey_User_UserDetail");
+
+            builder.Entity<REAnalyzerResponse>()
+                .HasKey(e => e.ResponseId)
+                .HasName("PrimaryKey_ResponseId");
+
+            builder.Entity<REAnalyzerResponse>()
+                .Property(e => e.Data)
+                .HasColumnType("nvarchar(max)");
         }
     }
 }
