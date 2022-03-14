@@ -26,10 +26,17 @@ builder.Services.AddRazorPages();
 builder.Services.AddHttpClient("mash", c =>{
     c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("MashAPI"));
     c.DefaultRequestHeaders.Add("x-rapidapi-host", "mashvisor-api.p.rapidapi.com");
-    c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("REAnalyzerKey") ?? "missing-key"); 
+    c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("RapidApiKey") ?? "missing-key"); 
+});
+
+builder.Services.AddHttpClient("realestate", c => {
+    c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("RealEstateAPI"));
+    c.DefaultRequestHeaders.Add("x-rapidapi-host", "us-real-estate.p.rapidapi.com");
+    c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("RapidApiKey") ?? "missing-key");
 });
 
 builder.Services.AddScoped<IRealEstateAnalyzer, RealEstateAnalyzer>();
+builder.Services.AddScoped<IRealEstate, RealEstate>();
 
 var app = builder.Build();
 

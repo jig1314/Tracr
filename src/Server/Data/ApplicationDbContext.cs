@@ -17,6 +17,8 @@ namespace Tracr.Server.Data
 
         public DbSet<REAnalyzerResponse> AnalyzerResponse { get; set; }
 
+        public DbSet<RealEstateResponse> RealEstateResponse { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -37,6 +39,14 @@ namespace Tracr.Server.Data
                 .HasName("PrimaryKey_ResponseId");
 
             builder.Entity<REAnalyzerResponse>()
+                .Property(e => e.Data)
+                .HasColumnType("nvarchar(max)");
+
+            builder.Entity<RealEstateResponse>()
+                .HasKey(e => e.ResponseId)
+                .HasName("PrimaryKey_ResponseId");
+
+            builder.Entity<RealEstateResponse>()
                 .Property(e => e.Data)
                 .HasColumnType("nvarchar(max)");
         }
