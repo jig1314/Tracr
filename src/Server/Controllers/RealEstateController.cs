@@ -9,8 +9,8 @@ namespace Tracr.Server.Controllers
     [ApiController]
     public class RealEstateController : Controller
     {
-        private readonly IRealEstate _realestate;
-        public RealEstateController(IRealEstate realEstate)
+        private readonly IRealEstateService _realestate;
+        public RealEstateController(IRealEstateService realEstate)
         {
             this._realestate = realEstate;
         }
@@ -18,12 +18,20 @@ namespace Tracr.Server.Controllers
         [HttpGet("Average-Rate")]
         public async Task<ActionResult<RealEstateDto>> Get(int zip)
         {
-            var data = await _realestate.AverageRateByZip(zip);
+            try
+            {
+                var data = await _realestate.AverageRateByZip(zip);
 
-            if (data != null && data.Data != null)
-                return Ok(new RealEstateDto() { Data = data.Data});
+                if (data != null && data.Data != null)
+                    return Ok(new RealEstateDto() { Data = data.Data });
 
-            return NotFound($"Unable to retrieve interest rate data for {zip}");
+                return NotFound($"Unable to retrieve interest rate data for {zip}");
+            }
+            catch (Exception)
+            {
+               return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
     }
 }

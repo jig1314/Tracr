@@ -35,8 +35,8 @@ builder.Services.AddHttpClient("realestate", c => {
     c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("RapidApiKey") ?? "missing-key");
 });
 
-builder.Services.AddScoped<IRealEstateAnalyzer, RealEstateAnalyzer>();
-builder.Services.AddScoped<IRealEstate, RealEstate>();
+builder.Services.AddScoped<IRealEstateAnalyzerService, RealEstateAnalyzerService>();
+builder.Services.AddScoped<IRealEstateService, RealEstateService>();
 
 var app = builder.Build();
 

@@ -14,7 +14,7 @@ namespace Tracr.Server.Services
     /// investment including cash flow, cash on cash return, and cap rate.
     /// </summary>
 
-    public interface IRealEstateAnalyzer
+    public interface IRealEstateAnalyzerService
     {
         /// <summary>
         /// The endpoint retrieves rental income rates for Airbnb or traditional
