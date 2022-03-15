@@ -11,13 +11,13 @@ namespace Tracr.Server.Controllers
     [Authorize]
     public class AnalyzerController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAnalyzerRepo _repository;
         public readonly IRealEstateAnalyzerService _analyzer;
 
-        public AnalyzerController(IRealEstateAnalyzerService analyzer, ApplicationDbContext context)
+        public AnalyzerController(IRealEstateAnalyzerService analyzer, IAnalyzerRepo repository)
         {
             this._analyzer = analyzer;
-            this._context = context;
+            this._repository = repository;
         }
 
         [HttpGet("City-Summary")]
@@ -25,9 +25,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "CitySummary")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("CitySummary");
 
                 if (cached != null)
                     return Ok(dto);
@@ -36,8 +34,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("CitySummary", result.Data);
                     return Ok(dto);
                 }
 
@@ -55,9 +52,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "InvestmentBreakdown")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("InvestmentBreakdown");
 
                 if (cached != null)
                     return Ok(dto);
@@ -66,8 +61,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("InvestmentBreakdown", result.Data);
                     return Ok(dto);
                 }
 
@@ -85,9 +79,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "LongTermRentals")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("LongTermRentals");
 
                 if (cached != null)
                     return Ok(dto);
@@ -96,8 +88,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("LongTermRentals", result.Data);
                     return Ok(dto);
                 }
 
@@ -115,9 +106,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "OccupancyRates")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("OccupancyRates");
 
                 if (cached != null)
                     return Ok(dto);
@@ -126,8 +115,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("OccupancyRates", result.Data);
                     return Ok(dto);
                 }
 
@@ -144,9 +132,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "PropertyByAddress")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("PropertyByAddress");
 
                 if (cached != null)
                     return Ok(dto);
@@ -155,8 +141,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("PropertyByAddress", result.Data);
                     return Ok(dto);
                 }
 
@@ -173,9 +158,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "PropertyMarker")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("PropertyMarker");
 
                 if (cached != null)
                     return Ok(dto);
@@ -184,8 +167,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("PropertyMarker", result.Data);
                     return Ok(dto);
                 }
 
@@ -203,9 +185,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "PropertyPerformance")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("PropertyPerformance");
 
                 if (cached != null)
                     return Ok(dto);
@@ -214,8 +194,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("PropertyPerformance", result.Data);
                     return Ok(dto);
                 }
 
@@ -232,9 +211,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "RentalRates")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("RentalRates");
 
                 if (cached != null)
                     return Ok(dto);
@@ -243,8 +220,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("RentalRates", result.Data);
                     return Ok(dto);
                 }
 
@@ -261,10 +237,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "ShortTermRentalListings")
-                    .FirstOrDefault();
-
+                var cached = _repository.GetResponseAsync("ShortTermRentalListings");
                 if (cached != null)
                     return Ok(dto);
 
@@ -272,8 +245,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("ShortTermRentalListings", result.Data);
                     return Ok(dto);
                 }
 
@@ -290,9 +262,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "ShortTermRentalMarketSummary")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("ShortTermRentalMarketSummary");
 
                 if (cached != null)
                     return Ok(dto);
@@ -301,8 +271,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("ShortTermRentalMarketSummary", result.Data);
                     return Ok(dto);
                 }
 
@@ -319,9 +288,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "TopAirbnbCities")
-                    .FirstOrDefault();
+                var cached = await _repository.GetResponseAsync("TopAirbnbCities");
 
                 if (cached != null)
                     return Ok(dto);
@@ -330,8 +297,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("TopAirbnbCities", result.Data);
                     return Ok(dto);
                 }
 
@@ -348,9 +314,7 @@ namespace Tracr.Server.Controllers
         {
             try
             {
-                var cached = _context.AnalyzerResponse
-                    .Where(r => r.RequestMethod == "TopMarkets")
-                    .FirstOrDefault();
+                var cached = _repository.GetResponseAsync("TopMarkets");
 
                 if (cached != null)
                     return Ok(dto);
@@ -359,8 +323,7 @@ namespace Tracr.Server.Controllers
 
                 if (result.Data != null)
                 {
-                    _context.AnalyzerResponse.Add(result);
-                    await _context.SaveChangesAsync();
+                    await _repository.AddResponseAsync("TopMarkets", result.Data);
                     return Ok(dto);
                 }
 

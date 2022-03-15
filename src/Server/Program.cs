@@ -37,6 +37,8 @@ builder.Services.AddHttpClient("realestate", c => {
 
 builder.Services.AddScoped<IRealEstateAnalyzerService, RealEstateAnalyzerService>();
 builder.Services.AddScoped<IRealEstateService, RealEstateService>();
+builder.Services.AddScoped<IRealEstateRepo, RealEstateRepo>();
+builder.Services.AddScoped<IAnalyzerRepo, AnalyzerRepo>(); 
 
 var app = builder.Build();
 
