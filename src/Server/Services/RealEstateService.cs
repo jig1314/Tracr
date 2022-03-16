@@ -32,7 +32,7 @@ namespace Tracr.Server.Services
             throw new Exception(response.StatusCode.ToString());
         }
 
-        public async Task<RealEstateResponse> EstimatedValue(int property_id)
+        public async Task<RealEstateResponse> EstimatedValue(long property_id)
         {
             var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
 
@@ -273,7 +273,7 @@ namespace Tracr.Server.Services
             throw new Exception(response.StatusCode.ToString());
         }
 
-        public async Task<RealEstateResponse> PropertyDetail(int property_id)
+        public async Task<RealEstateResponse> PropertyDetail(long property_id)
         {
             var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
 
@@ -303,7 +303,7 @@ namespace Tracr.Server.Services
             throw new Exception(response.StatusCode.ToString());
         }
 
-        public async Task<RealEstateResponse> SimilarHomes(int property_id)
+        public async Task<RealEstateResponse> SimilarHomes(long property_id)
         {
             var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
 

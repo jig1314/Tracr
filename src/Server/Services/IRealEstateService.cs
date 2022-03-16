@@ -10,14 +10,14 @@ namespace Tracr.Server.Services
         /// </summary>
         /// <param name="mls_id"></param>
         /// <returns>RealEstateResponse</returns>
-        Task<RealEstateResponse> PropertyDetail(int property_id);
+        Task<RealEstateResponse> PropertyDetail(long property_id);
         Task<RealEstateResponse> PropertyByMlsId(string mls_id);
         Task<RealEstateResponse> LocationSuggest(string input);
         Task<RealEstateResponse> LocationSchools(string ciy, string state_code, int postal_code);
         Task<RealEstateResponse> LocationNoiseScore(decimal longitude, decimal latitude);
         Task<RealEstateResponse> ForSale(RealEstateDto param);
-        Task<RealEstateResponse> SimilarHomes(int property_id);
-        Task<RealEstateResponse> EstimatedValue(int property_id);
+        Task<RealEstateResponse> SimilarHomes(long property_id);
+        Task<RealEstateResponse> EstimatedValue(long property_id);
         Task<RealEstateResponse> SoldHomes(RealEstateDto param);
         Task<RealEstateResponse> ForRent(RealEstateDto param);
         Task<RealEstateResponse> MortgageCalc(RealEstateDto param);
