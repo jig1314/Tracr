@@ -39,5 +39,4 @@ Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/_git/
 ## Working prototype
 During this sprint, the test and production environments were stood up and the CI/CD pipeline was developed to delivery updates to these environments.  
 Dev/Integration: https://tracr-dev.azurewebsites.net    
-Test: https://tracr-test.azurewebsites.net  
 Production: https://tracr.azurewebsites.net
