@@ -6,9 +6,6 @@ Tracr is a Progressive Web Application built with the Blazor Framework (Web Asse
 ## Production URL
 https://tracr.azurewebsites.net
 
-## Test URL
-https://tracr-test.azurewebsites.net
-
 ## Dev/Integration URL
 https://tracr-dev.azurewebsites.net
 
