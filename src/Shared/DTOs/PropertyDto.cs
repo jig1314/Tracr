@@ -8,7 +8,7 @@
 
         public int NumBedrooms { get; set; }
 
-        public int NumBathrooms { get; set; }
+        public decimal NumBathrooms { get; set; }
 
         public MortageDto Mortage { get; set; }
 

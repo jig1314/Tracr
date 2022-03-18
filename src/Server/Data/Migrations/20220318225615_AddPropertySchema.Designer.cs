@@ -12,7 +12,7 @@ using Tracr.Server.Data;
 namespace Tracr.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220318031338_AddPropertySchema")]
+    [Migration("20220318225615_AddPropertySchema")]
     partial class AddPropertySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -419,8 +419,8 @@ namespace Tracr.Server.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("APR")
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)");
+                        .HasPrecision(10, 3)
+                        .HasColumnType("decimal(10,3)");
 
                     b.Property<decimal>("MonthlyPayment")
                         .HasPrecision(18, 2)
@@ -452,8 +452,9 @@ namespace Tracr.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumBathrooms")
-                        .HasColumnType("int");
+                    b.Property<decimal>("NumBathrooms")
+                        .HasPrecision(3, 1)
+                        .HasColumnType("decimal(3,1)");
 
                     b.Property<int>("NumBedrooms")
                         .HasColumnType("int");

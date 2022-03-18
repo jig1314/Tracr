@@ -17,8 +17,8 @@ namespace Tracr.Server.Controllers
             _context = context;
         }
 
-        [HttpGet("getProperties")]
-        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetProperties()
+        [HttpGet("getUserProperties")]
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetUserProperties()
         {
             try
             {
