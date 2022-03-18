@@ -18,7 +18,7 @@ namespace Tracr.Server.Data.Migrations
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumBedrooms = table.Column<int>(type: "int", nullable: false),
-                    NumBathrooms = table.Column<int>(type: "int", nullable: false)
+                    NumBathrooms = table.Column<decimal>(type: "decimal(3,1)", precision: 3, scale: 1, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,7 +59,7 @@ namespace Tracr.Server.Data.Migrations
                     PropertyId = table.Column<int>(type: "int", nullable: false),
                     Principal = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     MonthlyPayment = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    APR = table.Column<decimal>(type: "decimal(18,3)", precision: 18, scale: 3, nullable: false)
+                    APR = table.Column<decimal>(type: "decimal(10,3)", precision: 10, scale: 3, nullable: false)
                 },
                 constraints: table =>
                 {

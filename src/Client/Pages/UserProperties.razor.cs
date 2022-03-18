@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Tracr.Client.Services;
 using Tracr.Shared.DTOs;
 
 namespace Tracr.Client.Pages
@@ -14,6 +15,9 @@ namespace Tracr.Client.Pages
         [Inject]
         public NavigationManager? NavigationManager { get; set; }
 
+        [Inject]
+        public IPropertyService? PropertyService { get; set; }
+
         protected List<PropertyDto> UserPropertyDtos { get; set; } = new List<PropertyDto>();
 
         public string ErrorMessage { get; set; } = "";
@@ -22,7 +26,7 @@ namespace Tracr.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            if (AuthenticationStateTask == null || NavigationManager == null)
+            if (AuthenticationStateTask == null || NavigationManager == null || PropertyService == null)
                 return;
 
             AuthenticationState = await AuthenticationStateTask;
@@ -33,7 +37,29 @@ namespace Tracr.Client.Pages
             }
             else
             {
-                // TODO: Add Data Retrieval
+                await GetUserProperties();
+            }
+        }
+
+        private async Task GetUserProperties()
+        {
+            if (PropertyService == null)
+                return;
+
+            ErrorMessage = "";
+
+            try
+            {
+                RetrievingData = true;
+                UserPropertyDtos = await PropertyService.GetUserProperties();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"{ex.Message}";
+            }
+            finally
+            {
+                RetrievingData = false;
             }
         }
     }

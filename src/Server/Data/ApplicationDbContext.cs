@@ -49,6 +49,8 @@ namespace Tracr.Server.Data
                 .HasForeignKey(p => p.ApplicationUserId)
                 .HasConstraintName("ForeignKey_Property_ApplicationUserId");
 
+            builder.Entity<Property>().Property(p => p.NumBathrooms).HasPrecision(3, 1);
+
             builder.Entity<Mortage>()
                 .HasKey(m => m.PropertyId)
                 .HasName("PrimaryKey_Mortage_PropertyId");
@@ -62,7 +64,7 @@ namespace Tracr.Server.Data
 
             builder.Entity<Mortage>().Property(m => m.Principal).HasPrecision(18, 2);
             builder.Entity<Mortage>().Property(m => m.MonthlyPayment).HasPrecision(18, 2);
-            builder.Entity<Mortage>().Property(m => m.APR).HasPrecision(18, 3);
+            builder.Entity<Mortage>().Property(m => m.APR).HasPrecision(10, 3);
 
             builder.Entity<Address>()
                 .HasKey(a => a.PropertyId)
