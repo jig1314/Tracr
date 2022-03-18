@@ -1,0 +1,85 @@
+﻿<div class="container-lg">
+    <div class="row row-0">
+        <div class="col">
+            <h3 class="mb-3">Properties</h3>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-icon mb-1">
+                <Icon class="icon" Elements="@Icons.Plus" />
+            </button>
+        </div>
+    </div>
+    @if(!RetrievingData)
+    {
+        if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+                @ErrorMessage
+            </CustomAlert>
+        }
+
+        if(UserPropertyDtos?.Count > 0)
+        {
+            <Row HasCards="true">
+                @foreach(var property in UserPropertyDtos)
+                {
+                    <Card>
+                        <div class="row g-2 align-items-center">
+                            <div class="col-auto property-icon">
+                                <div class="m-3">
+                                    <span class="avatar avatar-lg avatar-rounded">
+                                        <Icon class="icon" Elements="@Icons.Home" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <CardBody>
+                                    <div class="row row-0" style="justify-content:space-between;">
+                                        <div class="col-auto m-1">
+                                            <h4><a href="#">@property.Name (@property.NumBedrooms bdr / @property.NumBathrooms bth)</a></h4>
+                                            <hr style="margin:unset;" />
+                                            <div class="text-muted">
+                                                @property.Address.StreetAddress
+                                            </div>
+                                            <div class="text-muted">
+                                                @property.Address.City, @property.Address.State @property.Address.ZipCode
+                                            </div>
+                                        </div>
+                                        <div class="col-auto m-1">
+                                            <h4>Mortage</h4>
+                                            <hr style="margin:unset;" />
+                                            <div class="text-muted">
+                                                @property.Mortage.Principal.ToString("C") (@property.Mortage.APR% APR)
+                                            </div>
+                                            <div class="text-muted">
+                                                @property.Mortage.MonthlyPayment.ToString("C")/Month
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CardBody>
+                            </div>
+                            <div class="col-auto m-1">
+                                <button type="button" class="btn btn-icon">
+                                    <Icon class="icon" Elements="@Icons.Pencil" />
+                                </button>
+                                <button type="button" class="btn btn-icon btn-danger">
+                                    <Icon class="icon" Elements="@Icons.X" />
+                                </button>
+                            </div>
+                        </div>
+                    </Card>
+                }
+            </Row>
+        }
+        else
+        {
+            <p>No Properties Found!</p>
+        }
+    }
+    else
+    {
+        <div style="display:flex; justify-content:center;">
+            <div class="spinner-border" role="status"></div>
+        </div>
+    }
+</div>

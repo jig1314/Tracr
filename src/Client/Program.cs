@@ -15,7 +15,9 @@ builder.Services.AddHttpClient("Tracr.ServerAPI", client => client.BaseAddress =
 
 builder.Services.AddHttpClient<IUnauthorizedUserService, UnauthorizedUserService>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 builder.Services.AddHttpClient<IUserService, UserService>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>(); ;
+    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+builder.Services.AddHttpClient<IPropertyService, PropertyService>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Tracr.ServerAPI"));
