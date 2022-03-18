@@ -42,6 +42,13 @@ namespace Tracr.Server.Data
                 .HasKey(p => p.Id)
                 .HasName("PrimaryKey_PropertyId");
 
+            builder.Entity<Property>()
+                .HasOne(p => p.ApplicationUser)
+                .WithMany(u => u.Properties)
+                .IsRequired()
+                .HasForeignKey(p => p.ApplicationUserId)
+                .HasConstraintName("ForeignKey_Property_ApplicationUserId");
+
             builder.Entity<Mortage>()
                 .HasKey(m => m.PropertyId)
                 .HasName("PrimaryKey_Mortage_PropertyId");
