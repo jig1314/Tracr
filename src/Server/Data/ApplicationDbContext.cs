@@ -15,6 +15,14 @@ namespace Tracr.Server.Data
 
         public DbSet<ApplicationUserDetail> ApplicationUserDetails { get; set; }
 
+        public DbSet<Property> Properties { get; set; }
+
+        public DbSet<Mortage> Mortages { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Renter> Renters { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -29,6 +37,56 @@ namespace Tracr.Server.Data
                 .IsRequired()
                 .HasForeignKey<ApplicationUserDetail>(e => e.ApplicationUserId)
                 .HasConstraintName("ForeignKey_User_UserDetail");
+
+            builder.Entity<Property>()
+                .HasKey(p => p.Id)
+                .HasName("PrimaryKey_PropertyId");
+
+            builder.Entity<Property>()
+                .HasOne(p => p.ApplicationUser)
+                .WithMany(u => u.Properties)
+                .IsRequired()
+                .HasForeignKey(p => p.ApplicationUserId)
+                .HasConstraintName("ForeignKey_Property_ApplicationUserId");
+
+            builder.Entity<Mortage>()
+                .HasKey(m => m.PropertyId)
+                .HasName("PrimaryKey_Mortage_PropertyId");
+
+            builder.Entity<Mortage>()
+                .HasOne(m => m.Property)
+                .WithOne(p => p.Mortage)
+                .IsRequired()
+                .HasForeignKey<Mortage>(m => m.PropertyId)
+                .HasConstraintName("ForeignKey_Mortage_Property");
+
+            builder.Entity<Mortage>().Property(m => m.Principal).HasPrecision(18, 2);
+            builder.Entity<Mortage>().Property(m => m.MonthlyPayment).HasPrecision(18, 2);
+            builder.Entity<Mortage>().Property(m => m.APR).HasPrecision(18, 3);
+
+            builder.Entity<Address>()
+                .HasKey(a => a.PropertyId)
+                .HasName("PrimaryKey_Address_PropertyId");
+
+            builder.Entity<Address>()
+                .HasOne(a => a.Property)
+                .WithOne(p => p.Address)
+                .IsRequired()
+                .HasForeignKey<Address>(a => a.PropertyId)
+                .HasConstraintName("ForeignKey_Address_Property");
+
+            builder.Entity<Renter>()
+                .HasKey(r => r.PropertyId)
+                .HasName("PrimaryKey_Renter_PropertyId");
+
+            builder.Entity<Renter>()
+                .HasOne(r => r.Property)
+                .WithMany(p => p.Renters)
+                .IsRequired()
+                .HasForeignKey(r => r.PropertyId)
+                .HasConstraintName("ForeignKey_Renter_Property");
+
+            builder.Entity<Renter>().Property(r => r.MonthlyRent).HasPrecision(18, 2);
         }
     }
 }
