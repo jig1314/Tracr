@@ -15,6 +15,7 @@ namespace Tracr.Server.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumBedrooms = table.Column<int>(type: "int", nullable: false),
                     NumBathrooms = table.Column<int>(type: "int", nullable: false)
@@ -22,6 +23,12 @@ namespace Tracr.Server.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PrimaryKey_PropertyId", x => x.Id);
+                    table.ForeignKey(
+                        name: "ForeignKey_Property_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,6 +93,11 @@ namespace Tracr.Server.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_ApplicationUserId",
+                table: "Properties",
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
