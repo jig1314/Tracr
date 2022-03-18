@@ -34,7 +34,7 @@
                     </NavbarMenu>
                 </Navbar>
             </div>
-            <div class="col-lg-6 pb-5">
+            <div class="col-lg-7 pb-5">
                 @ChildContent
             </div>
         </div>
@@ -73,7 +73,7 @@
                                 </div>;
                 break;
             case "manageProperties":
-                ChildContent = null;
+                ChildContent = @<UserProperties />;
                 break;
             case "changePassword":
                 ChildContent = @<div class="container-tight py-4">
