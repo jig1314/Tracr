@@ -442,6 +442,10 @@ namespace Tracr.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -454,6 +458,8 @@ namespace Tracr.Server.Data.Migrations
 
                     b.HasKey("Id")
                         .HasName("PrimaryKey_PropertyId");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Properties");
                 });
@@ -574,6 +580,18 @@ namespace Tracr.Server.Data.Migrations
                     b.Navigation("Property");
                 });
 
+            modelBuilder.Entity("Tracr.Server.Models.Property", b =>
+                {
+                    b.HasOne("Tracr.Server.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Properties")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("ForeignKey_Property_ApplicationUserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Tracr.Server.Models.Renter", b =>
                 {
                     b.HasOne("Tracr.Server.Models.Property", "Property")
@@ -590,6 +608,8 @@ namespace Tracr.Server.Data.Migrations
                 {
                     b.Navigation("ApplicationUserDetail")
                         .IsRequired();
+
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("Tracr.Server.Models.Property", b =>
