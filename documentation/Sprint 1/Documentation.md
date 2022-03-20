@@ -29,7 +29,7 @@ The development team has developed unit tests centered around the vaidation func
 Unit Tests have been integrated into the CI/CD build pipeline and has successfully passed.  
 See example here: https://dev.azure.com/SWE6813-Team1/Tracr/_testManagement/runs?_a=runCharts&runId=16
 
-## Sprint Review/Retrospective
+## Sprint 1 Review/Retrospective
 Our team recorded our sprint review in a Word document.  
 Here is the link to the document: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Review.docx 
   
@@ -37,6 +37,6 @@ Our team recorded our retrospective of Sprint 1 reports in an excel workbook.
 Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Retrospective.xlsx
 
 ## Working prototype
-During this sprint, the test and production environments were stood up and the CI/CD pipeline was developed to delivery updates to these environments.  
+During this sprint, the integration and production environments were stood up and the CI/CD pipeline was developed to delivery updates to these environments.  
 Dev/Integration: https://tracr-dev.azurewebsites.net    
 Production: https://tracr.azurewebsites.net
