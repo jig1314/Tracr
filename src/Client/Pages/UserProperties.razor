@@ -4,12 +4,12 @@
             <h3 class="mb-3">Properties</h3>
         </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-icon mb-1">
+            <button type="button" class="btn btn-icon mb-1" @onclick="AddNewProperty">
                 <Icon class="icon" Elements="@Icons.Plus" />
             </button>
         </div>
     </div>
-    @if(!RetrievingData)
+    @if(!LoadingData)
     {
         if (!string.IsNullOrWhiteSpace(ErrorMessage))
         {
@@ -36,7 +36,7 @@
                                 <CardBody>
                                     <div class="row row-0" style="justify-content:space-between;">
                                         <div class="col-auto m-1">
-                                            <h4><a href="#">@property.Name (@property.NumBedrooms bdr / @property.NumBathrooms bth)</a></h4>
+                                            <h4><a href="userProfile/manageProperties/edit/@property.Id">@property.Name (@property.NumBedrooms bdr / @property.NumBathrooms bth)</a></h4>
                                             <hr style="margin:unset;" />
                                             <div class="text-muted">
                                                 @property.Address.StreetAddress
@@ -59,10 +59,10 @@
                                 </CardBody>
                             </div>
                             <div class="col-auto m-1">
-                                <button type="button" class="btn btn-icon">
+                                <button type="button" class="btn btn-icon" @onclick="(() => EditProperty(property.Id))">
                                     <Icon class="icon" Elements="@Icons.Pencil" />
                                 </button>
-                                <button type="button" class="btn btn-icon btn-danger">
+                                <button type="button" class="btn btn-icon btn-danger" @onclick="(() => DeletePropertyModal.Show(property.Id))">
                                     <Icon class="icon" Elements="@Icons.X" />
                                 </button>
                             </div>
@@ -83,3 +83,5 @@
         </div>
     }
 </div>
+
+<DeletePropertyModal @ref="DeletePropertyModal" OnDelete="DeleteProperty" />

@@ -2,8 +2,10 @@ using BlazorStrap;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using TabBlazor;
 using Tracr.Client;
 using Tracr.Client.Factories;
+using Tracr.Client.MappingProfiles;
 using Tracr.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -24,5 +26,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 builder.Services.AddApiAuthorization()
     .AddAccountClaimsPrincipalFactory<CustomAccountClaimsPrincipalFactory>();
 builder.Services.AddBlazorStrap();
+builder.Services.AddTabler();
+builder.Services.AddAutoMapper(typeof(RenterProfile));
 
 await builder.Build().RunAsync();

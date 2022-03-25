@@ -1,10 +1,8 @@
-﻿namespace Tracr.Server.Models
+﻿namespace Tracr.Shared.DTOs
 {
-    public class Renter
+    public class RenterDto
     {
         public int Id { get; set; }
-
-        public Property Property { get; set; }
 
         public int PropertyId { get; set; }
 
@@ -14,8 +12,8 @@
 
         public decimal MonthlyRent { get; set; }
 
-        public DateOnly StartingMonth { get; set; }
+        public DateTime StartingMonth { get; set; }
 
-        public DateOnly EndingMonth { get; set; }
+        public DateTime EndingMonth { get; set; }
     }
 }

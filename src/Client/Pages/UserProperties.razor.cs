@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorStrap;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Tracr.Client.Components;
 using Tracr.Client.Services;
 using Tracr.Shared.DTOs;
 
@@ -20,9 +22,11 @@ namespace Tracr.Client.Pages
 
         protected List<PropertyDto> UserPropertyDtos { get; set; } = new List<PropertyDto>();
 
+        protected DeletePropertyModal DeletePropertyModal { get; set; }
+
         public string ErrorMessage { get; set; } = "";
 
-        public bool RetrievingData { get; set; } = false;
+        public bool LoadingData { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -50,7 +54,7 @@ namespace Tracr.Client.Pages
 
             try
             {
-                RetrievingData = true;
+                LoadingData = true;
                 UserPropertyDtos = await PropertyService.GetUserProperties();
             }
             catch (Exception ex)
@@ -59,7 +63,46 @@ namespace Tracr.Client.Pages
             }
             finally
             {
-                RetrievingData = false;
+                LoadingData = false;
+            }
+        }
+
+        protected void AddNewProperty()
+        {
+            if (NavigationManager == null)
+                return;
+
+            NavigationManager.NavigateTo("/userProfile/manageProperties/add");
+        }
+
+        protected void EditProperty(int id)
+        {
+            if (NavigationManager == null)
+                return;
+
+            NavigationManager.NavigateTo($"/userProfile/manageProperties/edit/{id}");
+        }
+
+        protected async Task DeleteProperty(int propertyId)
+        {
+            if (PropertyService == null)
+                return;
+
+            ErrorMessage = "";
+
+            try
+            {
+                LoadingData = true;
+                await PropertyService.DeleteProperty(propertyId);
+                UserPropertyDtos = await PropertyService.GetUserProperties();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"{ex.Message}";
+            }
+            finally
+            {
+                LoadingData = false;
             }
         }
     }
