@@ -36,7 +36,7 @@ namespace Tracr.Client.Components
 
         public string ErrorMessage { get; set; } = "";
 
-        public bool LoadingData { get; set; } = false;
+        public bool LoadingData { get; set; } = true;
 
         public async void Show()
         {
@@ -45,6 +45,7 @@ namespace Tracr.Client.Components
             if (CurrentViewMode == ViewMode.Add)
             {
                 RenterViewModel = new RenterViewModel();
+                LoadingData = false;
             }
             else if (CurrentViewMode == ViewMode.Edit && RenterId.HasValue)
             {
@@ -114,9 +115,6 @@ namespace Tracr.Client.Components
             catch (Exception ex)
             {
                 ErrorMessage = $"{ex.Message}";
-            }
-            finally
-            {
                 LoadingData = false;
             }
         }
@@ -142,12 +140,8 @@ namespace Tracr.Client.Components
             catch (Exception ex)
             {
                 ErrorMessage = $"{ex.Message}";
-            }
-            finally
-            {
                 LoadingData = false;
             }
         }
-
     }
 }

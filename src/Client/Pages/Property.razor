@@ -103,6 +103,16 @@ else
                             </div>
                         </RowCol>
                     </Row>
+                    <div class="d-flex align-items-center">
+                        @if(CurrentViewMode == ViewMode.Add)
+                        {
+                            <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>
+                        }
+                        else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
+                        {
+                            <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
+                        }
+                    </div>
                 </ChildContent>
             </Tab>
             @if(CurrentViewMode == ViewMode.Edit)
@@ -129,7 +139,7 @@ else
                                     <Column Item="RenterTableViewModel" Property="@(x=>x.EndingMonth)" Title="Ending Month" />
                                     <Column Item="RenterTableViewModel" Title="" ActionColumn Width="75px">
                                         <Template>
-                                            <div class="row row-0" style="justify-content:space-between;">
+                                            <div class="row row-0" style="justify-content:space-between; width: 50px;">
                                                 <div class="col-auto">
                                                     <Icon @onclick="(() => OpenEditRenterModal(context.Id))" style="cursor: pointer;" class="icon" Elements="@Icons.Pencil" />
                                                 </div>
@@ -149,16 +159,6 @@ else
                 </Tab>
             }
         </Tabs>
-        <div class="d-flex align-items-center">
-            @if(CurrentViewMode == ViewMode.Add)
-            {
-                <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>
-            }
-            else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
-            {
-                <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
-            }
-        </div>
     </BSForm>
 }
 

@@ -1,7 +1,7 @@
 ﻿@using BlazorStrap.Extensions.FluentValidation
 @using Tracr.Shared.DTOs
 
-<BSModal DataId="renterModal" @ref="Modal" IsStaticBackdrop="true" Size="Size.Medium" IsCentered="true">
+<BSModal OnHide="(() => LoadingData = true)" DataId="renterModal" @ref="Modal" IsStaticBackdrop="true" Size="Size.Medium" IsCentered="true">
     <Header>
         @if(CurrentViewMode == ViewMode.Add)
         {
