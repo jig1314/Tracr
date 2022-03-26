@@ -12,7 +12,7 @@ else
     <BSForm class="container-lg" Model=@PropertyViewModel OnValidSubmit="SubmitProperty">
         <FluentValidator TValidator="PropertyValidator" />
         <div class="row row-0 align-items-center mb-3">
-            <div class="col-auto" style="margin-right: 15px;">
+            <div class="col-auto property-icon" style="margin-right: 15px;">
                 <span class="avatar avatar-md avatar-rounded">
                     <Icon class="icon" Elements="@Icons.Home" />
                 </span>
@@ -22,13 +22,8 @@ else
                 <BSFeedback For="@(() => PropertyViewModel.Name)"/>
             </div>
             <div class="col-auto">
-                @if(CurrentViewMode == ViewMode.Add)
+                @if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
                 {
-                    <BSButton IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>
-                }
-                else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
-                {
-                    <BSButton IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
                     <BSButton class="btn btn-icon" Color="BSColor.Light" @onclick="(() => DeletePropertyModal.Show(PropertyId.Value))"><Icon class="icon" Elements="@Icons.Trash"/></BSButton>
                 }
             </div>
@@ -45,38 +40,38 @@ else
                     <Icon class="icon m-1" Elements="@Icons.Info_circle"/> Details
                 </Header>
                 <ChildContent>
-                    <div class="row">
-                        <div class="col">
+                    <Row>
+                        <RowCol Sm="12" Lg="6">
                             <h3>House Information</h3>
                             <div class="mb-3">
                                 <BSLabel>Address</BSLabel>
                                 <BSInput InputType="InputType.Text" placeholder="Enter Street Address" @bind-Value="PropertyViewModel.StreetAddress"/>
                                 <BSFeedback For="@(() => PropertyViewModel.StreetAddress)"/>
                             </div>
-                            <div class="row">
-                                <div class="col col-5">
+                            <Row>
+                                <RowCol Sm="12" Lg="5">
                                     <div class="mb-3">
                                         <BSLabel>City</BSLabel>
                                         <BSInput InputType="InputType.Text" placeholder="Enter City" @bind-Value="PropertyViewModel.City"/>
                                         <BSFeedback For="@(() => PropertyViewModel.City)"/>
                                     </div>
-                                </div>
-                                <div class="col col-4">
+                                </RowCol>
+                                <RowCol Sm="12" Md="6" Lg="4">
                                     <div class="mb-3">
                                         <BSLabel>State</BSLabel>
                                         <BSInput InputType="InputType.Text" placeholder="Enter State" @bind-Value="PropertyViewModel.State"/>
                                         <BSFeedback For="@(() => PropertyViewModel.State)"/>
                                     </div>
-                                </div>
-                                <div class="col col-3">
+                                </RowCol>
+                                <RowCol Sm="12" Md="6" Lg="3">
                                     <div class="mb-3">
                                         <BSLabel>Zip Code</BSLabel>
                                         <BSInput InputType="InputType.Text" placeholder="Enter Zip" @bind-Value="PropertyViewModel.ZipCode"/>
                                         <BSFeedback For="@(() => PropertyViewModel.ZipCode)"/>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
+                                </RowCol>
+                            </Row>
+                            <Row>
                                 <div class="col mb-3">
                                     <BSLabel>Number of Bedrooms</BSLabel>
                                     <BSInput InputType="InputType.Text" placeholder="Enter Number of Bedrooms" @bind-Value="PropertyViewModel.NumBedrooms"/>
@@ -87,9 +82,9 @@ else
                                     <BSInput InputType="InputType.Text" placeholder="Enter Number of Bathrooms" @bind-Value="PropertyViewModel.NumBathrooms"/>
                                     <BSFeedback For="@(() => PropertyViewModel.NumBathrooms)"/>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
+                            </Row>
+                        </RowCol>
+                        <RowCol Sm="12" Lg="6">
                             <h3>Mortage Information</h3>
                             <div class="mb-3">
                                 <BSLabel>Principal</BSLabel>
@@ -106,8 +101,8 @@ else
                                 <BSInput InputType="InputType.Text" placeholder="Enter Monthly Payment" @bind-Value="PropertyViewModel.MonthlyPayment"/>
                                 <BSFeedback For="@(() => PropertyViewModel.MonthlyPayment)"/>
                             </div>
-                        </div>
-                    </div>
+                        </RowCol>
+                    </Row>
                 </ChildContent>
             </Tab>
             @if(CurrentViewMode == ViewMode.Edit)
@@ -154,6 +149,16 @@ else
                 </Tab>
             }
         </Tabs>
+        <div class="d-flex align-items-center">
+            @if(CurrentViewMode == ViewMode.Add)
+            {
+                <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>
+            }
+            else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
+            {
+                <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
+            }
+        </div>
     </BSForm>
 }
 
