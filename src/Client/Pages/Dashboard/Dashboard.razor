@@ -1,0 +1,43 @@
+﻿<h1 class="page-title">Property Dashboard</h1>
+
+@if (LoadingData)
+{
+    <div style="display:flex; justify-content:center;">
+        <div class="spinner-border" role="status"></div>
+    </div>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    {
+        <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+            @ErrorMessage
+        </CustomAlert>
+    }
+    <Row class="mt-1 row-deck row-cards">
+        <RowCol Sm="12" Lg="6">
+            <ProfitProjectionDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" SelectedPropertyIds="SelectedPropertyIds" />
+        </RowCol>
+        <RowCol Sm="12" Lg="6">
+            @if(SelectedPropertyIds?.Count > 0)
+            {
+                <PropertyEarningsDashboardTile UserProperties="UserPropertyDtos" SelectedPropertyIds="SelectedPropertyIds" PropertyIncome="PropertyIncome" />
+            }
+            else
+            {
+                <TopEarningDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" />
+            }
+        </RowCol>
+        <RowCol Lg="12">
+            <h2 class="page-title">Properties</h2>
+        </RowCol>
+        <RowCol Lg="12">
+            <UserPropertyDashboardTile UserProperties="UserPropertyDtos" SelectedPropertyIdsChanged="OnSelectedPropertyIdsChanged" SelectedPropertyIds="SelectedPropertyIds" />
+        </RowCol>
+    </Row>
+    <Row>
+        <div class="d-flex align-items-center">
+            <BSButton OnClick="GoToManageProperties" class="btn btn-pill btn-outline-dark ms-auto mb-3">Manage Properties<Icon class="icon ms-1" Elements="@Icons.Chevron_right"/></BSButton>
+        </div>
+    </Row>
+}
