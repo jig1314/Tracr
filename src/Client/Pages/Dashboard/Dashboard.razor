@@ -19,8 +19,14 @@ else
             <ProfitProjectionDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" SelectedPropertyIds="SelectedPropertyIds" />
         </RowCol>
         <RowCol Sm="12" Lg="6">
-            <TopEarningDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" />
-            @*<PropertyEarningsDashboardTile />*@
+            @if(SelectedPropertyIds?.Count > 0)
+            {
+                <PropertyEarningsDashboardTile UserProperties="UserPropertyDtos" SelectedPropertyIds="SelectedPropertyIds" PropertyIncome="PropertyIncome" />
+            }
+            else
+            {
+                <TopEarningDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" />
+            }
         </RowCol>
         <RowCol Lg="12">
             <h2 class="page-title">Properties</h2>

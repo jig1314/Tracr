@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using TabBlazor;
 using Tracr.Client.Models;
+using Tracr.Shared.DTOs;
+using Tracr.Shared.Models;
 
 namespace Tracr.Client.Pages.Dashboard
 {
@@ -14,7 +16,50 @@ namespace Tracr.Client.Pages.Dashboard
             OneYear
         }
 
+        private List<PropertyIncome> _propertyIncome;
+
+        [Parameter]
+        public List<PropertyIncome> PropertyIncome
+        {
+            get
+            {
+                return _propertyIncome;
+            }
+            set
+            {
+                if (_propertyIncome != value)
+                {
+                    _propertyIncome = value;
+                    OnPropertyIncomeChanged();
+                }
+            }
+        }
+
+        private List<PropertyDto> _userProperties;
+
+        [Parameter]
+        public List<PropertyDto> UserProperties
+        {
+            get
+            {
+                return _userProperties;
+            }
+            set
+            {
+                if (_userProperties != value)
+                {
+                    _userProperties = value;
+                    OnUserPropertiesChanged();
+                }
+            }
+        }
+
+        [Parameter]
+        public HashSet<int> SelectedPropertyIds { get; set; }
+
         protected Dropdown DropdownRef { get; set; }
+
+        protected ApexChart<PropertyEarnings> PropertyEarningsChart { get; set; }
 
         protected ApexChartOptions<PropertyEarnings> ChartOptions;
 
@@ -35,11 +80,14 @@ namespace Tracr.Client.Pages.Dashboard
             }
         }
 
+        private Dictionary<int, decimal> PropertyMonthlyExpenseMap = new Dictionary<int, decimal>();
+        private Dictionary<int, string> PropertyNameMap = new Dictionary<int, string>();
+
         public string FinalProjection { get; set; } = "";
 
         public string ViewModeMessage { get; set; }
 
-        public List<PropertyEarnings> PastPropertyEarnings { get; set; }
+        public List<PropertyEarnings> PastPropertyEarnings { get; set; } = new List<PropertyEarnings>();
 
         protected override void OnInitialized()
         {
@@ -56,7 +104,7 @@ namespace Tracr.Client.Pages.Dashboard
 
             CurrentViewMode = ViewMode.YTD;
             ViewModeMessage = "Year-To-Date (YTD)";
-            PastPropertyEarnings = new List<PropertyEarnings>();
+            OnUserPropertiesChanged();
         }
 
         private void OnViewModeChanged()
@@ -75,7 +123,91 @@ namespace Tracr.Client.Pages.Dashboard
                 default:
                     break;
             }
+
+            OnPropertyIncomeChanged();
             StateHasChanged();
+        }
+
+        private async void OnPropertyIncomeChanged()
+        {
+            PastPropertyEarnings = new List<PropertyEarnings>();
+            FinalProjection = "";
+
+            if (PropertyIncome?.Count > 0)
+            {
+                int startingMonth = default;
+                int startingYear = default;
+
+                switch (CurrentViewMode)
+                {
+                    case ViewMode.YTD:
+                        startingMonth = 1;
+                        startingYear = DateTime.Today.Year;
+                        break;
+                    case ViewMode.SixMonths:
+                        startingMonth = DateTime.Today.AddMonths(-6).Month;
+                        startingYear = DateTime.Today.AddMonths(-6).Year;
+                        break;
+                    case ViewMode.OneYear:
+                        startingMonth = DateTime.Today.AddYears(-1).Month;
+                        startingYear = DateTime.Today.AddYears(-1).Year;
+                        break;
+                    default:
+                        break;
+                }
+
+                var startDate = new DateTime(startingYear, startingMonth, 1);
+                var endDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month));
+                var allEarnings = new List<PropertyEarnings>()
+                {
+                    new PropertyEarnings()
+                    {
+                        Month = startDate,
+                        Earnings = PropertyIncome.Where(e => e.Month.Month == startDate.Month && e.Month.Year == startDate.Year).Sum(e => e.Income) -
+                                    UserProperties.DistinctBy(e => e.Id).Sum(e => GetMonthlyExpenses(e.Id))
+                    }
+                };
+
+                var currentDate = startDate.AddMonths(1);
+
+                while (currentDate <= endDate)
+                {
+                    var earnings = new PropertyEarnings()
+                    {
+                        Month = currentDate,
+                        Earnings = PropertyIncome.Where(e => e.Month.Month == currentDate.Month && e.Month.Year == currentDate.Year).Sum(e => e.Income)
+                    };
+
+                    earnings.Earnings -= UserProperties.DistinctBy(e => e.Id).Sum(e => GetMonthlyExpenses(e.Id));
+
+                    earnings.Earnings += allEarnings.Last().Earnings;
+                    allEarnings.Add(earnings);
+
+                    currentDate = currentDate.AddMonths(1);
+                }
+
+                PastPropertyEarnings = allEarnings;
+                FinalProjection = PastPropertyEarnings.Last().Earnings.ToString("C");
+                if (PropertyEarningsChart != null)
+                {
+                    await PropertyEarningsChart.AppendDataAsync(allEarnings);
+                    await PropertyEarningsChart.RenderAsync();
+                }
+            }
+        }
+
+        private decimal GetMonthlyExpenses(int propertyId)
+        {
+            if (PropertyMonthlyExpenseMap.TryGetValue(propertyId, out decimal value) && (SelectedPropertyIds == null || SelectedPropertyIds.Count == 0 || SelectedPropertyIds.Contains(propertyId)))
+                return value;
+            else
+                return 0;
+        }
+
+        private void OnUserPropertiesChanged()
+        {
+            PropertyMonthlyExpenseMap = UserProperties.ToDictionary(p => p.Id, p => p.Mortage.MonthlyPayment);
+            PropertyNameMap = UserProperties.ToDictionary(p => p.Id, p => p.Name);
         }
 
         protected string GetProfitLabel(decimal value)
