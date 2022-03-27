@@ -16,7 +16,7 @@ else
     }
     <Row class="mt-1 row-deck row-cards">
         <RowCol Sm="12" Lg="6">
-            <ProfitProjectionDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome"  />
+            <ProfitProjectionDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" SelectedPropertyIds="SelectedPropertyIds" />
         </RowCol>
         <RowCol Sm="12" Lg="6">
             <TopEarningDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome" />
@@ -26,7 +26,7 @@ else
             <h2 class="page-title">Properties</h2>
         </RowCol>
         <RowCol Lg="12">
-            <UserPropertyDashboardTile UserProperties="UserPropertyDtos" />
+            <UserPropertyDashboardTile UserProperties="UserPropertyDtos" SelectedPropertyIdsChanged="OnSelectedPropertyIdsChanged" SelectedPropertyIds="SelectedPropertyIds" />
         </RowCol>
     </Row>
     <Row>

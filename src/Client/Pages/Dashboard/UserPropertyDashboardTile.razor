@@ -8,7 +8,7 @@
                     <Card>
                         <div class="row g-2 align-items-center">
                             <div class="col-auto form-check ms-3">
-                                <BSInputCheckbox CheckedValue="@("nc")" Value="@("")" />
+                                <Checkbox ValueChanged="((isChecked) => SelectedPropertyChanged(property.Id, isChecked))" Value="SelectedPropertyIds.Contains(property.Id)" />
                             </div>
                             <div class="col-auto property-icon">
                                 <div class="m-3">

@@ -54,6 +54,9 @@ namespace Tracr.Client.Pages.Dashboard
             }
         }
 
+        [Parameter]
+        public HashSet<int> SelectedPropertyIds { get; set; }
+
         private Dictionary<int, decimal> PropertyMonthlyExpenseMap = new Dictionary<int, decimal>();
 
         protected Dropdown DropdownRef { get; set; }
@@ -195,7 +198,7 @@ namespace Tracr.Client.Pages.Dashboard
 
         private decimal GetMonthlyExpenses(int propertyId)
         {
-            if (PropertyMonthlyExpenseMap.TryGetValue(propertyId, out decimal value))
+            if (PropertyMonthlyExpenseMap.TryGetValue(propertyId, out decimal value) && (SelectedPropertyIds == null || SelectedPropertyIds.Count == 0 || SelectedPropertyIds.Contains(propertyId)))
                 return value;
             else
                 return 0;

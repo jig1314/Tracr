@@ -14,5 +14,25 @@ namespace Tracr.Client.Pages.Dashboard
 
         [Parameter]
         public List<PropertyDto> UserProperties { get; set; }
+
+        [Parameter]
+        public HashSet<int> SelectedPropertyIds { get; set; }
+
+        [Parameter]
+        public EventCallback<HashSet<int>> SelectedPropertyIdsChanged { get; set; }
+
+        protected void SelectedPropertyChanged(int propertyId, bool isChecked)
+        {
+            if (!isChecked && SelectedPropertyIds.Contains(propertyId))
+            {
+                SelectedPropertyIds.Remove(propertyId);
+            }
+            else if (isChecked && !SelectedPropertyIds.Contains(propertyId))
+            {
+                SelectedPropertyIds.Add(propertyId);
+            }
+
+            SelectedPropertyIdsChanged.InvokeAsync(SelectedPropertyIds);
+        }
     }
 }

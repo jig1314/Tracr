@@ -23,7 +23,12 @@ namespace Tracr.Client.Pages.Dashboard
 
         public bool LoadingData { get; set; } = false;
 
+
+        public HashSet<int> SelectedPropertyIds { get; set; } = new HashSet<int>();
+
         protected List<PropertyDto> UserPropertyDtos { get; set; }
+
+        protected List<PropertyIncome> CachePropertyIncome { get; set; }
 
         protected List<PropertyIncome> PropertyIncome { get; set; }
 
@@ -42,6 +47,7 @@ namespace Tracr.Client.Pages.Dashboard
             {
                 await GetUserProperties();
                 await RefreshUserPropertyIncome();
+                PropertyIncome = CachePropertyIncome;
             }
         }
 
@@ -78,7 +84,7 @@ namespace Tracr.Client.Pages.Dashboard
             {
                 LoadingData = true;
 
-                PropertyIncome = await PropertyService.GetUserPropertyIncome();
+                CachePropertyIncome = await PropertyService.GetUserPropertyIncome();
             }
             catch (Exception ex)
             {
@@ -88,6 +94,22 @@ namespace Tracr.Client.Pages.Dashboard
             {
                 LoadingData = false;
             }
+        }
+
+        protected void OnSelectedPropertyIdsChanged(HashSet<int> selectedPropertyIds)
+        {
+            SelectedPropertyIds = selectedPropertyIds;
+
+            if (SelectedPropertyIds?.Count > 0)
+            {
+                PropertyIncome = CachePropertyIncome.Where(p => SelectedPropertyIds.Contains(p.PropertyId)).ToList();
+            }
+            else
+            {
+                PropertyIncome = CachePropertyIncome;
+            }
+
+            StateHasChanged();
         }
 
         protected void GoToManageProperties()
