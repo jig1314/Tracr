@@ -1,9 +1,9 @@
 ﻿<Card class="mb-3" style="max-height: 25rem; background: transparent; border: unset;">
     <CardBody class="card-body card-body-scrollable card-body-scrollable-shadow">
-        @if(UserPropertyDtos?.Count > 0)
+        @if(UserProperties?.Count > 0)
         {
             <Row HasCards="true">
-                @foreach(var property in UserPropertyDtos)
+                @foreach(var property in UserProperties)
                 {
                     <Card>
                         <div class="row g-2 align-items-center">

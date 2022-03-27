@@ -1,22 +1,37 @@
 ﻿<h1 class="page-title">Property Dashboard</h1>
 
-<Row class="mt-1 row-deck row-cards">
-    <RowCol Sm="12" Lg="6">
-        <ProfitProjectionDashboardTile />
-    </RowCol>
-    <RowCol Sm="12" Lg="6">
-        <TopEarningDashboardTile />
-        @*<PropertyEarningsDashboardTile />*@
-    </RowCol>
-    <RowCol Lg="12">
-        <h2 class="page-title">Properties</h2>
-    </RowCol>
-    <RowCol Lg="12">
-        <UserPropertyDashboardTile />
-    </RowCol>
-</Row>
-<Row>
-    <div class="d-flex align-items-center">
-        <BSButton OnClick="GoToManageProperties" class="btn btn-pill btn-outline-dark ms-auto mb-3">Manage Properties<Icon class="icon ms-1" Elements="@Icons.Chevron_right"/></BSButton>
+@if (LoadingData)
+{
+    <div style="display:flex; justify-content:center;">
+        <div class="spinner-border" role="status"></div>
     </div>
-</Row>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    {
+        <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+            @ErrorMessage
+        </CustomAlert>
+    }
+    <Row class="mt-1 row-deck row-cards">
+        <RowCol Sm="12" Lg="6">
+            <ProfitProjectionDashboardTile UserProperties="UserPropertyDtos" PropertyIncome="PropertyIncome"  />
+        </RowCol>
+        <RowCol Sm="12" Lg="6">
+            <TopEarningDashboardTile />
+            @*<PropertyEarningsDashboardTile />*@
+        </RowCol>
+        <RowCol Lg="12">
+            <h2 class="page-title">Properties</h2>
+        </RowCol>
+        <RowCol Lg="12">
+            <UserPropertyDashboardTile UserProperties="UserPropertyDtos" />
+        </RowCol>
+    </Row>
+    <Row>
+        <div class="d-flex align-items-center">
+            <BSButton OnClick="GoToManageProperties" class="btn btn-pill btn-outline-dark ms-auto mb-3">Manage Properties<Icon class="icon ms-1" Elements="@Icons.Chevron_right"/></BSButton>
+        </div>
+    </Row>
+}
