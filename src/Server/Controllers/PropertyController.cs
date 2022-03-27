@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Tracr.Server.Data;
 using Tracr.Server.Models;
 using Tracr.Shared.DTOs;
+using Tracr.Shared.Models;
 
 namespace Tracr.Server.Controllers
 {
@@ -180,6 +181,27 @@ namespace Tracr.Server.Controllers
                 };
 
                 return Ok(renterDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
+
+        [HttpGet("getUserPropertyIncome")]
+        public async Task<ActionResult<List<PropertyIncome>>> GetUserPropertyIncome()
+        {
+            try
+            {
+                if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "You are not authorized to retrieve user property information!");
+                }
+
+                var idUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var income = await _context.GetAllUserPropertyIncome(idUser);
+
+                return Ok(income);
             }
             catch (Exception ex)
             {

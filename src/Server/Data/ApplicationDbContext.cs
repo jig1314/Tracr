@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Options;
 using Tracr.Server.Models;
+using Tracr.Shared.Models;
 
 namespace Tracr.Server.Data
 {
@@ -24,6 +25,75 @@ namespace Tracr.Server.Data
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Renter> Renters { get; set; }
+
+        public DbSet<PropertyIncome> PropertyIncome { get; set; }
+
+        #region Sql Statements
+
+        public Task<List<PropertyIncome>> GetAllUserPropertyIncome(string idUser) =>
+            PropertyIncome.FromSqlRaw(
+            @"
+                ;with cte as 
+                (
+	                select
+		                Renters.Id,
+		                Renters.PropertyId,
+		                Renters.MonthlyRent, 
+		                Renters.StartingMonth, 
+		                Renters.EndingMonth
+	                from Renters
+	                inner join Properties on Properties.Id = Renters.PropertyId
+	                where Properties.ApplicationUserId = {0}
+	                union all
+	                select 
+		                Id,
+		                PropertyId,
+		                MonthlyRent,
+		                dateadd(month, 1, StartingMonth),
+		                EndingMonth
+	                from cte 
+	                where dateadd(month, 1, StartingMonth) < EndingMonth
+                )
+                select 
+	                Id as RenterId,
+	                PropertyId,
+	                MonthlyRent as Income, 
+	                StartingMonth as Month
+                from cte", idUser)
+            .AsNoTrackingWithIdentityResolution()
+            .ToListAsync();
+
+        public Task<List<PropertyIncome>> GetPropertyIncome(int propertyId) =>
+            PropertyIncome.FromSqlRaw(
+            @"
+                ;with cte as 
+                (
+	                select
+		                Renters.Id,
+		                Renters.PropertyId,
+		                Renters.MonthlyRent, 
+		                Renters.StartingMonth, 
+		                Renters.EndingMonth
+	                from Renters
+	                where Renters.PropertyId = {0}
+	                union all
+	                select 
+		                Id,
+		                PropertyId,
+		                MonthlyRent,
+		                dateadd(month, 1, StartingMonth),
+		                EndingMonth
+	                from cte 
+	                where dateadd(month, 1, StartingMonth) < EndingMonth
+                )
+                select 
+	                Id as RenterId,
+	                PropertyId,
+	                MonthlyRent as Income, 
+	                StartingMonth as Month
+                from cte", propertyId)
+            .AsNoTrackingWithIdentityResolution()
+            .ToListAsync();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -91,7 +161,11 @@ namespace Tracr.Server.Data
                 .HasConstraintName("ForeignKey_Renter_Property");
 
             builder.Entity<Renter>().Property(r => r.MonthlyRent).HasPrecision(18, 2);
+
+            builder.Entity<PropertyIncome>().HasNoKey();
         }
+
+        #endregion
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
@@ -128,7 +202,6 @@ namespace Tracr.Server.Data
         public DateOnlyComparer() : base(
             (d1, d2) => d1 == d2 && d1.DayNumber == d2.DayNumber,
             d => d.GetHashCode())
-        {
-        }
+        { }
     }
 }
