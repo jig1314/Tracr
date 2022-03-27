@@ -1,0 +1,56 @@
+﻿<Card class="mb-3" style="max-height: 25rem; background: transparent; border: unset;">
+    <CardBody class="card-body card-body-scrollable card-body-scrollable-shadow">
+        @if(UserPropertyDtos?.Count > 0)
+        {
+            <Row HasCards="true">
+                @foreach(var property in UserPropertyDtos)
+                {
+                    <Card>
+                        <div class="row g-2 align-items-center">
+                            <div class="col-auto form-check ms-3">
+                                <BSInputCheckbox CheckedValue="@("nc")" Value="@("")" />
+                            </div>
+                            <div class="col-auto property-icon">
+                                <div class="m-3">
+                                    <span class="avatar avatar-lg avatar-rounded">
+                                        <Icon class="icon" Elements="@Icons.Home" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <CardBody>
+                                    <div class="row row-0" style="justify-content:space-between;">
+                                        <div class="col-auto m-1">
+                                            <h4><a href="userProfile/manageProperties/edit/@property.Id">@property.Name (@property.NumBedrooms bdr / @property.NumBathrooms bth)</a></h4>
+                                            <hr style="margin:unset;" />
+                                            <div class="text-muted">
+                                                @property.Address.StreetAddress
+                                            </div>
+                                            <div class="text-muted">
+                                                @property.Address.City, @property.Address.State @property.Address.ZipCode
+                                            </div>
+                                        </div>
+                                        <div class="col-auto m-1">
+                                            <h4>Mortage</h4>
+                                            <hr style="margin:unset;" />
+                                            <div class="text-muted">
+                                                @property.Mortage.Principal.ToString("C") (@property.Mortage.APR% APR)
+                                            </div>
+                                            <div class="text-muted">
+                                                @property.Mortage.MonthlyPayment.ToString("C")/Month
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CardBody>
+                            </div>
+                        </div>
+                    </Card>
+                }
+            </Row>
+        }
+        else
+        {
+            <p>No Properties Found!</p>
+        }
+    </CardBody>
+</Card>
