@@ -24,14 +24,14 @@
             <div class="h1">Top 5</div>
         </div>
         <div>
-            <ApexChart TItem="TopEarningProperty" Options="@ChartOptions" FormatYAxisLabel="GetProfitLabel">
+            <ApexChart @ref=TopEarningPropertyChart TItem="TopEarningProperty" Options="@ChartOptions" FormatYAxisLabel="GetProfitLabel">
                 <ApexPointSeries TItem="TopEarningProperty"
                                  Items="TopEarningProperties"
                                  Name="Earnings"
                                  SeriesType="SeriesType.Bar"
                                  XValue="@(e => e.PropertyName)"
                                  YAggregate="@(e => e.Sum(e => e.Earnings))"
-                                 OrderBy="e=>e.Y" />
+                                 OrderByDescending="e=>e.Y" />
             </ApexChart>
         </div>
     </CardBody>
