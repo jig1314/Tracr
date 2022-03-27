@@ -1,4 +1,5 @@
 ﻿using Tracr.Shared.DTOs;
+using Tracr.Shared.Models;
 
 namespace Tracr.Client.Services
 {
@@ -14,5 +15,6 @@ namespace Tracr.Client.Services
         Task<RenterDto> GetRenter(int renterId);
         Task UpdateRenter(RenterDto renterDto);
         Task DeleteRenter(int renterId);
+        Task<List<PropertyIncome>> GetUserPropertyIncome();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Tracr.Shared.DTOs;
+using Tracr.Shared.Models;
 
 namespace Tracr.Client.Services
 {
@@ -54,6 +55,23 @@ namespace Tracr.Client.Services
 
                 if (response == null)
                     throw new Exception("Property's renter information was not found!");
+
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<PropertyIncome>> GetUserPropertyIncome()
+        {
+            try
+            {
+                var response = await httpClient.GetFromJsonAsync<List<PropertyIncome>>($"api/property/getUserPropertyIncome");
+
+                if (response == null)
+                    throw new Exception("Property income information was not found!");
 
                 return response;
             }

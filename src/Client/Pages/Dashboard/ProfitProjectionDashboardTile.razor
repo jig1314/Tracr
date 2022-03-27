@@ -25,14 +25,13 @@
             <div class="h1">@FinalProjection</div>
         </div>
         <div>
-            <ApexChart TItem="ProjectedProfit" Options="@ChartOptions" FormatYAxisLabel="GetProfitLabel">
+            <ApexChart @ref=ProjectedProfitChart TItem="ProjectedProfit" Options="@ChartOptions" FormatYAxisLabel="GetProfitLabel">
                 <ApexPointSeries TItem="ProjectedProfit"
                                  Items="ProjectedProfits"
                                  Name="Projected Profit"
                                  SeriesType="SeriesType.Line"
                                  XValue="@(e => e.Month.ToString("MM/yyyy"))"
-                                 YAggregate="@(e => e.Sum(e => e.Profit))"
-                                 OrderBy="e=>e.X" />
+                                 YAggregate="@(e => e.Sum(e => e.Profit))"/>
             </ApexChart>
         </div>
     </CardBody>

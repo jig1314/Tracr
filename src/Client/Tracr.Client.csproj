@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="Blazor-ApexCharts" Version="0.7.0-beta" />
+    <PackageReference Include="Blazor-ApexCharts" Version="0.8.2-beta" />
     <PackageReference Include="BlazorStrap" Version="5.0.104" />
     <PackageReference Include="BlazorStrap.Extensions.FluentValidation" Version="1.5.0" />
     <PackageReference Include="ColorCode.HTML" Version="2.0.13" />

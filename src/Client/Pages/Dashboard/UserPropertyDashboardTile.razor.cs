@@ -12,37 +12,27 @@ namespace Tracr.Client.Pages.Dashboard
         [Inject]
         public IPropertyService? PropertyService { get; set; }
 
-        protected List<PropertyDto> UserPropertyDtos { get; set; } = new List<PropertyDto>();
+        [Parameter]
+        public List<PropertyDto> UserProperties { get; set; }
 
-        public string ErrorMessage { get; set; } = "";
+        [Parameter]
+        public HashSet<int> SelectedPropertyIds { get; set; }
 
-        public bool LoadingUserPropertyData { get; set; } = false;
+        [Parameter]
+        public EventCallback<HashSet<int>> SelectedPropertyIdsChanged { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected void SelectedPropertyChanged(int propertyId, bool isChecked)
         {
-            await GetUserProperties();
-        }
-
-        private async Task GetUserProperties()
-        {
-            if (PropertyService == null)
-                return;
-
-            ErrorMessage = "";
-
-            try
+            if (!isChecked && SelectedPropertyIds.Contains(propertyId))
             {
-                LoadingUserPropertyData = true;
-                UserPropertyDtos = await PropertyService.GetUserProperties();
+                SelectedPropertyIds.Remove(propertyId);
             }
-            catch (Exception ex)
+            else if (isChecked && !SelectedPropertyIds.Contains(propertyId))
             {
-                ErrorMessage = $"{ex.Message}";
+                SelectedPropertyIds.Add(propertyId);
             }
-            finally
-            {
-                LoadingUserPropertyData = false;
-            }
+
+            SelectedPropertyIdsChanged.InvokeAsync(SelectedPropertyIds);
         }
     }
 }

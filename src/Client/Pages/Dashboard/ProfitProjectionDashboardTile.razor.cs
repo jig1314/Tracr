@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using TabBlazor;
 using Tracr.Client.Models;
+using Tracr.Shared.DTOs;
+using Tracr.Shared.Models;
 
 namespace Tracr.Client.Pages.Dashboard
 {
@@ -14,7 +16,52 @@ namespace Tracr.Client.Pages.Dashboard
             FiveYears
         }
 
+        private List<PropertyIncome> _propertyIncome;
+
+        [Parameter]
+        public List<PropertyIncome> PropertyIncome
+        {
+            get
+            {
+                return _propertyIncome;
+            }
+            set
+            {
+                if (_propertyIncome != value)
+                {
+                    _propertyIncome = value;
+                    OnPropertyIncomeChanged();
+                }
+            }
+        }
+
+        private List<PropertyDto> _userProperties;
+
+        [Parameter]
+        public List<PropertyDto> UserProperties
+        {
+            get
+            {
+                return _userProperties;
+            }
+            set
+            {
+                if (_userProperties != value)
+                {
+                    _userProperties = value;
+                    OnUserPropertiesChanged();
+                }
+            }
+        }
+
+        [Parameter]
+        public HashSet<int> SelectedPropertyIds { get; set; }
+
+        private Dictionary<int, decimal> PropertyMonthlyExpenseMap = new Dictionary<int, decimal>();
+
         protected Dropdown DropdownRef { get; set; }
+
+        protected ApexChart<ProjectedProfit> ProjectedProfitChart { get; set; }
 
         protected ApexChartOptions<ProjectedProfit> ChartOptions;
 
@@ -39,7 +86,7 @@ namespace Tracr.Client.Pages.Dashboard
 
         public string ViewModeMessage { get; set; }
 
-        public List<ProjectedProfit> ProjectedProfits { get; set; }
+        public List<ProjectedProfit> ProjectedProfits { get; set; } = new List<ProjectedProfit>();
 
         protected override void OnInitialized()
         {
@@ -56,7 +103,7 @@ namespace Tracr.Client.Pages.Dashboard
 
             CurrentViewMode = ViewMode.SixMonths;
             ViewModeMessage = "Next 6 months";
-            ProjectedProfits = new List<ProjectedProfit>();
+            OnUserPropertiesChanged();
         }
 
         private void OnViewModeChanged()
@@ -75,7 +122,91 @@ namespace Tracr.Client.Pages.Dashboard
                 default:
                     break;
             }
+
+            OnPropertyIncomeChanged();
             StateHasChanged();
+        }
+
+        private async void OnPropertyIncomeChanged()
+        {
+            ProjectedProfits = new List<ProjectedProfit>();
+            FinalProjection = "";
+
+            if (PropertyIncome?.Count > 0)
+            {
+                int endingMonth = default;
+                int endingYear = default;
+
+                switch (CurrentViewMode)
+                {
+                    case ViewMode.SixMonths:
+                        endingMonth = DateTime.Today.AddMonths(6).Month;
+                        endingYear = DateTime.Today.AddMonths(6).Year;
+                        break;
+                    case ViewMode.OneYear:
+                        endingMonth = DateTime.Today.AddYears(1).Month;
+                        endingYear = DateTime.Today.AddYears(1).Year;
+                        break;
+                    case ViewMode.FiveYears:
+                        endingMonth = DateTime.Today.AddYears(5).Month;
+                        endingYear = DateTime.Today.AddYears(5).Year;
+                        break;
+                    default:
+                        break;
+                }
+
+                var startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                var endDate = new DateTime(endingYear, endingMonth, DateTime.DaysInMonth(endingYear, endingMonth));
+
+                var projectedProfits = new List<ProjectedProfit>()
+                {
+                    new ProjectedProfit()
+                    {
+                        Month = startDate,
+                        Profit = PropertyIncome.Where(e => e.Month.Month == startDate.Month && e.Month.Year == startDate.Year).Sum(e => e.Income) - 
+                                    UserProperties.DistinctBy(e => e.Id).Sum(e => GetMonthlyExpenses(e.Id))
+                    }
+                };
+
+                var currentDate = startDate.AddMonths(1);
+
+                while (currentDate <= endDate)
+                {
+                    var profit = new ProjectedProfit()
+                    {
+                        Month = currentDate,
+                        Profit = PropertyIncome.Where(e => e.Month.Month == currentDate.Month && e.Month.Year == currentDate.Year).Sum(e => e.Income) 
+                    };
+
+                    profit.Profit -= UserProperties.DistinctBy(e => e.Id).Sum(e => GetMonthlyExpenses(e.Id));
+
+                    profit.Profit += projectedProfits.Last().Profit;
+                    projectedProfits.Add(profit);
+
+                    currentDate = currentDate.AddMonths(1);
+                }
+
+                ProjectedProfits = projectedProfits;
+                FinalProjection = ProjectedProfits.Last().Profit.ToString("C");
+                if (ProjectedProfitChart != null)
+                {
+                    await ProjectedProfitChart.AppendDataAsync(projectedProfits);
+                    await ProjectedProfitChart.RenderAsync();
+                }
+            }
+        }
+
+        private decimal GetMonthlyExpenses(int propertyId)
+        {
+            if (PropertyMonthlyExpenseMap.TryGetValue(propertyId, out decimal value) && (SelectedPropertyIds == null || SelectedPropertyIds.Count == 0 || SelectedPropertyIds.Contains(propertyId)))
+                return value;
+            else
+                return 0;
+        }
+
+        private void OnUserPropertiesChanged()
+        {
+            PropertyMonthlyExpenseMap = UserProperties.ToDictionary(p => p.Id, p => p.Mortage.MonthlyPayment);
         }
 
         protected string GetProfitLabel(decimal value)
