@@ -13,7 +13,7 @@ https://dev.azure.com/SWE6813-Team1/Tracr/_dashboards/dashboard/003be833-c040-48
 
 ## Daily Scrum Reports
 Our team recorded our reports from our scrum meetings in an excel workbook. Each worksheet represents each meeting.  
-Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/Tracr/_git/Tracr?version=GBmaster&path=/documentation/Sprint%201/Scrum%201%20Reports.xlsx
+Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Scrum%20Reports.xlsx
 
 ## Sprint 1 Mob Programming Session
 The team lead trains and demos the test suite for the suite.  
