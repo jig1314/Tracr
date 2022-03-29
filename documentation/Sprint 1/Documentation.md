@@ -22,12 +22,13 @@ Video:https://youtu.be/FF8lfBtibFI
 ## BDD Test Cases
 Three BDD tests were developed for Work Item/Test Case 12,16,20 which tests the 3 user stories we developed this sprint. The Test has been automated, integrated into the CI/CD pipeline and successfully run against each environment.  
 More information at: https://dev.azure.com/SWE6813-Team1/Tracr/_workitems/edit/12/, https://dev.azure.com/SWE6813-Team1/Tracr/_workitems/edit/16/ and https://dev.azure.com/SWE6813-Team1/Tracr/_workitems/edit/20/
-More tests will be developed in future iterations,
+Statistics of the production level BDD tests can be seen on the dashboard here: https://dev.azure.com/SWE6813-Team1/Tracr/_dashboards/dashboard/003be833-c040-48f5-b8b5-1dbd565e0870
+More tests will be developed in future iterations.
 
 ## Unit tests
 The development team has developed unit tests centered around the vaidation functionality of the Razor Pages using FluentValidation and its testing functionality.  
 Unit Tests have been integrated into the CI/CD build pipeline and has successfully passed.  
-See example here: https://dev.azure.com/SWE6813-Team1/Tracr/_testManagement/runs?_a=runCharts&runId=16
+Statistics of the production level unit tests can be seen on the dashboard here: https://dev.azure.com/SWE6813-Team1/Tracr/_dashboards/dashboard/003be833-c040-48f5-b8b5-1dbd565e0870
 
 ## Sprint 1 Review/Retrospective
 Our team recorded our sprint review in a Word document.  
