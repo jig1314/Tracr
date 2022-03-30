@@ -93,7 +93,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                             "FirstName",
                             "LastName",
                             "Email",
@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Gender",
                             "CountryofResidence",
                             "DateofBirth"});
-                table4.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Test",
                             "Name",
                             "testing@gmail.com",
@@ -114,7 +114,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "United States",
                             "01/01/2000"});
 #line 7
- testRunner.Given("I have registered for an account", ((string)(null)), table4, "Given ");
+ testRunner.Given("I have registered for an account", ((string)(null)), table6, "Given ");
 #line hidden
 #line 10
  testRunner.When("I click the view profile link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

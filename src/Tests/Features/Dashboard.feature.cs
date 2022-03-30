@@ -20,23 +20,23 @@ namespace Tracr.Tests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Login")]
-    public partial class LoginFeature
+    [NUnit.Framework.DescriptionAttribute("Dashboard")]
+    public partial class DashboardFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-#line 1 "Login.feature"
+#line 1 "Dashboard.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Login", "As a user, I need to be able to log in to the system so that I can track my prope" +
-                    "rties.", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Dashboard", "As a user, I need to be able to see a home page so that I can view dashboards rel" +
+                    "ated to my properties.", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,14 +75,14 @@ namespace Tracr.Tests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Existing user logging in")]
+        [NUnit.Framework.DescriptionAttribute("Existing user logging in and viewing dashboard")]
         [NUnit.Framework.CategoryAttribute("BDD")]
-        public void ExistingUserLoggingIn()
+        public void ExistingUserLoggingInAndViewingDashboard()
         {
             string[] tagsOfScenario = new string[] {
                     "BDD"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Existing user logging in", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Existing user logging in and viewing dashboard", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -93,7 +93,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "FirstName",
                             "LastName",
                             "Email",
@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Gender",
                             "CountryofResidence",
                             "DateofBirth"});
-                table4.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "Test",
                             "Name",
                             "testing@gmail.com",
@@ -114,22 +114,22 @@ this.ScenarioInitialize(scenarioInfo);
                             "United States",
                             "01/01/2000"});
 #line 7
- testRunner.Given("I have registered for an account", ((string)(null)), table4, "Given ");
+ testRunner.Given("I have registered for an account", ((string)(null)), table2, "Given ");
 #line hidden
 #line 10
  testRunner.When("I click the log in link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password"});
-                table5.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "testName",
                             "NotR3@Lpw"});
 #line 11
- testRunner.And("I submit the required information", ((string)(null)), table5, "And ");
+ testRunner.And("I log in", ((string)(null)), table3, "And ");
 #line hidden
 #line 14
- testRunner.Then("I have the ability to log in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I have the ability to see the dashboard", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
