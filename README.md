@@ -37,6 +37,10 @@ Our backlog is ordered according to the expected workflow of the user that will 
 * Assigned to sprint
 * Additional details (if applicable)
 
+## CI/CD
+CI pipelines: https://dev.azure.com/SWE6813-Team1/Tracr/_build?view=folders  
+CD releases: https://dev.azure.com/SWE6813-Team1/Tracr/_release?_a=releases
+
 # Contributors
 * Tyler Sharkey - Product Owner/Developer
 * Jonathan Gamble (Team Lead) - Scrum Master/Developer
