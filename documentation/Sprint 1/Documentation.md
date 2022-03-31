@@ -13,7 +13,7 @@ https://dev.azure.com/SWE6813-Team1/Tracr/_dashboards/dashboard/003be833-c040-48
 
 ## Daily Scrum Reports
 Our team recorded our reports from our scrum meetings in an excel workbook. Each worksheet represents each meeting.  
-Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/Tracr/_git/Tracr?version=GBmaster&path=/documentation/Sprint%201/Scrum%201%20Reports.xlsx
+The Sprint 1 Scrum Reports.xlsx file can be found in the Sprint 1 folder in this repo or here: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Scrum%20Reports.xlsx
 
 ## Sprint 1 Mob Programming Session
 The team lead trains and demos the test suite for the suite.  
@@ -22,22 +22,22 @@ Video:https://youtu.be/FF8lfBtibFI
 ## BDD Test Cases
 Three BDD tests were developed for Work Item/Test Case 12,16,20 which tests the 3 user stories we developed this sprint. The Test has been automated, integrated into the CI/CD pipeline and successfully run against each environment.  
 More information at: https://dev.azure.com/SWE6813-Team1/Tracr/_workitems/edit/12/, https://dev.azure.com/SWE6813-Team1/Tracr/_workitems/edit/16/ and https://dev.azure.com/SWE6813-Team1/Tracr/_workitems/edit/20/
-More tests will be developed in future iterations,
+Statistics and more information about the production level BDD tests can be seen on the dashboard here: https://dev.azure.com/SWE6813-Team1/Tracr/_dashboards/dashboard/003be833-c040-48f5-b8b5-1dbd565e0870
+More tests will be developed in future iterations.
 
 ## Unit tests
 The development team has developed unit tests centered around the vaidation functionality of the Razor Pages using FluentValidation and its testing functionality.  
 Unit Tests have been integrated into the CI/CD build pipeline and has successfully passed.  
-See example here: https://dev.azure.com/SWE6813-Team1/Tracr/_testManagement/runs?_a=runCharts&runId=16
+Statistics and more information about the production level unit tests can be seen on the dashboard here: https://dev.azure.com/SWE6813-Team1/Tracr/_dashboards/dashboard/003be833-c040-48f5-b8b5-1dbd565e0870
 
-## Sprint Review/Retrospective
+## Sprint 1 Review/Retrospective
 Our team recorded our sprint review in a Word document.  
-Here is the link to the document: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Review.docx 
+The Sprint 1 Review.docx file can be found in the Sprint 1 folder in this repo or here: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Review.docx 
   
 Our team recorded our retrospective of Sprint 1 reports in an excel workbook.  
-Link to scrum reports for this sprint: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Retrospective.xlsx
+The Sprint 1 Retrospective.xlsx file can be found in the Sprint 1 folder in this repo or here: https://dev.azure.com/SWE6813-Team1/_git/Tracr?path=/documentation/Sprint%201/Sprint%201%20Retrospective.xlsx
 
 ## Working prototype
-During this sprint, the test and production environments were stood up and the CI/CD pipeline was developed to delivery updates to these environments.  
+During this sprint, the integration and production environments were stood up and the CI/CD pipeline was developed to delivery updates to these environments.  
 Dev/Integration: https://tracr-dev.azurewebsites.net    
-Test: https://tracr-test.azurewebsites.net  
 Production: https://tracr.azurewebsites.net

@@ -27,15 +27,15 @@ namespace Tracr.Client.ViewModels
 
             RuleFor(x => x.FirstName)
                 .NotEmpty()
-                .WithMessage("Please enter a valid first name.")
+                .WithMessage("Please enter a valid first name. Must start with a capital letter and be at leasr two letters long!")
                 .Matches("^([A-Z][a-zA-Z]{1,})$")
-                .WithMessage("Please enter a valid first name.");
+                .WithMessage("Please enter a valid first name. Must start with a capital letter and be at leasr two letters long!");
 
             RuleFor(x => x.LastName)
                 .NotEmpty()
-                .WithMessage("Please enter a valid last name.")
+                .WithMessage("Please enter a valid last name. Must start with a capital letter and be at leasr two letters long!")
                 .Matches("^([A-Z][a-zA-Z]{1,})$")
-                .WithMessage("Please enter a valid last name.");
+                .WithMessage("Please enter a valid last name. Must start with a capital letter and be at leasr two letters long!");
 
             RuleFor(x => x.Email)
                 .NotEmpty()

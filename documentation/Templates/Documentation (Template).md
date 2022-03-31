@@ -22,11 +22,10 @@ TODO
 ## Unit tests
 TODO
 
-## Sprint Review/Retrospective
+## Sprint {Sprint number} Review/Retrospective
 TODO 
 
 ## Working prototype
 During this sprint, the test and production environments were stood up and the CI/CD pipeline was developed to delivery updates to these environments.  
-Dev/Integration: https://tracr-dev.azurewebsites.net    
-Test: https://tracr-test.azurewebsites.net  
+Dev/Integration: https://tracr-dev.azurewebsites.net     
 Production: https://tracr.azurewebsites.net

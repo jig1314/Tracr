@@ -1,5 +1,7 @@
 ﻿@page "/userProfile"
 @page "/userProfile/{pageId}"
+@page "/userProfile/{pageId}/{subPageId}/"
+@page "/userProfile/{pageId}/{subPageId}/{propertyId}"
 
 <div id="userProfilePageBody" class="page-body">
     <div class="container-xl">
@@ -34,9 +36,7 @@
                     </NavbarMenu>
                 </Navbar>
             </div>
-            <div class="col-lg-6 pb-5">
-                @ChildContent
-            </div>
+            @ChildContent
         </div>
     </div>
 </div>
@@ -58,6 +58,38 @@
         }
     }
 
+    private string _subPageId = "";
+
+    [Parameter]
+    public string SubPageId
+    {
+        get
+        {
+            return _subPageId;
+        }
+        set
+        {
+            _subPageId = value;
+            UpdatePage();
+        }
+    }
+
+    private string _propertyId = "";
+
+    [Parameter]
+    public string PropertyId
+    {
+        get
+        {
+            return _propertyId;
+        }
+        set
+        {
+            _propertyId = value;
+            UpdatePage();
+        }
+    }
+
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
 
@@ -68,21 +100,38 @@
         switch (PageId)
         {
             case "personalInfo":
-                ChildContent = @<div class="container-tight py-4">
-                                    <PersonalInfo />
+                ChildContent = @<div class="col-lg-7 pb-5">
+                                    <div class="container-tight py-4">
+                                        <PersonalInfo />
+                                    </div>
                                 </div>;
                 break;
             case "manageProperties":
-                ChildContent = null;
+                if(SubPageId == "add")
+                    ChildContent = @<div class="col-lg-9">
+                                        <Property CurrentViewMode=Property.ViewMode.Add />
+                                    </div>;
+                else if(SubPageId == "edit")
+                    ChildContent = @<div class="col-lg-9">
+                                        <Property CurrentViewMode=Property.ViewMode.Edit PropertyId=Convert.ToInt32(PropertyId) />
+                                    </div>;
+                else
+                    ChildContent = @<div class="col-lg-7">
+                                        <UserProperties />
+                                    </div>;
                 break;
             case "changePassword":
-                ChildContent = @<div class="container-tight py-4">
-                                    <ChangePassword PasswordChanged="@(() => NavigationManager?.NavigateTo("userProfile/personalInfo"))" />
+                ChildContent = @<div class="col-lg-7 pb-5">
+                                    <div class="container-tight py-4">
+                                        <ChangePassword PasswordChanged="@(() => NavigationManager?.NavigateTo("userProfile/personalInfo"))" />
+                                    </div>
                                 </div>;
                 break;
             case "deleteAccount":
-                ChildContent = @<div class="container-tight py-4">
-                                    <DeleteAccount />
+                ChildContent = @<div class="col-lg-7 pb-5">
+                                    <div class="container-tight py-4">
+                                        <DeleteAccount />
+                                    </div>
                                 </div>;
                 break;
             default:
@@ -91,6 +140,8 @@
                 break;
             
         }
+
+        StateHasChanged();
     }
 
     public bool IsNavActive(string nav)

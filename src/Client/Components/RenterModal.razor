@@ -1,0 +1,76 @@
+﻿@using BlazorStrap.Extensions.FluentValidation
+@using Tracr.Shared.DTOs
+
+<BSModal OnHide="(() => LoadingData = true)" DataId="renterModal" @ref="Modal" IsStaticBackdrop="true" Size="Size.Medium" IsCentered="true">
+    <Header>
+        @if(CurrentViewMode == ViewMode.Add)
+        {
+            <h5 class="modal-title">New Renter</h5>
+        }
+        else
+        {
+            <h5 class="modal-title">Edit Renter</h5>
+        }
+    </Header>
+    <Content>
+        @if (LoadingData)
+        {
+            <div style="display:flex; justify-content:center;">
+                <div class="spinner-border" role="status"></div>
+            </div>
+        }
+        else
+        {
+            @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+            {
+                <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+                    @ErrorMessage
+                </CustomAlert>
+            }
+            <BSForm Model=@RenterViewModel OnValidSubmit="SubmitChanges">
+                <FluentValidator TValidator="RenterValidator" />
+                <div class="col mb-3">
+                    <BSLabel>First Name</BSLabel>
+                    <BSInput InputType="InputType.Text" placeholder="Enter First Name" @bind-Value="RenterViewModel.FirstName"/>
+                    <BSFeedback For="@(() => RenterViewModel.FirstName)"/>
+                </div>
+                <div class="col mb-3">
+                    <BSLabel>Last Name</BSLabel>
+                    <BSInput InputType="InputType.Text" placeholder="Enter Last Name" @bind-Value="RenterViewModel.LastName"/>
+                    <BSFeedback For="@(() => RenterViewModel.LastName)"/>
+                </div>
+                <div class="col mb-3">
+                    <BSLabel>Lease Start Date</BSLabel>
+                    <BSInput InputType="InputType.Date" placeholder="Enter Start Date" @bind-Value="RenterViewModel.StartingMonth"/>
+                    <BSFeedback For="@(() => RenterViewModel.StartingMonth)"/>
+                </div>
+                <div class="col mb-3">
+                    <BSLabel>Lease End Date</BSLabel>
+                    <BSInput InputType="InputType.Date" placeholder="Enter End Date" @bind-Value="RenterViewModel.EndingMonth"/>
+                    <BSFeedback For="@(() => RenterViewModel.EndingMonth)"/>
+                </div>
+                <div class="col mb-3">
+                    <BSLabel>Monthly Rent</BSLabel>
+                    <div class="@BS.Input_Group mb-3">
+                        <span class="@BS.Input_Group_Text">$</span>
+                        <BSInput InputType="InputType.Text" placeholder="Enter Monthly Rent (E.g. 1000.00)" @bind-Value="RenterViewModel.MonthlyRent"/>
+                        <BSFeedback For="@(() => RenterViewModel.MonthlyRent)"/>
+                    </div>
+                </div>
+
+                <div class="modal-footer" style="padding: unset;">
+                <BSButton @onclick="Modal.HideAsync" IsLink="true">Cancel</BSButton>
+                @if(CurrentViewMode == ViewMode.Add)
+                {
+                    <BSButton style="margin: unset;" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/> Add Renter</BSButton>
+                }
+                else
+                {
+                    <BSButton style="margin: unset;" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/> Update Renter</BSButton>
+                }
+                </div>
+            </BSForm>
+        }
+    </Content>
+    <Footer />
+</BSModal>
