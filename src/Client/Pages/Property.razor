@@ -88,18 +88,27 @@ else
                             <h3>Mortage Information</h3>
                             <div class="mb-3">
                                 <BSLabel>Principal</BSLabel>
-                                <BSInput InputType="InputType.Text" placeholder="Enter Principal" @bind-Value="PropertyViewModel.Principal"/>
-                                <BSFeedback For="@(() => PropertyViewModel.Principal)"/>
+                                <div class="@BS.Input_Group mb-3">
+                                    <span class="@BS.Input_Group_Text">$</span>
+                                    <BSInput InputType="InputType.Text" placeholder="Enter Principal (Ex: 100000)" @bind-Value="PropertyViewModel.Principal"/>
+                                    <BSFeedback For="@(() => PropertyViewModel.Principal)"/>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <BSLabel>APR (in percent)</BSLabel>
-                                <BSInput InputType="InputType.Text" placeholder="Enter APR" @bind-Value="PropertyViewModel.APR"/>
-                                <BSFeedback For="@(() => PropertyViewModel.APR)"/>
+                                <div class="@BS.Input_Group mb-3">
+                                    <BSInput InputType="InputType.Text" placeholder="Enter APR (Ex: 2.75)" @bind-Value="PropertyViewModel.APR"/>
+                                    <span class="@BS.Input_Group_Text">%</span>
+                                    <BSFeedback For="@(() => PropertyViewModel.APR)"/>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <BSLabel>Monthly Payment</BSLabel>
-                                <BSInput InputType="InputType.Text" placeholder="Enter Monthly Payment" @bind-Value="PropertyViewModel.MonthlyPayment"/>
-                                <BSFeedback For="@(() => PropertyViewModel.MonthlyPayment)"/>
+                                <div class="@BS.Input_Group mb-3">
+                                    <span class="@BS.Input_Group_Text">$</span>
+                                    <BSInput InputType="InputType.Text" placeholder="Enter Monthly Payment (Ex: 2000)" @bind-Value="PropertyViewModel.MonthlyPayment"/>
+                                    <BSFeedback For="@(() => PropertyViewModel.MonthlyPayment)"/>
+                                </div>
                             </div>
                         </RowCol>
                     </Row>

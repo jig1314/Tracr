@@ -33,32 +33,29 @@ namespace Tracr.Client.ViewModels
 
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .WithMessage("Please enter a valid property name.");
+                .WithMessage("Please enter a property name.");
 
             RuleFor(x => x.NumBedrooms)
                 .NotEmpty()
-                .WithMessage("Please enter a number of bedrooms.")
+                .WithMessage("Please enter a number of bedrooms. Must be a number value! (Example: 5)")
                 .Custom((numBedrooms, context) =>
                 {
                     if ((!(int.TryParse(numBedrooms, out int value)) || value < 0))
                     {
-                        context.AddFailure($"{numBedrooms} is not a valid number of bedrooms!");
+                        context.AddFailure($"{numBedrooms} is not a valid number of bedrooms! Must be a number value! (Example: 5)");
                     }
                 });
 
             RuleFor(x => x.NumBathrooms)
                 .NotEmpty()
-                .WithMessage("Please enter a number of bathrooms.")
+                .WithMessage("Please enter a number of bathrooms. Must be a positive number or decimal value less than 100! (Example: 3.5)")
                 .Custom((numBedrooms, context) =>
                 {
-                    if ((!(decimal.TryParse(numBedrooms, out decimal value)) || value < 0))
+                    if ((!(decimal.TryParse(numBedrooms, out decimal value)) || value < 0 || value >= 100))
                     {
-                        context.AddFailure($"{numBedrooms} is not a valid number of bathrooms!");
+                        context.AddFailure($"{numBedrooms} is not a valid number of bathrooms! Must be a positive number or decimal value less than 100! (Example: 3.5)");
                     }
-                })
-                .ScalePrecision(1, 3)
-                .WithMessage($"Please enter a valid number of bathrooms!");
-
+                });
 
             RuleFor(x => x.StreetAddress)
                 .NotEmpty()
@@ -78,42 +75,36 @@ namespace Tracr.Client.ViewModels
 
             RuleFor(x => x.Principal)
                 .NotEmpty()
-                .WithMessage("Please enter a principal.")
+                .WithMessage("Please enter a principal. (Example: 100000.00)")
                 .Custom((principal, context) =>
                 {
                     if ((!(decimal.TryParse(principal, out decimal value)) || value < 0))
                     {
-                        context.AddFailure($"{principal} is not a valid principal!");
+                        context.AddFailure($"{principal} is not a valid principal! (Example: 100000.00)");
                     }
-                })
-                .ScalePrecision(2, 18)
-                .WithMessage($"Please enter a valid principal!");
+                });
 
             RuleFor(x => x.MonthlyPayment)
                 .NotEmpty()
-                .WithMessage("Please enter a monthly payment.")
+                .WithMessage("Please enter a monthly payment. (Example: 2000.00)")
                 .Custom((monthlyPayment, context) =>
                 {
                     if ((!(decimal.TryParse(monthlyPayment, out decimal value)) || value < 0))
                     {
-                        context.AddFailure($"{monthlyPayment} is not a valid monthly payment!");
+                        context.AddFailure($"{monthlyPayment} is not a valid monthly payment! (Example: 2000.00)");
                     }
-                })
-                .ScalePrecision(2, 18)
-                .WithMessage($"Please enter a valid monthly payment!");
+                });
 
             RuleFor(x => x.APR)
                 .NotEmpty()
-                .WithMessage("Please enter an APR.")
+                .WithMessage("Please enter an APR. (Example: 2.75)")
                 .Custom((apr, context) =>
                 {
                     if ((!(decimal.TryParse(apr, out decimal value)) || value < 0))
                     {
-                        context.AddFailure($"{apr} is not a valid APR!");
+                        context.AddFailure($"{apr} is not a valid APR! (Example: 2.75)");
                     }
-                })
-                .ScalePrecision(3, 10)
-                .WithMessage($"Please enter a valid APR!");
+                });
         }
     }
 }

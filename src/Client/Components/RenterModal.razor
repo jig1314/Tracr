@@ -54,8 +54,8 @@
                     <div class="@BS.Input_Group mb-3">
                         <span class="@BS.Input_Group_Text">$</span>
                         <BSInput InputType="InputType.Text" placeholder="Enter Monthly Rent (E.g. 1000.00)" @bind-Value="RenterViewModel.MonthlyRent"/>
+                        <BSFeedback For="@(() => RenterViewModel.MonthlyRent)"/>
                     </div>
-                    <BSFeedback For="@(() => RenterViewModel.MonthlyRent)"/>
                 </div>
 
                 <div class="modal-footer" style="padding: unset;">

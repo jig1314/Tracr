@@ -106,9 +106,25 @@ namespace Tracr.Tests.UnitTests
         }
 
         [Test]
-        public void EndingMonthShould_HaveNoValidationErrors_WhenItIsNotNull()
+        public void EndingMonthShould_HaveValidationErrors_WhenLessThanStartingDate()
         {
-            var model = new RenterViewModel() { EndingMonth = DateOnly.FromDateTime(DateTime.Today) };
+            var model = new RenterViewModel() { StartingMonth = DateOnly.FromDateTime(DateTime.Today.AddDays(1)), EndingMonth = DateOnly.FromDateTime(DateTime.Today) };
+            var result = validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.EndingMonth);
+        }
+
+        [Test]
+        public void EndingMonthShould_HaveValidationErrors_WhenEqualToStartingDate()
+        {
+            var model = new RenterViewModel() { StartingMonth = DateOnly.FromDateTime(DateTime.Today), EndingMonth = DateOnly.FromDateTime(DateTime.Today) };
+            var result = validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.EndingMonth);
+        }
+
+        [Test]
+        public void EndingMonthShould_HaveNoValidationErrors_WhenItIsNotNullAndGreaterThanStartingDate()
+        {
+            var model = new RenterViewModel() { StartingMonth = DateOnly.FromDateTime(DateTime.Today).AddDays(-1), EndingMonth = DateOnly.FromDateTime(DateTime.Today) };
             var result = validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(x => x.EndingMonth);
         }
