@@ -1,7 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 
 namespace Tracr.Tests.Pages
 {
