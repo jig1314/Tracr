@@ -1,3 +1,5 @@
+[![Build status](https://dev.azure.com/SWE6813-Team1/Tracr/_apis/build/status/tracr-prod)](https://dev.azure.com/SWE6813-Team1/Tracr/_build/latest?definitionId=5)
+
 # Introduction 
 Tracr is a Progressive Web Application built with the Blazor Framework (Web Assembly) and uses a .NET Core Web API to commuincate with a SQL Database and external APIs.
 
