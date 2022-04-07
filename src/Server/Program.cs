@@ -22,6 +22,7 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpClient("mash", c =>{
     c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("MashAPI"));

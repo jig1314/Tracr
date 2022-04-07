@@ -1,8 +1,15 @@
 ﻿@page "/"
+@using Tracr.Client.Pages.Dashboard
 
 <div class="container pt-3">
-    <h1>Welcome to Tracr!</h1>
-    <p>This site is meant to act as a simplify property management for individual real estate investors.</p>
-    <p>If that sounds like something you would be interested in, create an account now and get started!</p>
-    
+    <AuthorizeView>
+        <Authorized>
+            <Dashboard />
+        </Authorized>
+        <NotAuthorized>
+            <h1>Welcome to Tracr!</h1>
+            <p>This site is meant to act as a simplify property management for individual real estate investors.</p>
+            <p>If that sounds like something you would be interested in, create an account now and get started!</p>
+        </NotAuthorized>
+    </AuthorizeView>
 </div>

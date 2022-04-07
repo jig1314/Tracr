@@ -1,0 +1,178 @@
+﻿@using Tracr.Shared.DTOs
+@using BlazorStrap.Extensions.FluentValidation
+
+@if (LoadingData)
+{
+    <div style="display:flex; justify-content:center;">
+        <div class="spinner-border" role="status"></div>
+    </div>
+}
+else
+{
+    <BSForm class="container-lg" Model=@PropertyViewModel OnValidSubmit="SubmitProperty">
+        <FluentValidator TValidator="PropertyValidator" />
+        <div class="row row-0 align-items-center mb-3">
+            <div class="col-auto property-icon" style="margin-right: 15px;">
+                <span class="avatar avatar-md avatar-rounded">
+                    <Icon class="icon" Elements="@Icons.Home" />
+                </span>
+            </div>
+            <div class="col" style="margin-right: 15px;">
+                <BSInput InputType="InputType.Text" placeholder="Enter Property Name" @bind-Value="PropertyViewModel.Name"/>
+                <BSFeedback For="@(() => PropertyViewModel.Name)"/>
+            </div>
+            <div class="col-auto">
+                @if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
+                {
+                    <BSButton class="btn btn-icon" Color="BSColor.Light" @onclick="(() => DeletePropertyModal.Show(PropertyId.Value))"><Icon class="icon" Elements="@Icons.Trash"/></BSButton>
+                }
+            </div>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+                @ErrorMessage
+            </CustomAlert>
+        }
+        <Tabs>
+            <Tab>
+                <Header>
+                    <Icon class="icon m-1" Elements="@Icons.Info_circle"/> Details
+                </Header>
+                <ChildContent>
+                    <Row>
+                        <RowCol Sm="12" Lg="6">
+                            <h3>House Information</h3>
+                            <div class="mb-3">
+                                <BSLabel>Address</BSLabel>
+                                <BSInput InputType="InputType.Text" placeholder="Enter Street Address" @bind-Value="PropertyViewModel.StreetAddress"/>
+                                <BSFeedback For="@(() => PropertyViewModel.StreetAddress)"/>
+                            </div>
+                            <Row>
+                                <RowCol Sm="12" Lg="5">
+                                    <div class="mb-3">
+                                        <BSLabel>City</BSLabel>
+                                        <BSInput InputType="InputType.Text" placeholder="Enter City" @bind-Value="PropertyViewModel.City"/>
+                                        <BSFeedback For="@(() => PropertyViewModel.City)"/>
+                                    </div>
+                                </RowCol>
+                                <RowCol Sm="12" Md="6" Lg="4">
+                                    <div class="mb-3">
+                                        <BSLabel>State</BSLabel>
+                                        <BSInput InputType="InputType.Text" placeholder="Enter State" @bind-Value="PropertyViewModel.State"/>
+                                        <BSFeedback For="@(() => PropertyViewModel.State)"/>
+                                    </div>
+                                </RowCol>
+                                <RowCol Sm="12" Md="6" Lg="3">
+                                    <div class="mb-3">
+                                        <BSLabel>Zip Code</BSLabel>
+                                        <BSInput InputType="InputType.Text" placeholder="Enter Zip" @bind-Value="PropertyViewModel.ZipCode"/>
+                                        <BSFeedback For="@(() => PropertyViewModel.ZipCode)"/>
+                                    </div>
+                                </RowCol>
+                            </Row>
+                            <Row>
+                                <div class="col mb-3">
+                                    <BSLabel>Number of Bedrooms</BSLabel>
+                                    <BSInput InputType="InputType.Text" placeholder="Enter Number of Bedrooms" @bind-Value="PropertyViewModel.NumBedrooms"/>
+                                    <BSFeedback For="@(() => PropertyViewModel.NumBedrooms)"/>
+                                </div>
+                                <div class="col mb-3">
+                                    <BSLabel>Number of Bathrooms</BSLabel>
+                                    <BSInput InputType="InputType.Text" placeholder="Enter Number of Bathrooms" @bind-Value="PropertyViewModel.NumBathrooms"/>
+                                    <BSFeedback For="@(() => PropertyViewModel.NumBathrooms)"/>
+                                </div>
+                            </Row>
+                        </RowCol>
+                        <RowCol Sm="12" Lg="6">
+                            <h3>Mortage Information</h3>
+                            <div class="mb-3">
+                                <BSLabel>Principal</BSLabel>
+                                <div class="@BS.Input_Group mb-3">
+                                    <span class="@BS.Input_Group_Text">$</span>
+                                    <BSInput InputType="InputType.Text" placeholder="Enter Principal (Ex: 100000)" @bind-Value="PropertyViewModel.Principal"/>
+                                    <BSFeedback For="@(() => PropertyViewModel.Principal)"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <BSLabel>APR (in percent)</BSLabel>
+                                <div class="@BS.Input_Group mb-3">
+                                    <BSInput InputType="InputType.Text" placeholder="Enter APR (Ex: 2.75)" @bind-Value="PropertyViewModel.APR"/>
+                                    <span class="@BS.Input_Group_Text">%</span>
+                                    <BSFeedback For="@(() => PropertyViewModel.APR)"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <BSLabel>Monthly Payment</BSLabel>
+                                <div class="@BS.Input_Group mb-3">
+                                    <span class="@BS.Input_Group_Text">$</span>
+                                    <BSInput InputType="InputType.Text" placeholder="Enter Monthly Payment (Ex: 2000)" @bind-Value="PropertyViewModel.MonthlyPayment"/>
+                                    <BSFeedback For="@(() => PropertyViewModel.MonthlyPayment)"/>
+                                </div>
+                            </div>
+                        </RowCol>
+                    </Row>
+                    <div class="d-flex align-items-center">
+                        @if(CurrentViewMode == ViewMode.Add)
+                        {
+                            <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>
+                        }
+                        else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
+                        {
+                            <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
+                        }
+                    </div>
+                </ChildContent>
+            </Tab>
+            @if(CurrentViewMode == ViewMode.Edit)
+            {
+                <Tab>
+                    <Header>
+                        <Icon class="icon m-1" Elements="@Icons.Users"/> Renters
+                    </Header>
+                    <ChildContent>
+                        @if (LoadingRenterData)
+                        {
+                            <div style="display:flex; justify-content:center;">
+                                <div class="spinner-border" role="status"></div>
+                            </div>
+                        }
+                        else if(Renters?.Count > 0)
+                        {
+                            <Table ShowHeader="false" Item="RenterTableViewModel" Items="@Renters" PageSize="5" Hover Responsive>
+                                <ChildContent>
+                                    <Column Item="RenterTableViewModel" Property="@(x=>x.FirstName)" Title="First Name" />
+                                    <Column Item="RenterTableViewModel" Property="@(x=>x.LastName)" Title="Last Name" />
+                                    <Column Item="RenterTableViewModel" Property="@(x=>x.MonthlyRent)" Title="Monthly Rent" />
+                                    <Column Item="RenterTableViewModel" Property="@(x=>x.StartingMonth)" Title="Starting Month" />
+                                    <Column Item="RenterTableViewModel" Property="@(x=>x.EndingMonth)" Title="Ending Month" />
+                                    <Column Item="RenterTableViewModel" Title="" ActionColumn Width="75px">
+                                        <Template>
+                                            <div class="row row-0" style="justify-content:space-between; width: 50px;">
+                                                <div class="col-auto">
+                                                    <Icon @onclick="(() => OpenEditRenterModal(context.Id))" style="cursor: pointer;" class="icon" Elements="@Icons.Pencil" />
+                                                </div>
+                                                <div class="col-auto">
+                                                    <Icon class="icon" @onclick="(() => DeleteRenterModal.Show(context.Id))" style="cursor: pointer;" Elements="@Icons.Trash_x"/>
+                                                </div>
+                                            </div>
+                                        </Template>
+                                    </Column>
+                                </ChildContent>
+                            </Table>
+                        }
+                        <BSButton class="btn btn-pill" style="margin-top: 10px;" Color="BSColor.Primary" @onclick="OpenAddRenterModal">
+                            <Icon class="icon" Elements="@Icons.Plus"/> Add Renter
+                        </BSButton>
+                    </ChildContent>
+                </Tab>
+            }
+        </Tabs>
+    </BSForm>
+}
+
+<DeletePropertyModal @ref="DeletePropertyModal" OnDelete="DeleteProperty" />
+
+<DeleteRenterModal @ref="DeleteRenterModal" OnDelete="DeleteRenter" />
+
+<RenterModal @ref="RenterModal" OnSubmit="GetRentersInformation" />

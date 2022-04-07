@@ -17,7 +17,7 @@ namespace Tracr.Server.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -300,6 +300,33 @@ namespace Tracr.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Tracr.Server.Models.Address", b =>
+                {
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PropertyId")
+                        .HasName("PrimaryKey_Address_PropertyId");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("Tracr.Server.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -384,6 +411,114 @@ namespace Tracr.Server.Data.Migrations
                     b.ToTable("ApplicationUserDetails");
                 });
 
+            modelBuilder.Entity("Tracr.Server.Models.Mortage", b =>
+                {
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("APR")
+                        .HasPrecision(10, 3)
+                        .HasColumnType("decimal(10,3)");
+
+                    b.Property<decimal>("MonthlyPayment")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Principal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("PropertyId")
+                        .HasName("PrimaryKey_Mortage_PropertyId");
+
+                    b.ToTable("Mortages");
+                });
+
+            modelBuilder.Entity("Tracr.Server.Models.Property", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("NumBathrooms")
+                        .HasPrecision(3, 1)
+                        .HasColumnType("decimal(3,1)");
+
+                    b.Property<int>("NumBedrooms")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id")
+                        .HasName("PrimaryKey_PropertyId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("Tracr.Server.Models.Renter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("EndingMonth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MonthlyRent")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartingMonth")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id")
+                        .HasName("PrimaryKey_RenterId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("Renters");
+                });
+
+            modelBuilder.Entity("Tracr.Shared.Models.PropertyIncome", b =>
+                {
+                    b.Property<decimal>("Income")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RenterId")
+                        .HasColumnType("int");
+
+                    b.ToTable("PropertyIncome");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -435,6 +570,18 @@ namespace Tracr.Server.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tracr.Server.Models.Address", b =>
+                {
+                    b.HasOne("Tracr.Server.Models.Property", "Property")
+                        .WithOne("Address")
+                        .HasForeignKey("Tracr.Server.Models.Address", "PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("ForeignKey_Address_Property");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Tracr.Server.Models.ApplicationUserDetail", b =>
                 {
                     b.HasOne("Tracr.Server.Models.ApplicationUser", "ApplicationUser")
@@ -447,10 +594,59 @@ namespace Tracr.Server.Data.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("Tracr.Server.Models.Mortage", b =>
+                {
+                    b.HasOne("Tracr.Server.Models.Property", "Property")
+                        .WithOne("Mortage")
+                        .HasForeignKey("Tracr.Server.Models.Mortage", "PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("ForeignKey_Mortage_Property");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("Tracr.Server.Models.Property", b =>
+                {
+                    b.HasOne("Tracr.Server.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Properties")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("ForeignKey_Property_ApplicationUserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Tracr.Server.Models.Renter", b =>
+                {
+                    b.HasOne("Tracr.Server.Models.Property", "Property")
+                        .WithMany("Renters")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("ForeignKey_Renter_Property");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Tracr.Server.Models.ApplicationUser", b =>
                 {
                     b.Navigation("ApplicationUserDetail")
                         .IsRequired();
+
+                    b.Navigation("Properties");
+                });
+
+            modelBuilder.Entity("Tracr.Server.Models.Property", b =>
+                {
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("Mortage")
+                        .IsRequired();
+
+                    b.Navigation("Renters");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,11 +6,13 @@
     </a>
     
     <NavbarMenu>
-        <NavbarMenuItem Href="" Text="Home">
-            <MenuItemIcon>
-                <Icon class="icon" Elements="@Icons.Home" />
-            </MenuItemIcon>
-        </NavbarMenuItem>
+        <AuthorizeView>
+            <NavbarMenuItem Href="" Text="Dashboard">
+                <MenuItemIcon>
+                    <Icon class="icon" Elements="@Icons.Dashboard" />
+                </MenuItemIcon>
+            </NavbarMenuItem>
+        </AuthorizeView>
     </NavbarMenu>
     <LoginDisplay />
 </Navbar>
