@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tracr.Server.Services;
+using Tracr.Server.Repositories;
 using Tracr.Shared.DTOs;
 
 namespace Tracr.Server.Controllers
@@ -9,8 +9,8 @@ namespace Tracr.Server.Controllers
     [ApiController]
     public class RealEstateController : Controller
     {
-        private readonly IRealEstateService _realestate;
-        public RealEstateController(IRealEstateService realEstate)
+        private readonly IRealEstateRepo _realestate;
+        public RealEstateController(IRealEstateRepo realEstate)
         {
             this._realestate = realEstate;
         }

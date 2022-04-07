@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Tracr.Server.Data;
 using Tracr.Server.Models;
-using Tracr.Server.Services;
+using Tracr.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +30,6 @@ builder.Services.AddHttpClient("realestate", c => {
     c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("RapidApiKey") ?? "missing-key");
 });
 
-builder.Services.AddScoped<IRealEstateService, RealEstateService>();
 builder.Services.AddScoped<IRealEstateRepo, RealEstateRepo>();
 
 var app = builder.Build();

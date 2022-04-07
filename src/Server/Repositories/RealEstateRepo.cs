@@ -3,13 +3,13 @@ using System.Text;
 using Tracr.Server.Models;
 using Tracr.Shared.DTOs;
 
-namespace Tracr.Server.Services
+namespace Tracr.Server.Repositories
 {
-    public class RealEstateService : IRealEstateService
+    public class RealEstateRepo : IRealEstateRepo
     {
         private readonly HttpClient _httpClient;
 
-        public RealEstateService(IHttpClientFactory clientFactory)
+        public RealEstateRepo(IHttpClientFactory clientFactory)
         {
             this._httpClient = clientFactory.CreateClient("realestate");
         }

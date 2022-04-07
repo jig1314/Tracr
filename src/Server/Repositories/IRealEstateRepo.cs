@@ -1,8 +1,8 @@
 ﻿using Tracr.Server.Models;
 using Tracr.Shared.DTOs;
-namespace Tracr.Server.Services
+namespace Tracr.Server.Repositories
 {
-    public interface IRealEstateService
+    public interface IRealEstateRepo
     {
 
         /// <summary>
