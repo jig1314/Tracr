@@ -1,27 +1,19 @@
-﻿using Tracr.Server.Models;
-using Tracr.Shared.DTOs;
+﻿using Tracr.Server.ResourceParameters;
+using Tracr.Shared.Models;
+
 namespace Tracr.Server.Repositories
 {
+    /// <summary>
+    /// https://rapidapi.com/datascraper/api/us-real-estate/
+    /// </summary>
     public interface IRealEstateRepo
     {
-
-        /// <summary>
-        /// https://rapidapi.com/datascraper/api/us-real-estate/
-        /// </summary>
-        /// <param name="mls_id"></param>
-        /// <returns>RealEstateResponse</returns>
-        Task<RealEstateResponse> PropertyDetail(long property_id);
-        Task<RealEstateResponse> PropertyByMlsId(string mls_id);
-        Task<RealEstateResponse> LocationSuggest(string input);
-        Task<RealEstateResponse> LocationSchools(string ciy, string state_code, int postal_code);
-        Task<RealEstateResponse> LocationNoiseScore(decimal longitude, decimal latitude);
-        Task<RealEstateResponse> ForSale(RealEstateDto param);
-        Task<RealEstateResponse> SimilarHomes(long property_id);
-        Task<RealEstateResponse> EstimatedValue(long property_id);
-        Task<RealEstateResponse> SoldHomes(RealEstateDto param);
-        Task<RealEstateResponse> ForRent(RealEstateDto param);
-        Task<RealEstateResponse> MortgageCalc(RealEstateDto param);
-        Task<RealEstateResponse> RateTrends(bool is_refinance);
-        Task<RealEstateResponse> AverageRateByZip(int postal_code);
+        //Task<RealEstateDto> PropertyDetail(long property_id);
+        //Task<RealEstateDto> LocationSuggest(string input);
+        Task<List<PropertyForSale>> ForSale(ForSaleResourceParameters param);
+        //Task<RealEstateDto> SimilarHomes(long property_id);
+        //Task<RealEstateDto> EstimatedValue(long property_id);
+        Task<MortageCalculation> MortgageCalc(MortageCalcResourceParameters param);
+        //Task<RealEstateDto> RateTrends(bool is_refinance);
     }
 }

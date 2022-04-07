@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using Tracr.Server.Models;
-using Tracr.Shared.DTOs;
+using Tracr.Server.ResourceParameters;
+using Tracr.Shared.Models;
 
 namespace Tracr.Server.Repositories
 {
@@ -14,40 +17,22 @@ namespace Tracr.Server.Repositories
             this._httpClient = clientFactory.CreateClient("realestate");
         }
 
-        public async Task<RealEstateResponse> AverageRateByZip(int postal_code)
-        {
-            if (postal_code < 5)
-                throw new ArgumentException();
+        //public async Task<RealEstateResponse> EstimatedValue(long property_id)
+        //{
+        //    var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
 
-            var query = new Dictionary<string, string?>() { { "postal_code", postal_code.ToString() } };
+        //    var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("for-sale/home-estimate-value", query));
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("finance/average-rate", query));
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var body = await response.Content.ReadAsStringAsync();
+        //        return new RealEstateResponse("EstimatedValue", body);
+        //    }
 
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("AverageRateByZip", body);
-            }
+        //    throw new Exception(response.StatusCode.ToString());
+        //}
 
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> EstimatedValue(long property_id)
-        {
-            var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
-
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("for-sale/home-estimate-value", query));
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("EstimatedValue", body);
-            }
-
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> ForRent(RealEstateDto param)
+        public async Task<List<PropertyForSale>> ForSale(ForSaleResourceParameters param)
         {
             var query = new Dictionary<string, string?>();
 
@@ -59,7 +44,6 @@ namespace Tracr.Server.Repositories
             query.Add("state_code", param.state_code);
             query.Add("limit", param.limit.ToString());
             query.Add("offset", param.offset.ToString());
-            query.Add("sort", param.sort.ToString());
 
             //optional params
             if (param.location.HasValue)
@@ -82,155 +66,53 @@ namespace Tracr.Server.Repositories
 
             if (param.baths_max.HasValue)
                 query.Add("baths_max", param.baths_max.ToString());
-
-            if (param.property_type.HasValue)
-                query.Add("property_type", param.property_type.ToString());
-
-            if (param.community_ammenities.Count > 0)
-            {
-                var sb = new StringBuilder();
-
-                param.community_ammenities.ForEach(a =>
-                {
-                    sb.Append($"{a.ToString()},");
-                });
-
-                query.Add("community_ammenities", sb.ToString());
-            }                  
-
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("/v2/for-rent", query));
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("ForRent", body);
-            }
-
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> ForSale(RealEstateDto param)
-        {
-            var query = new Dictionary<string, string?>();
-
-            // load required params
-            if (string.IsNullOrEmpty(param.city) || string.IsNullOrEmpty(param.state_code))
-                throw new ArgumentException();
-
-            query.Add("city", param.city);
-            query.Add("state_code", param.state_code);
-            query.Add("limit", param.limit.ToString());
-            query.Add("offset", param.offset.ToString());
-            query.Add("sort", param.sort.ToString());
-
-            //optional params
-            if (param.location.HasValue)
-                query.Add("location", param.location.ToString());
-
-            if (param.price_min.HasValue)
-                query.Add("price_min", param.price_min.ToString());
-
-            if (param.price_max.HasValue)
-                query.Add("price_max", param.price_max.ToString());
-
-            if (param.beds_min.HasValue)
-                query.Add("beds_min", param.beds_min.ToString());
-
-            if (param.beds_max.HasValue)
-                query.Add("beds_max", param.beds_max.ToString());
-
-            if (param.baths_min.HasValue)
-                query.Add("baths_min", param.baths_min.ToString());
-
-            if (param.baths_max.HasValue)
-                query.Add("baths_max", param.baths_max.ToString());
-
-            if (param.property_type.HasValue)
-                query.Add("property_type", param.property_type.ToString());
-
-            if (param.new_construction.HasValue)
-                query.Add("new_construction", param.new_construction.ToString());
-
-            if (param.home_size_max.HasValue)
-                query.Add("home_size_max", param.home_size_max.ToString());
-
-            if (param.community_ammenities.Count > 0)
-            {
-                var sb = new StringBuilder();
-
-                param.community_ammenities.ForEach(a =>
-                {
-                    sb.Append($"{a.ToString()},");
-                });
-
-                query.Add("community_ammenities", sb.ToString());
-            }
-
 
             var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("/v2/for-sale", query));
 
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("ForSale", body);
+                var content = JsonConvert.DeserializeObject<JToken>(body);
+                var data = content.SelectToken("data");
+                var homeSearch = data.SelectToken("home_search");
+                var results = homeSearch.SelectTokens("results[*]");
+
+                var properties = results.Select(property => new PropertyForSale()
+                {
+                    PhotoURL = (string)property.SelectToken("primary_photo")["href"],
+                    ListPrice = Convert.ToDecimal((string)property["list_price"]),
+                    YearBuilt = Convert.ToInt32((string)property.SelectToken("description")["year_built"]),
+                    NumBedrooms = Convert.ToInt32((string)property.SelectToken("description")["beds"]),
+                    NumBathrooms = (decimal)(Convert.ToInt32((string)property.SelectToken("description")["baths_full"]) + (Convert.ToInt32((string)property.SelectToken("description")["baths_half"]) * .5)),
+                    SqaureFootage = Convert.ToInt32((string)property.SelectToken("description")["sqft"]),
+                    StreetAddress = (string)property.SelectToken("location").SelectToken("address")["line"],
+                    City = (string)property.SelectToken("location").SelectToken("address")["city"],
+                    State = (string)property.SelectToken("location").SelectToken("address")["state_code"],
+                    ZipCode = (string)property.SelectToken("location").SelectToken("address")["postal_code"]
+                });
+
+                return properties.ToList();
             }
 
             throw new Exception(response.StatusCode.ToString());
         }
 
-        public async Task<RealEstateResponse> LocationNoiseScore(decimal longitude, decimal latitude)
-        {
-            var query = new Dictionary<string, string?>() { 
-                { "latitude", latitude.ToString() },
-                { "longitude", longitude.ToString() }
-            };
+        //public async Task<RealEstateResponse> LocationSuggest(string input)
+        //{
+        //    var query = new Dictionary<string, string?>() { { "input", input } };
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("location/noise-score", query));
+        //    var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("location/suggest", query));
 
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("LocationNoiseScore", body);
-            }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var body = await response.Content.ReadAsStringAsync();
+        //        return new RealEstateResponse("LocationSuggest", body);
+        //    }
 
-            throw new Exception(response.StatusCode.ToString());
-        }
+        //    throw new Exception(response.StatusCode.ToString());
+        //}
 
-        public async Task<RealEstateResponse> LocationSchools(string city, string state_code, int postal_code)
-        {
-            var query = new Dictionary<string, string?>() {
-                { "ciy", city },
-                { "state_code", state_code },
-                { "postal_code", postal_code.ToString() }
-            };
-
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("location/schools", query));
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("LocationNoiseScore", body);
-            }
-
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> LocationSuggest(string input)
-        {
-            var query = new Dictionary<string, string?>() { { "input", input } };
-
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("location/suggest", query));
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("LocationSuggest", body);
-            }
-
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> MortgageCalc(RealEstateDto param)
+        public async Task<MortageCalculation> MortgageCalc(MortageCalcResourceParameters param)
         {            
              var query = new Dictionary<string, string?>();
 
@@ -239,11 +121,12 @@ namespace Tracr.Server.Repositories
                 || !param.percent_rate.HasValue || !param.monthly_home_insurance.HasValue || !param.price.HasValue )
                 throw new ArgumentException();
 
-            query.Add("show_amortization", param.city);
+            query.Add("show_amortization", param.show_amortization ? "True" : "False");
             query.Add("year_term", param.year_term.ToString());
             query.Add("hoa_fees", param.hoa_fees.ToString());
             query.Add("percent_tax_rate", param.percent_tax_rate.ToString());
             query.Add("percent_rate", param.percent_rate.ToString());
+            query.Add("down_payment", param.down_payment.ToString());
             query.Add("monthly_home_insurance", param.monthly_home_insurance.ToString());
             query.Add("price", param.price.ToString());
 
@@ -252,129 +135,66 @@ namespace Tracr.Server.Repositories
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("ForSale", body);
+                var content = JsonConvert.DeserializeObject<JToken>(body);
+                var data = content.SelectToken("data");
+
+                var mortageCalculation = new MortageCalculation()
+                {
+                    TermInYears = Convert.ToInt32((string)data["term"]),
+                    Principal = Convert.ToDecimal((string)data["loan_amount"]),
+                    MonthlyPayment = Convert.ToDecimal((string)data["monthly_payment"]),
+                    APR = Convert.ToDecimal((string)data["rate"]) * 100
+                };
+
+                return mortageCalculation;
             }
 
             throw new Exception(response.StatusCode.ToString());
         }
 
-        public async Task<RealEstateResponse> PropertyByMlsId(string mls_id)
-        {
-            var query = new Dictionary<string, string?>() { { "mls_id", mls_id } };
+        //public async Task<RealEstateResponse> PropertyDetail(long property_id)
+        //{
+        //    var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("property-by-mls-id", query));
+        //    var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("v2/property-detail", query));
 
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("PropertyByMlsId", body);
-            }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var body = await response.Content.ReadAsStringAsync();
+        //        return new RealEstateResponse("PropertyDetail", body);
+        //    }
 
-            throw new Exception(response.StatusCode.ToString());
-        }
+        //    throw new Exception(response.StatusCode.ToString());
+        //}
 
-        public async Task<RealEstateResponse> PropertyDetail(long property_id)
-        {
-            var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
+        //public async Task<RealEstateResponse> RateTrends(bool is_refinance)
+        //{
+        //    var query = new Dictionary<string, string?>() { { "is_refinance", is_refinance.ToString() } };
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("v2/property-detail", query));
+        //    var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("finance/rate-trends", query));
 
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("PropertyDetail", body);
-            }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var body = await response.Content.ReadAsStringAsync();
+        //        return new RealEstateResponse("RateTrends", body);
+        //    }
 
-            throw new Exception(response.StatusCode.ToString());
-        }
+        //    throw new Exception(response.StatusCode.ToString());
+        //}
 
-        public async Task<RealEstateResponse> RateTrends(bool is_refinance)
-        {
-            var query = new Dictionary<string, string?>() { { "is_refinance", is_refinance.ToString() } };
+        //public async Task<RealEstateResponse> SimilarHomes(long property_id)
+        //{
+        //    var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("finance/rate-trends", query));
+        //    var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("for-sale/similiar-homes", query));
 
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("RateTrends", body);
-            }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var body = await response.Content.ReadAsStringAsync();
+        //        return new RealEstateResponse("SimilarHomes", body);
+        //    }
 
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> SimilarHomes(long property_id)
-        {
-            var query = new Dictionary<string, string?>() { { "property_id", property_id.ToString() } };
-
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("for-sale/similiar-homes", query));
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("SimilarHomes", body);
-            }
-
-            throw new Exception(response.StatusCode.ToString());
-        }
-
-        public async Task<RealEstateResponse> SoldHomes(RealEstateDto param)
-        {
-            var query = new Dictionary<string, string?>();
-
-            // load required params
-            if (string.IsNullOrEmpty(param.city) || string.IsNullOrEmpty(param.state_code))
-                throw new ArgumentException();
-
-            query.Add("city", param.city);
-            query.Add("state_code", param.state_code);
-            query.Add("limit", param.limit.ToString());
-            query.Add("offset", param.offset.ToString());
-            query.Add("sort", param.sort.ToString());
-            query.Add("max_sold_days", param.max_sold_days.ToString());
-
-
-            //optional params
-            if (param.location.HasValue)
-                query.Add("location", param.location.ToString());
-
-            if (param.price_min.HasValue)
-                query.Add("price_min", param.price_min.ToString());
-
-            if (param.price_max.HasValue)
-                query.Add("price_max", param.price_max.ToString());
-
-            if (param.beds_min.HasValue)
-                query.Add("beds_min", param.beds_min.ToString());
-
-            if (param.beds_max.HasValue)
-                query.Add("beds_max", param.beds_max.ToString());
-
-            if (param.baths_min.HasValue)
-                query.Add("baths_min", param.baths_min.ToString());
-
-            if (param.baths_max.HasValue)
-                query.Add("baths_max", param.baths_max.ToString());
-
-            if (param.property_type.HasValue)
-                query.Add("property_type", param.property_type.ToString());
-
-            if (param.new_construction.HasValue)
-                query.Add("new_construction", param.new_construction.ToString());
-
-            if (param.home_size_max.HasValue)
-                query.Add("home_size_max", param.home_size_max.ToString());
-
-
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("/sold-homes", query));
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                return new RealEstateResponse("SoldHomes", body);
-            }
-
-            throw new Exception(response.StatusCode.ToString());
-        }
+        //    throw new Exception(response.StatusCode.ToString());
+        //}
     }
 }
