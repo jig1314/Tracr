@@ -1,0 +1,52 @@
+﻿@page "/suggestions/"
+
+<div class="container pt-3">
+    <PageHeader style="margin:unset;">
+        <div class="row align-items-center">
+            <div class="col">
+                <TabBlazor.PageTitle>
+                    Suggestions
+                </TabBlazor.PageTitle>
+                <div class="text-muted mt-1">Based on the next 6 months net profit projection</div>
+            </div>
+        </div>
+    </PageHeader>
+</div>
+<div class="container pt-3">
+    <div class="row g-4">
+        <div class="col-3">
+            <h3><Icon class="icon me-2" Elements="@Icons.Filter"/>Filters</h3>
+
+            <div class="subheader mb-2">City</div>
+            <div class="mb-2">
+                <BSInput TValue="string" InputType="InputType.Text" placeholder="Enter a city..." />
+            </div>
+            <div class="subheader mb-2">State</div>
+            <div class="mb-2">
+                <BSInput TValue="string" InputType="InputType.Select">
+                    <option value="null">Select a state...</option>
+                </BSInput>
+            </div>
+            <div class="subheader mb-2">Max List Price</div>
+            <div class="row row-0 align-items-center mb-2">
+                <div class="col">
+                    <BSInput @bind-Value="Price" InputType="InputType.Range" min="200000" max="400000" step="10000"/>
+                </div>
+                <div class="col-auto ms-2">
+                    <BSLabel>@Price?.ToString("C")</BSLabel>
+                </div>
+            </div>
+            <div class="mt-3">
+                <BSButton Color="BSColor.Primary" IsOutlined="true" IsSubmit="true">Apply Filters</BSButton>
+            </div>
+        </div>
+        <div class="col-9">
+            <SuggestedProperties />
+        </div>
+    </div>
+</div>
+
+@code
+{
+    public int? Price { get; set; } = 200000;
+}
