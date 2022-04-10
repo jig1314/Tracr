@@ -1,4 +1,4 @@
-﻿namespace Tracr.Server.ResourceParameters
+﻿namespace Tracr.Shared.ResourceParameters
 {
     public class MortageCalcResourceParameters
     {
