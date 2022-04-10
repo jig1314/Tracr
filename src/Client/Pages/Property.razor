@@ -112,6 +112,14 @@ else
                         {
                             <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
                         }
+                        else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
+                        {
+                            <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Danger" @onclick="btnClose_Click"/>Cancel</BSButton>
+                        }
+                        else if(CurrentViewMode == ViewMode.Add)
+                        {
+                            <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Danger" @onclick="btnClose_Click"/>Cancel</BSButton>
+                        }
                     </div>
                 </ChildContent>
             </Tab>
