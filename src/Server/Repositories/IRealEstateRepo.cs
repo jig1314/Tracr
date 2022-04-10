@@ -1,5 +1,5 @@
-﻿using Tracr.Server.ResourceParameters;
-using Tracr.Shared.Models;
+﻿using Tracr.Shared.Models;
+using Tracr.Shared.ResourceParameters;
 
 namespace Tracr.Server.Repositories
 {
@@ -15,5 +15,7 @@ namespace Tracr.Server.Repositories
         //Task<RealEstateDto> EstimatedValue(long property_id);
         Task<MortageCalculation> MortgageCalc(MortageCalcResourceParameters param);
         //Task<RealEstateDto> RateTrends(bool is_refinance);
+        List<StateCode> GetStateCodes();
+        List<SortByOption> GetSortByOptions();
     }
 }

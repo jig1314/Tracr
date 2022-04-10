@@ -8,7 +8,18 @@
                 {
                     <RowCol Sm="12" Md="6" Lg="4">
                         <Card>
-                            <img src="https://ap.rdcpix.com/da5f33259897350f0a7f7c18a4c44ea2l-m1953170496s-w1024_h768.jpg" class="card-img-top">
+                            @if(string.IsNullOrWhiteSpace(@property.PhotoURL))
+                            {
+                                <div class="d-flex card-cover text-center card-cover-blurred align-items-center" style="height: 217.5px;">
+                                    <span class="avatar avatar-lg avatar-rounded" style="margin: auto">
+                                        <Icon class="icon" Elements="@Icons.Home" />
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="@property.PhotoURL" class="card-img-top" style="height: 217.5px;">
+                            }
                             <CardBody>
                                 <p style="font-size: small; text-align: center;" class="text-muted mb-2">@property.StreetAddress @property.City, @property.State @property.ZipCode</p>
                                 <div class="d-flex align-items-center mb-2">
@@ -56,5 +67,6 @@
 
 @code
 {
+    [Parameter]
     public List<PropertyForSale> Properties { get; set; }
 }

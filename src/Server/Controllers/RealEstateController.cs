@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tracr.Server.Repositories;
-using Tracr.Server.ResourceParameters;
 using Tracr.Shared.DTOs;
 using Tracr.Shared.Models;
+using Tracr.Shared.ResourceParameters;
 
 namespace Tracr.Server.Controllers
 {
@@ -36,7 +36,7 @@ namespace Tracr.Server.Controllers
         //}
 
         [HttpGet("For-Sale")]
-        public async Task<ActionResult<List<PropertyForSale>>> GetForSale(ForSaleResourceParameters forSaleResourceParameters)
+        public async Task<ActionResult<List<PropertyForSale>>> GetForSale([FromQuery] ForSaleResourceParameters forSaleResourceParameters)
         {
             try
             {
@@ -134,5 +134,36 @@ namespace Tracr.Server.Controllers
         //        return StatusCode(StatusCodes.Status500InternalServerError);
         //    }
         //}
+
+        [HttpGet("states")]
+        public async Task<ActionResult<List<StateCode>>> GetStates()
+        {
+            try
+            {
+                var states = _realestate.GetStateCodes();
+
+                return Ok(states);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
+
+
+        [HttpGet("sortByOptions")]
+        public async Task<ActionResult<List<StateCode>>> GetSortByOptions()
+        {
+            try
+            {
+                var sortByOptions = _realestate.GetSortByOptions();
+
+                return Ok(sortByOptions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, (ex.InnerException != null) ? ex.InnerException.Message : ex.Message);
+            }
+        }
     }
 }

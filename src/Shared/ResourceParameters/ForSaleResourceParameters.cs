@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tracr.Server.ResourceParameters
+namespace Tracr.Shared.ResourceParameters
 {
     public class ForSaleResourceParameters
     {
@@ -10,7 +10,9 @@ namespace Tracr.Server.ResourceParameters
         [Range(0, 200)]
         public int limit { get; set; } = 42;
 
-        public string? state_code { get; set; }
+        public int sortByOption { get; set; } = 1;
+
+        public int? stateId { get; set; }
 
         public string? city { get; set; }
 
@@ -20,11 +22,11 @@ namespace Tracr.Server.ResourceParameters
 
         public int? price_max { get; set; }
 
-        public int? beds_min { get; set; }
+        public int? beds_min { get; set; } = 1;
 
         public int? beds_max { get; set; }
 
-        public int? baths_min { get; set; }
+        public int? baths_min { get; set; } = 1;
 
         public int? baths_max { get; set; }
     }
