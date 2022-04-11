@@ -37,6 +37,8 @@ namespace Tracr.Client.Pages
 
         protected BSButton ApplyFilterButton;
 
+        protected BSOffCanvas? _offCanvasFilter;
+
         public List<StateCode> StateCodes { get; set; }
         public List<SortByOption> SortByOptions { get; set; }
         public List<PropertyDto> UserProperties { get;  set; }
@@ -68,22 +70,13 @@ namespace Tracr.Client.Pages
                 await InitializePage();
                 if (FinalProjectedProfit <= 0)
                 {
-                    MakePageUnavailable();
+                    UnavailableMessage = "Your six month projected profit is less than or equal to $0.00. We have no suggestions for you at this time.";
                 }
                 else
                 {
-                    await SearchForProperties();
+                    //await SearchForProperties();
                 }
             }
-        }
-
-        private void MakePageUnavailable()
-        {
-            if (ApplyFilterButton != null)
-                ApplyFilterButton.IsDisabled = true;
-
-            UnavailableMessage = "Your six month projected profit is less than or equal to $0.00. We have no suggestions for you at this time.";
-            StateHasChanged();
         }
 
         private async Task InitializePage()
@@ -209,5 +202,16 @@ namespace Tracr.Client.Pages
                 return 0;
         }
 
+        protected async Task FilterCanvasSubmit()
+        {
+            await SearchForProperties();
+            await ToggleFilterCanvas();
+        }
+
+        protected async Task ToggleFilterCanvas()
+        {
+            if (_offCanvasFilter != null)
+                await _offCanvasFilter.ToggleAsync();
+        }
     }
 }
