@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlazorStrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Tracr.Client.Models;
@@ -34,6 +35,8 @@ namespace Tracr.Client.Pages
         public bool LoadingData { get; set; } = false;
         public bool LoadingPropertyData { get; set; } = false;
 
+        protected BSButton ApplyFilterButton;
+
         public List<StateCode> StateCodes { get; set; }
         public List<SortByOption> SortByOptions { get; set; }
         public List<PropertyDto> UserProperties { get;  set; }
@@ -44,6 +47,7 @@ namespace Tracr.Client.Pages
         private Dictionary<int, decimal> PropertyMonthlyExpenseMap = new Dictionary<int, decimal>();
 
         public string ErrorMessage { get; set; } = "";
+        public string UnavailableMessage { get; set; } = "";
         public decimal FinalProjectedProfit { get; private set; }
         public decimal MinListPrice { get; private set; }
         public decimal MaxListPrice { get; private set; }
@@ -62,8 +66,24 @@ namespace Tracr.Client.Pages
             else
             {
                 await InitializePage();
-                await SearchForProperties();
+                if (FinalProjectedProfit <= 0)
+                {
+                    MakePageUnavailable();
+                }
+                else
+                {
+                    await SearchForProperties();
+                }
             }
+        }
+
+        private void MakePageUnavailable()
+        {
+            if (ApplyFilterButton != null)
+                ApplyFilterButton.IsDisabled = true;
+
+            UnavailableMessage = "Your six month projected profit is less than or equal to $0.00. We have no suggestions for you at this time.";
+            StateHasChanged();
         }
 
         private async Task InitializePage()
@@ -110,6 +130,9 @@ namespace Tracr.Client.Pages
 
             try
             {
+                if (ApplyFilterButton != null)
+                    ApplyFilterButton.IsDisabled = true;
+
                 LoadingPropertyData = true;
 
                 var resourceParameters = Mapper.Map<ForSaleResourceParameters>(SuggestionsFilterViewModel);
@@ -121,6 +144,9 @@ namespace Tracr.Client.Pages
             }
             finally
             {
+                if(ApplyFilterButton != null)
+                    ApplyFilterButton.IsDisabled = false;
+
                 LoadingPropertyData = false;
             }
         }
