@@ -74,7 +74,7 @@ namespace Tracr.Client.Pages
                 }
                 else
                 {
-                    //await SearchForProperties();
+                    await SearchForProperties();
                 }
             }
         }
