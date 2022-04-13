@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Tracr.Server.Data;
+using Tracr.Server.Hubs;
 using Tracr.Server.Models;
 using Tracr.Server.Repositories;
 
@@ -20,9 +22,15 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
+builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
 
 builder.Services.AddHttpClient("realestate", c => {
     c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("RealEstateAPI"));
@@ -33,6 +41,8 @@ builder.Services.AddHttpClient("realestate", c => {
 builder.Services.AddScoped<IRealEstateRepo, RealEstateRepo>();
 
 var app = builder.Build();
+
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,7 +58,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
@@ -58,9 +67,9 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationHub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
