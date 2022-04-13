@@ -58,7 +58,13 @@ namespace Tracr.Client.Shared
                 _started = true;
             }
             
-            await _hubConnection.StartAsync();
+            if (_started)
+                await RefreshNotificationsAsync();
+        }
+
+        private async Task RefreshNotificationsAsync()
+        {
+            await _hubConnection.SendAsync("CheckNotifications");
         }
 
         public async Task ConnectWithRetryAsync(HubConnection connection)

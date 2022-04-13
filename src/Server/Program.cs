@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Tracr.Server.Data;
 using Tracr.Server.Hubs;
 using Tracr.Server.Models;
@@ -21,6 +24,10 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+builder.Services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>,
+                ConfigureJwtBearerOptions>());
 
 builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
@@ -73,3 +80,27 @@ app.MapHub<NotificationHub>("/notificationHub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
+
+public class ConfigureJwtBearerOptions : IPostConfigureOptions<JwtBearerOptions>
+{
+    public void PostConfigure(string name, JwtBearerOptions options)
+    {
+        var originalOnMessageReceived = options.Events.OnMessageReceived;
+        options.Events.OnMessageReceived = async context =>
+        {
+            await originalOnMessageReceived(context);
+
+            if (string.IsNullOrEmpty(context.Token))
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    path.StartsWithSegments("/notificationHub"))
+                {
+                    context.Token = accessToken;
+                }
+            }
+        };
+    }
+}
