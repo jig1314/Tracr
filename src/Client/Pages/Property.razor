@@ -113,6 +113,7 @@ else
                         </RowCol>
                     </Row>
                     <div class="d-flex align-items-center">
+                        <BSButton OnClick="GoBackToPropertiesPage" class="mt-2"><Icon class="icon" Elements="@Icons.Chevron_left"/>Back</BSButton>
                         @if(CurrentViewMode == ViewMode.Add)
                         {
                             <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>

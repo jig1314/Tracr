@@ -253,5 +253,13 @@ namespace Tracr.Client.Pages
                 LoadingRenterData = false;
             }
         }
+
+        protected void GoBackToPropertiesPage()
+        {
+            if (NavigationManager == null)
+                return;
+
+            NavigationManager.NavigateTo("/userProfile/manageProperties/");
+        }
     }
 }
