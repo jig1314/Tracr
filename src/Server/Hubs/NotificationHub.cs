@@ -16,6 +16,7 @@ namespace Tracr.Server.Hubs
         public async Task CheckNotifications()
         {
             await CheckEmptyProperties();
+            await CheckLeasesEnding();
         }
 
         private async Task CheckEmptyProperties()
@@ -23,10 +24,26 @@ namespace Tracr.Server.Hubs
             var idUser = Context.UserIdentifier;
 
             var properties = await _context.Properties.Include(p => p.Renters).Where(p => p.ApplicationUserId == idUser).ToListAsync();
-            foreach(var property in properties.Where(p => p.Renters == null || p.Renters.Count == 0))
+            foreach(var property in properties.Where(p => p.Renters == null || p.Renters.Where(r => r.EndingMonth < DateOnly.FromDateTime(DateTime.Today)).Count() == 0))
             {
                 await Clients.Caller.SendAsync("Notification", "Empty Property", $"Your property ({property.Name}) currently does not have any renters!");
             }
         }
+
+        private async Task CheckLeasesEnding()
+        {
+            var idUser = Context.UserIdentifier;
+
+            var properties = await _context.Properties.Include(p => p.Renters).Where(p => p.ApplicationUserId == idUser).ToListAsync();
+            
+            foreach (var property in properties.Where(p => p.Renters.Count > 0))
+            {
+                foreach (var renter in property.Renters.Where(r => r.EndingMonth.ToDateTime(TimeOnly.MinValue).Subtract(DateTime.Today).TotalDays < 90))
+                {
+                    await Clients.Caller.SendAsync("Notification", "Lease Ending", $"{renter.FirstName} {renter.LastName}'s lease is ending on {renter.EndingMonth}!");
+                }
+            }
+        }
+
     }
 }
