@@ -34,10 +34,11 @@ namespace Tracr.Client.Shared
                         };
                     }).Build();
 
-                _hubConnection.On<string, string>("Notification", (title, message) =>
+                _hubConnection.On<int, string, string>("Notification", (propertyId, title, message) =>
                 {
                     UserNotifications.Add(new Notification()
                     {
+                        PropertyId = propertyId,
                         Title = title,
                         Message = message
                     });

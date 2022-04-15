@@ -26,7 +26,7 @@ namespace Tracr.Server.Hubs
             var properties = await _context.Properties.Include(p => p.Renters).Where(p => p.ApplicationUserId == idUser).ToListAsync();
             foreach(var property in properties.Where(p => p.Renters == null || p.Renters.Where(r => r.EndingMonth < DateOnly.FromDateTime(DateTime.Today)).Count() == 0))
             {
-                await Clients.Caller.SendAsync("Notification", "Empty Property", $"Your property ({property.Name}) currently does not have any renters!");
+                await Clients.Caller.SendAsync("Notification", property.Id, "Empty Property", $"Your property ({property.Name}) currently does not have any renters!");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Tracr.Server.Hubs
             {
                 foreach (var renter in property.Renters.Where(r => r.EndingMonth.ToDateTime(TimeOnly.MinValue).Subtract(DateTime.Today).TotalDays < 90))
                 {
-                    await Clients.Caller.SendAsync("Notification", "Lease Ending", $"{renter.FirstName} {renter.LastName}'s lease is ending on {renter.EndingMonth}!");
+                    await Clients.Caller.SendAsync("Notification", property.Id, "Lease Ending", $"{renter.FirstName} {renter.LastName}'s lease is ending on {renter.EndingMonth}!");
                 }
             }
         }

@@ -20,7 +20,7 @@
                     <div class="list-group list-group-flush list-group-hoverable">
                     @foreach(var notification in UserNotifications)
                     {
-                        <div class="list-group-item">
+                        <div @onclick="(() => notification.Seen = true)" class="list-group-item">
                             <div class="row align-items-center">
                             @if(notification.Seen)
                             {
@@ -31,9 +31,7 @@
                                 <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
                             }
                                 <div class="col">
-                                    <div class="d-block mt-n1">
-                                        @notification.Title
-                                    </div>
+                                    <h4><a href="userProfile/manageProperties/edit/@notification.PropertyId" class="d-block">@notification.Title</a></h4>
                                     <div class="d-block mt-n1">
                                         @notification.Message
                                     </div>
