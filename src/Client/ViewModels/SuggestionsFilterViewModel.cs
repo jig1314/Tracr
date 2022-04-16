@@ -10,7 +10,7 @@ namespace Tracr.Client.ViewModels
 
         public decimal? MaxListPrice { get; set; }
 
-        public int SortBy { get; set; } = 1;
+        public int? SortBy { get; set; } = 1;
     }
 
     public class SuggestionsFilterValidator : AbstractValidator<SuggestionsFilterViewModel>
@@ -29,7 +29,9 @@ namespace Tracr.Client.ViewModels
 
             RuleFor(x => x.MaxListPrice)
                 .NotNull()
-                .WithMessage("Please select a maximum list price.");
+                .WithMessage("Please select a maximum list price.")
+                .GreaterThan(0)
+                .WithMessage("Maximum list price must be greater than $0.00"); 
 
             RuleFor(x => x.SortBy)
                 .NotNull()
