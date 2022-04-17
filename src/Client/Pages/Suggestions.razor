@@ -1,0 +1,166 @@
+﻿@page "/suggestions/"
+@using BlazorStrap.Extensions.FluentValidation
+@using Tracr.Shared.Models
+
+@if(LoadingData)
+{
+    <div class="page page-center">
+        <div class="container-tight py-4">
+            <div style="display:flex; justify-content:center;">
+                <div class="spinner-border" role="status"></div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container pt-3">
+        <PageHeader style="margin:unset;">
+            <div class="row align-items-center">
+                <div class="col">
+                    <TabBlazor.PageTitle>
+                        Suggestions
+                    </TabBlazor.PageTitle>
+                    <div class="text-muted mt-1">Based on the next 6 months net profit projection (@FinalProjectedProfit.ToString("C")).</div>
+                    <div class="text-muted mt-1">Max List Price range is determined by considering the projected profits as a down payment of 5% to 20% of the list price.</div>
+                </div>
+            </div>
+        </PageHeader>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(UnavailableMessage))
+    {
+        <div id="suggestionsUnavailable" class="container pt-3">
+            <CustomAlert Important=true Type="CustomAlertType.Warning" Icon="@Icons.Alert_triangle">
+                @UnavailableMessage
+            </CustomAlert>
+        </div>
+    }
+    else
+    {
+        <div class="container pt-3">
+            <div class="row g-4">
+                @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                {
+                    <CustomAlert Important=true Type="CustomAlertType.Error" Icon="@Icons.Alert_circle">
+                        @ErrorMessage
+                    </CustomAlert>
+                }
+                <div class="col-3 side-filter">
+                    <BSForm Model=@SuggestionsFilterViewModel OnValidSubmit="SearchForProperties">
+                        <FluentValidator TValidator="SuggestionsFilterValidator" />
+                        <h3><Icon class="icon me-2" Elements="@Icons.Filter"/>Filters</h3>
+
+                        <div class="subheader mb-2">City</div>
+                        <div class="mb-2">
+                            <BSInput TValue="string" InputType="InputType.Text" placeholder="Enter a city..." @bind-Value="SuggestionsFilterViewModel.City" />
+                            <BSFeedback For="@(() => SuggestionsFilterViewModel.City)"/>
+                        </div>
+                        <div class="subheader mb-2">State</div>
+                        <div class="mb-2">
+                            <BSInput InputType="InputType.Select" @bind-Value="SuggestionsFilterViewModel.State">
+                                <option value="0">Select a state...</option>
+                                @foreach(var state in StateCodes)
+                                {
+                                    <option value="@state.Id">@state.Code - @state.Description</option>
+                                }
+                            </BSInput>
+                            <BSFeedback For="@(() => SuggestionsFilterViewModel.State)"/>
+                        </div>
+                        <div class="subheader mb-2">Max List Price</div>
+                        <div class="row row-0 align-items-center mb-2">
+                            <div class="col">
+                                <BSInput @bind-Value="SuggestionsFilterViewModel.MaxListPrice" InputType="InputType.Range" min="@MinListPrice" max="@MaxListPrice" step="10000"/>
+                            </div>
+                            <div class="col-auto ms-2">
+                                <BSLabel>@SuggestionsFilterViewModel.MaxListPrice?.ToString("C")</BSLabel>
+                            </div>
+                            <BSFeedback For="@(() => SuggestionsFilterViewModel.MaxListPrice)"/>
+                        </div>
+                        <div class="mt-3">
+                            <BSButton @ref="ApplyFilterButton" style="width: 100%" Color="BSColor.Primary" IsOutlined="true" IsSubmit="true">Apply Filters</BSButton>
+                        </div>
+                    </BSForm>     
+                </div>      
+                <BSOffCanvas @ref="_offCanvasFilter">
+                    <Header>Filters</Header>
+                    <Content>
+                        <BSForm Model=@SuggestionsFilterViewModel OnValidSubmit="FilterCanvasSubmit">
+                            <FluentValidator TValidator="SuggestionsFilterValidator" />
+                            <h3><Icon class="icon me-2" Elements="@Icons.Filter"/>Filters</h3>
+
+                            <div class="subheader mb-2">City</div>
+                            <div class="mb-2">
+                                <BSInput TValue="string" InputType="InputType.Text" placeholder="Enter a city..." @bind-Value="SuggestionsFilterViewModel.City" />
+                                <BSFeedback For="@(() => SuggestionsFilterViewModel.City)"/>
+                            </div>
+                            <div class="subheader mb-2">State</div>
+                            <div class="mb-2">
+                                <BSInput InputType="InputType.Select" @bind-Value="SuggestionsFilterViewModel.State">
+                                    <option value="0">Select a state...</option>
+                                    @foreach(var state in StateCodes)
+                                    {
+                                        <option value="@state.Id">@state.Code - @state.Description</option>
+                                    }
+                                </BSInput>
+                                <BSFeedback For="@(() => SuggestionsFilterViewModel.State)"/>
+                            </div>
+                            <div class="subheader mb-2">Max List Price</div>
+                            <div class="row row-0 align-items-center mb-2">
+                                <div class="col">
+                                    <BSInput @bind-Value="SuggestionsFilterViewModel.MaxListPrice" InputType="InputType.Range" min="@MinListPrice" max="@MaxListPrice" step="10000"/>
+                                </div>
+                                <div class="col-auto ms-2">
+                                    <BSLabel>@SuggestionsFilterViewModel.MaxListPrice?.ToString("C")</BSLabel>
+                                </div>
+                                <BSFeedback For="@(() => SuggestionsFilterViewModel.MaxListPrice)"/>
+                            </div>
+                            <div class="mt-3">
+                                @if(LoadingPropertyData)
+                                {
+                                    <BSButton @ref="ApplyFilterButton" style="width: 100%" Color="BSColor.Primary" IsOutlined="true" IsSubmit="true">
+                                        Apply Filters
+                                        <span class="ms-2">
+                                            <div class="spinner-border spinner-border-sm text-muted" role="status"></div>
+                                        </span>
+                                    </BSButton>
+                                }
+                                else
+                                {
+                                    <BSButton @ref="ApplyFilterButton" style="width: 100%" Color="BSColor.Primary" IsOutlined="true" IsSubmit="true">Apply Filters</BSButton>
+                                }
+                            </div>
+                        </BSForm>    
+                    </Content>
+                </BSOffCanvas>
+                <div class="col-9 main-content">
+                    <div class="row row-0 align-items-center mb-3" style="justify-content: right;">
+                        <div class="col filter-button">
+                            <BSButton @onclick="ToggleFilterCanvas" class="btn btn-pill btn-secondary ms-auto"><Icon class="icon me-1" Elements="@Icons.Filter"/>Filter</BSButton>
+                        </div>
+                        <div class="col-auto">
+                            <BSLabel style="margin: unset;">Sort by:</BSLabel>
+                        </div>
+                        <div class="col-auto ms-2">
+                            <BSInput InputType="InputType.Select" @bind-Value="SuggestionsFilterViewModel.SortBy">
+                                @foreach(var option in SortByOptions)
+                                {
+                                    <option value="@option.Id">@option.DisplayName</option>
+                                }
+                            </BSInput>
+                        </div>
+                    </div>
+                    @if(LoadingPropertyData)
+                    {
+                        <div style="display:flex; justify-content:center;">
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    }
+                    else if(Properties != null)
+                    {
+                        <SuggestedProperties Properties="Properties" />
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

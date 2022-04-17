@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Tracr.Server.Data;
-using Tracr.Server.Hubs;
 using Tracr.Server.Models;
+using Tracr.Server.Repositories;
+using Tracr.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Environment.GetEnvironmentVariable("TracrDatabaseConnection")));
+                options.UseSqlServer(Environment.GetEnvironmentVariable("TracrDatabaseConnection") ?? "missing-string"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -24,13 +24,16 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddResponseCompression(opts =>
-{
-    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
-});
-builder.Services.AddSignalR();
 
+builder.Services.AddHttpClient("realestate", c => {
+    c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("RealEstateAPI"));
+    c.DefaultRequestHeaders.Add("x-rapidapi-host", "us-real-estate.p.rapidapi.com");
+    c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("RapidApiKey") ?? "missing-key");
+});
+
+builder.Services.AddScoped<IRealEstateRepo, RealEstateRepo>();
 builder.Services.AddScoped<IAlertHub, AlertHub>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,7 +63,6 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
-app.MapHub<AlertHub>("/alerthub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
