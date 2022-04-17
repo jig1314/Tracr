@@ -1,0 +1,42 @@
+﻿<h3>Alert</h3>
+@using Microsoft.AspNetCore.SignalR.Client
+@using Tracr.Client.Models
+@inject NavigationManager NavigationManager
+@page "/notfications/"
+
+<div>
+    @if (!alertNotification.Any())
+    {
+        <p>No Notifications</p>
+    }
+
+    @foreach (var item in alertNotification)
+    {
+        <div class="row">
+            <div class"card">
+                <div class"card-header"> @item.AlertType</div>
+                 <div> @item.AlertMessage</div>
+            </div>
+        </div>
+    }
+</div>
+@code {
+    private HubConnection hubConnection;
+    private List<Notification> alertNotification;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/alerthub")).Build();
+
+        hubConnection.On<string, string>("AlertPaymentReceived", (type, message) =>
+        {
+            alertNotification.Add(new Notification { AlertType = type, AlertMessage = message });
+
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+    }
+}

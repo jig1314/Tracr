@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Tracr.Server.Data;
+using Tracr.Server.Hubs;
 using Tracr.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +24,13 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+});
+builder.Services.AddSignalR();
 
+builder.Services.AddScoped<IAlertHub, AlertHub>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -52,6 +60,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<AlertHub>("/alerthub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
