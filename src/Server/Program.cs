@@ -4,6 +4,8 @@ using Tracr.Server.Data;
 using Tracr.Server.Models;
 using Tracr.Server.Repositories;
 using Tracr.Server.Hubs;
+using Tracr.Server.Services;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,9 +33,15 @@ builder.Services.AddHttpClient("realestate", c => {
     c.DefaultRequestHeaders.Add("x-rapidapi-key", Environment.GetEnvironmentVariable("RapidApiKey") ?? "missing-key");
 });
 
-builder.Services.AddScoped<IRealEstateRepo, RealEstateRepo>();
-builder.Services.AddScoped<IAlertHub, AlertHub>();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
 
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IRealEstateRepo, RealEstateRepo>();
+builder.Services.AddHostedService<AlertService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,9 +68,10 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.MapHub<AlertHub>("/alerthub");
 app.MapRazorPages();
 app.MapControllers();
+
 app.MapFallbackToFile("index.html");
 
 app.Run();
