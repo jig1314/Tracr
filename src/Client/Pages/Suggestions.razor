@@ -29,7 +29,7 @@ else
     </div>
     @if (!string.IsNullOrWhiteSpace(UnavailableMessage))
     {
-        <div class="container pt-3">
+        <div id="suggestionsUnavailable" class="container pt-3">
             <CustomAlert Important=true Type="CustomAlertType.Warning" Icon="@Icons.Alert_triangle">
                 @UnavailableMessage
             </CustomAlert>

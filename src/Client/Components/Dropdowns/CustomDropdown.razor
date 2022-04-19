@@ -1,22 +1,23 @@
 ﻿@inherits TablerBaseComponent
 @namespace TabBlazor
+<ClickOutside OnClickOutside="OnClickOutside">
+    <CascadingValue Name=Dropdown Value=this>
+    <HtmlElement Tag="@(Direction==CustomDropdownDirection.Down ? "div": "span")"
+                 class="@ClassNames"
+                 @onclick="OnDropdownClick"
+                 @attributes="@UnmatchedParameters"
+                 style="@GetSyle()">
 
-<CascadingValue Name=Dropdown Value=this>
-<HtmlElement Tag="@(Direction==CustomDropdownDirection.Down ? "div": "span")"
-                class="@ClassNames"
-                @onclick="OnDropdownClick"
-                @attributes="@UnmatchedParameters"
-                style="@GetSyle()">
 
+        @ChildContent
 
-    @ChildContent
+        @if (isExpanded)
+        {
+            <div @onclick:stopPropagation="!CloseOnClick">
+                @DropdownTemplate
+            </div>
 
-    @if (isExpanded)
-    {
-        <div @onclick:stopPropagation="!CloseOnClick">
-            @DropdownTemplate
-        </div>
-
-    }
-</HtmlElement>
-</CascadingValue>
+        }
+    </HtmlElement>
+    </CascadingValue>
+</ClickOutside>

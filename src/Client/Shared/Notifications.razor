@@ -11,7 +11,7 @@
 
     <DropdownTemplate>
         <CustomDropdownMenu Arrow="true" Card="true">
-            <Card style="width: max-content; max-width: 350px;">
+            <Card style="width: 350px;">
                 <CardHeader>
                     <CardTitle>Notifications</CardTitle>
                 </CardHeader>
@@ -20,7 +20,7 @@
                     <div class="list-group list-group-flush list-group-hoverable">
                     @foreach(var notification in UserNotifications)
                     {
-                        <div class="list-group-item">
+                        <div @onclick="(() => notification.Seen = true)" class="list-group-item">
                             <div class="row align-items-center">
                             @if(notification.Seen)
                             {
@@ -30,11 +30,9 @@
                             {
                                 <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
                             }
-                                <div class="col text-truncate">
-                                    <div class="d-block text-truncate mt-n1">
-                                        @notification.Title
-                                    </div>
-                                    <div class="d-block text-truncate mt-n1">
+                                <div class="col">
+                                    <h4><a href="userProfile/manageProperties/edit/@notification.PropertyId" class="d-block">@notification.Title</a></h4>
+                                    <div class="d-block mt-n1">
                                         @notification.Message
                                     </div>
                                 </div>
