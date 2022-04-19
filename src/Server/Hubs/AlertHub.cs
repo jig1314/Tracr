@@ -4,11 +4,11 @@ using Tracr.Server.Data;
 
 namespace Tracr.Server.Hubs
 {
-    public class NotificationHub : Hub
+    public class AlertHub : Hub
     {
         private readonly ApplicationDbContext _context;
 
-        public NotificationHub(ApplicationDbContext context)
+        public AlertHub(ApplicationDbContext context)
         {
             _context = context;
         }

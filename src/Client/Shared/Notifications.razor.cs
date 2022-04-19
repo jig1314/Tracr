@@ -7,7 +7,7 @@ namespace Tracr.Client.Shared
 {
     public partial class Notifications : ComponentBase, IAsyncDisposable
     {
-        private const string _hubURL = "/notificationHub";
+        private const string _hubURL = "/alertHub";
         private HubConnection _hubConnection;
         private bool _started = false;
 

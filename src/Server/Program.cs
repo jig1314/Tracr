@@ -8,6 +8,7 @@ using Tracr.Server.Data;
 using Tracr.Server.Hubs;
 using Tracr.Server.Models;
 using Tracr.Server.Repositories;
+using Tracr.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,7 +77,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
-app.MapHub<NotificationHub>("/notificationHub");
+app.MapHub<AlertHub>("/alertHub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
@@ -96,7 +97,7 @@ public class ConfigureJwtBearerOptions : IPostConfigureOptions<JwtBearerOptions>
                 var path = context.HttpContext.Request.Path;
 
                 if (!string.IsNullOrEmpty(accessToken) &&
-                    path.StartsWithSegments("/notificationHub"))
+                    path.StartsWithSegments("/alertHub"))
                 {
                     context.Token = accessToken;
                 }

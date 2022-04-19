@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json.Linq;
-using Tracr.Server.Data;
 using Tracr.Server.Hubs;
 using Tracr.Server.Repositories;
-using Tracr.Shared.ResourceParameters;
 
 namespace Tracr.Server.Services
 {
@@ -23,15 +20,13 @@ namespace Tracr.Server.Services
             {
                 //daily check for something
                 await Task.Delay(86400000);
-                DailyNotificationCheck();
+                await DailyNotificationCheck();
             }
         }
 
 
-        private async void DailyNotificationCheck()
+        private async Task DailyNotificationCheck()
         {
-            await _alertHub.Clients.All.SendAsync("AlertPropertyForSale", $"10 Homes are available in Atlanta");
-
         }
     }
 }
