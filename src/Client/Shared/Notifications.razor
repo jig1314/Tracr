@@ -1,0 +1,56 @@
+﻿<CustomDropdown Direction="CustomDropdownDirection.Down" CloseOnClick="false">
+    <ChildContent>
+        <div class="d-flex me-3">
+            <Icon class="icon" Elements="@Icons.Bell" />
+            @if(UserNotifications != null && UserNotifications.Any(n => !n.Seen))
+            {
+                <span class="status-dot status-dot-animated bg-red d-block"></span>
+            }
+        </div>
+    </ChildContent>
+
+    <DropdownTemplate>
+        <CustomDropdownMenu Arrow="true" Card="true">
+            <Card style="width: 350px;">
+                <CardHeader>
+                    <CardTitle>Notifications</CardTitle>
+                </CardHeader>
+                @if(UserNotifications?.Count > 0)
+                {
+                    <div class="list-group list-group-flush list-group-hoverable">
+                    @foreach(var notification in UserNotifications)
+                    {
+                        <div @onclick="(() => notification.Seen = true)" class="list-group-item">
+                            <div class="row align-items-center">
+                            @if(notification.Seen)
+                            {
+                                <div class="col-auto"><span class="status-dot d-block"></span></div>
+                            }
+                            else
+                            {
+                                <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
+                            }
+                                <div class="col">
+                                    <h4><a href="userProfile/manageProperties/edit/@notification.PropertyId" class="d-block">@notification.Title</a></h4>
+                                    <div class="d-block mt-n1">
+                                        @notification.Message
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    </div>
+                }
+                else
+                {
+                    <CardBody>
+                        <div class="d-block text-truncate mt-n1">
+                            No notifications at this time.
+                        </div>
+                    </CardBody>
+                }
+            </Card>
+        </CustomDropdownMenu>
+    </DropdownTemplate>
+
+</CustomDropdown>
