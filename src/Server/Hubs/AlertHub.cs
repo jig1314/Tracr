@@ -24,7 +24,7 @@ namespace Tracr.Server.Hubs
             var idUser = Context.UserIdentifier;
 
             var properties = await _context.Properties.Include(p => p.Renters).Where(p => p.ApplicationUserId == idUser).ToListAsync();
-            foreach(var property in properties.Where(p => p.Renters == null || p.Renters.Where(r => r.EndingMonth < DateOnly.FromDateTime(DateTime.Today)).Count() == 0))
+            foreach(var property in properties.Where(p => p.Renters == null || p.Renters.Where(r => r.EndingMonth > DateOnly.FromDateTime(DateTime.Today)).Count() == 0))
             {
                 await Clients.Caller.SendAsync("Notification", property.Id, "Empty Property", $"Your property ({property.Name}) currently does not have any renters!");
             }
