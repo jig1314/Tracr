@@ -133,6 +133,14 @@ namespace Tracr.Client.Pages
             {
                 await UpdateProperty();
             }
+            else if (CurrentViewMode == ViewMode.Add)
+            {
+                await CancelProperty();
+            }
+            else if (CurrentViewMode == ViewMode.Edit)
+            {
+                await CancelProperty();
+            }
         }
 
         private async Task CreateProperty()
@@ -163,7 +171,7 @@ namespace Tracr.Client.Pages
 
         private async Task UpdateProperty()
         {
-            if (PropertyService == null || Mapper == null || !PropertyId.HasValue)
+            if (PropertyService == null || Mapper == null || !PropertyId.HasValue || NavigationManager == null)
                 return;
 
             ErrorMessage = "";
@@ -175,6 +183,7 @@ namespace Tracr.Client.Pages
                 propertyDto.Id = PropertyId.Value;
 
                 await PropertyService.UpdateProperty(propertyDto);
+                NavigationManager.NavigateTo($"/userProfile/manageProperties/");
                 await GetPropertyInformation();
             }
             catch (Exception ex)
@@ -184,6 +193,32 @@ namespace Tracr.Client.Pages
             finally
             {
                 LoadingData = false;
+            }
+        }
+
+        private async Task CancelProperty() //Cancel Button
+        {
+            if (PropertyService == null || Mapper == null || NavigationManager == null)
+                return;
+
+            //ErrorMessage = "";
+
+            try
+            {
+               /* LoadingData = false;
+                var propertyDto = Mapper.Map<PropertyDto>(PropertyViewModel);
+
+                var propertyId = await PropertyService.CreateProperty(propertyDto);
+                await PropertyService.DeleteProperty(propertyId);*/
+                NavigationManager.NavigateTo($"/userProfile/manageProperties/");
+            }
+            /*catch (Exception ex)
+            {
+                ErrorMessage = $"{ex.Message}";
+            }*/
+            finally
+            {
+                //LoadingData = false;
             }
         }
 
@@ -231,8 +266,10 @@ namespace Tracr.Client.Pages
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        //Cancel Button Added
+       /* private void btnClose_Click(object sender, EventArgs e)
         {
+
             if (unsavedChanges)
             {
                 var result = MessageBox.Show("Save changes?", "unsaved changes", MessageBoxButtons.YesNoCancel);
@@ -255,7 +292,7 @@ namespace Tracr.Client.Pages
         {
             e.Cancel = cancelClose;
             cancelClose = false;
-        }
+        }*/
 
         protected async Task DeleteRenter(int renterId)
         {
