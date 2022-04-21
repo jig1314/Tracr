@@ -1,0 +1,72 @@
+﻿@using Tracr.Shared.Models
+<Card style="max-height: 75vh; background: transparent; border: unset;">
+    <CardBody class="card-body card-body-scrollable card-body-scrollable-shadow pt-0">
+        <Row class="mt-1 row-deck row-cards">
+            @if(Properties?.Count > 0)
+            {
+                foreach(var property in Properties)
+                {
+                    <RowCol Sm="12" Md="6" Lg="4">
+                        <Card>
+                            @if(string.IsNullOrWhiteSpace(@property.PhotoURL))
+                            {
+                                <div class="d-flex card-cover text-center card-cover-blurred align-items-center" style="height: 217.5px;">
+                                    <span class="avatar avatar-lg avatar-rounded" style="margin: auto">
+                                        <Icon class="icon" Elements="@Icons.Home" />
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="@property.PhotoURL" class="card-img-top" style="height: 217.5px;">
+                            }
+                            <CardBody>
+                                <p style="font-size: small; text-align: center;" class="text-muted mb-2">@property.StreetAddress @property.City, @property.State @property.ZipCode</p>
+                                <div class="d-flex align-items-center mb-2">
+                                    <BSLabel style="margin-bottom: unset;">List Price:</BSLabel>
+                                    <div class="ms-2">
+                                        <p style="font-size: small;" class="text-muted mb-0">@property.ListPrice.ToString("C")</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <BSLabel style="margin-bottom: unset;">Year Built:</BSLabel>
+                                    <div class="ms-2">
+                                        <p style="font-size: small;" class="text-muted mb-0">@property.YearBuilt</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <BSLabel style="margin-bottom: unset;">Bedrooms:</BSLabel>
+                                    <div class="ms-2">
+                                        <p style="font-size: small;" class="text-muted mb-0">@property.NumBedrooms</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <BSLabel style="margin-bottom: unset;">Bathrooms:</BSLabel>
+                                    <div class="ms-2">
+                                        <p style="font-size: small;" class="text-muted mb-0">@property.NumBathrooms</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <BSLabel style="margin-bottom: unset;">Sqft:</BSLabel>
+                                    <div class="ms-2">
+                                        <p style="font-size: small;" class="text-muted mb-0">@property.SqaureFootage.ToString("N0")</p>
+                                    </div>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </RowCol>
+                }
+            }
+            else
+            {
+                <p>No Properties Found!</p>
+            }
+        </Row>
+    </CardBody>
+</Card>
+
+@code
+{
+    [Parameter]
+    public List<PropertyForSale> Properties { get; set; }
+}

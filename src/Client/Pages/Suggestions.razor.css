@@ -1,0 +1,13 @@
+﻿@media (max-width: 768px) {
+    .side-filter {
+        display: none;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+@media (min-width: 768px) {
+    .filter-button {
+        display: none;
+    }
+}

@@ -12,7 +12,15 @@
                     <Icon class="icon" Elements="@Icons.Dashboard" />
                 </MenuItemIcon>
             </NavbarMenuItem>
+            <NavbarMenuItem id="suggestionsButton" Href="suggestions" Text="Suggestions">
+                <MenuItemIcon>
+                    <Icon class="icon" Elements="@Icons.Bulb" />
+                </MenuItemIcon>
+            </NavbarMenuItem>
         </AuthorizeView>
     </NavbarMenu>
+    <AuthorizeView>
+        <Notifications />
+    </AuthorizeView>
     <LoginDisplay />
 </Navbar>
