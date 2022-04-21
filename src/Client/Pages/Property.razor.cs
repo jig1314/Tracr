@@ -128,21 +128,11 @@ namespace Tracr.Client.Pages
             if (CurrentViewMode == ViewMode.Add)
             {
                 await CreateProperty();
-                //await CancelProperty();
             }
             else if (CurrentViewMode == ViewMode.Edit)
             {
                 await UpdateProperty();
-                //await CancelProperty();
             }
-            /*else if (CurrentViewMode == ViewMode.Add && PropertyId.HasValue)
-            {
-                await CancelProperty();
-            }*/
-            /*else if (CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
-            {
-                await CancelProperty();
-            }*/
         }
 
         private async Task CreateProperty()
@@ -158,7 +148,7 @@ namespace Tracr.Client.Pages
                 var propertyDto = Mapper.Map<PropertyDto>(PropertyViewModel);
 
                 var propertyId = await PropertyService.CreateProperty(propertyDto);
-                NavigationManager.NavigateTo($"/userProfile/manageProperties/");
+                NavigationManager.NavigateTo($"/userProfile/manageProperties/edit/{propertyId}");
                 StateHasChanged();
             }
             catch (Exception ex)
@@ -173,7 +163,7 @@ namespace Tracr.Client.Pages
 
         private async Task UpdateProperty()
         {
-            if (PropertyService == null || Mapper == null || !PropertyId.HasValue || NavigationManager == null)
+            if (PropertyService == null || Mapper == null || !PropertyId.HasValue)
                 return;
 
             ErrorMessage = "";
@@ -185,7 +175,6 @@ namespace Tracr.Client.Pages
                 propertyDto.Id = PropertyId.Value;
 
                 await PropertyService.UpdateProperty(propertyDto);
-                NavigationManager.NavigateTo($"/userProfile/manageProperties/");
                 await GetPropertyInformation();
             }
             catch (Exception ex)
@@ -196,31 +185,6 @@ namespace Tracr.Client.Pages
             {
                 LoadingData = false;
             }
-        }
-
-        private async Task CancelProperty() //Cancel Button
-        {
-            if (PropertyService == null || NavigationManager == null)
-                return;
-                NavigationManager.NavigateTo($"/userProfile/manageProperties/");
-
-            /*try
-            {
-                LoadingData = true;
-                var propertyDto = Mapper.Map<PropertyDto>(PropertyViewModel);
-
-                var propertyId = await PropertyService.CreateProperty(propertyDto);
-                NavigationManager.NavigateTo($"/userProfile/manageProperties/");
-                StateHasChanged();
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"{ex.Message}";
-            }
-            finally
-            {
-                LoadingData = false;
-            }*/
         }
 
         protected async Task DeleteProperty(int propertyId)

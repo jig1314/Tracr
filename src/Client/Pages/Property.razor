@@ -117,12 +117,10 @@ else
                         @if(CurrentViewMode == ViewMode.Add)
                         {
                             <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary" @onclick="@CreateProperty"><Icon class="icon" Elements="@Icons.Plus"/>Create New Property</BSButton>
-                            <BSButton class="ms-1 mt-1" IsSubmit="true" Color="BSColor.Danger" @onclick="@CancelProperty"><Icon class="icon" Elements="@Icons.X"/>Cancel</BSButton>
                         }
                         else if(CurrentViewMode == ViewMode.Edit && PropertyId.HasValue)
                         {
                             <BSButton class="ms-auto mt-2" IsSubmit="true" Color="BSColor.Primary" @onclick="@UpdateProperty"><Icon class="icon" Elements="@Icons.Check"/>Save Changes</BSButton>
-                            <BSButton class="ms-1 mt-1" IsSubmit="true" Color="BSColor.Danger" @onclick="@CancelProperty"><Icon class="icon" Elements="@Icons.X"/>Cancel</BSButton>
                             
                         }
                         
