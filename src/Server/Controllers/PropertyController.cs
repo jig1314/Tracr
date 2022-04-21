@@ -226,7 +226,7 @@ namespace Tracr.Server.Controllers
                     ApplicationUserId = idUser,
                     Name = propertyDto.Name,
                     NumBedrooms = propertyDto.NumBedrooms,
-                    NumBathrooms = propertyDto.NumBathrooms
+                    NumBathrooms = decimal.Round(propertyDto.NumBathrooms, 1)
                 };
 
                 _context.Properties.Add(property);
@@ -235,10 +235,11 @@ namespace Tracr.Server.Controllers
                 var mortage = new Mortage()
                 {
                     PropertyId = property.Id,
-                    Principal = propertyDto.Mortage.Principal,
-                    MonthlyPayment = propertyDto.Mortage.MonthlyPayment,
-                    APR = propertyDto.Mortage.APR
+                    Principal = decimal.Round(propertyDto.Mortage.Principal, 2),
+                    MonthlyPayment = decimal.Round(propertyDto.Mortage.MonthlyPayment, 2),
+                    APR = decimal.Round(propertyDto.Mortage.APR, 3)
                 };
+
 
                 var address = new Address()
                 {
@@ -287,7 +288,7 @@ namespace Tracr.Server.Controllers
                     PropertyId = renterDto.PropertyId,
                     FirstName = renterDto.FirstName,
                     LastName = renterDto.LastName,
-                    MonthlyRent = renterDto.MonthlyRent,
+                    MonthlyRent = decimal.Round(renterDto.MonthlyRent, 2),
                     StartingMonth = DateOnly.FromDateTime(renterDto.StartingMonth),
                     EndingMonth = DateOnly.FromDateTime(renterDto.EndingMonth)
                 };
@@ -326,11 +327,11 @@ namespace Tracr.Server.Controllers
 
                 property.Name = propertyDto.Name;
                 property.NumBedrooms = propertyDto.NumBedrooms;
-                property.NumBathrooms = propertyDto.NumBathrooms;
+                property.NumBathrooms = decimal.Round(propertyDto.NumBathrooms, 1);
 
-                property.Mortage.Principal = propertyDto.Mortage.Principal;
-                property.Mortage.MonthlyPayment = propertyDto.Mortage.MonthlyPayment;
-                property.Mortage.APR = propertyDto.Mortage.APR;
+                property.Mortage.Principal = decimal.Round(propertyDto.Mortage.Principal, 2);
+                property.Mortage.MonthlyPayment = decimal.Round(propertyDto.Mortage.MonthlyPayment, 2);
+                property.Mortage.APR = decimal.Round(propertyDto.Mortage.APR, 3);
 
                 property.Address.StreetAddress = propertyDto.Address.StreetAddress;
                 property.Address.City = propertyDto.Address.City;
@@ -369,7 +370,7 @@ namespace Tracr.Server.Controllers
 
                 renter.FirstName = renterDto.FirstName;
                 renter.LastName = renterDto.LastName;
-                renter.MonthlyRent = renterDto.MonthlyRent;
+                renter.MonthlyRent = decimal.Round(renterDto.MonthlyRent, 2);
                 renter.StartingMonth = DateOnly.FromDateTime(renterDto.StartingMonth);
                 renter.EndingMonth = DateOnly.FromDateTime(renterDto.EndingMonth);
 

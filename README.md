@@ -1,3 +1,12 @@
+Build Status:
+[![Build status](https://dev.azure.com/SWE6813-Team1/Tracr/_apis/build/status/tracr-prod)](https://dev.azure.com/SWE6813-Team1/Tracr/_build/latest?definitionId=5)
+
+Deployment Status:
+[![Deploy status](https://vsrm.dev.azure.com/SWE6813-Team1/_apis/public/Release/badge/bdd6bc71-5874-4d2c-9da8-f1705ba844aa/3/5)](https://dev.azure.com/SWE6813-Team1/Tracr/_release?_a=releases&definitionId=3)
+
+Test Status:
+[![Test status](https://vsrm.dev.azure.com/SWE6813-Team1/_apis/public/Release/badge/bdd6bc71-5874-4d2c-9da8-f1705ba844aa/3/6)](https://dev.azure.com/SWE6813-Team1/Tracr/_release?_a=releases&definitionId=3)
+
 # Introduction 
 Tracr is a Progressive Web Application built with the Blazor Framework (Web Assembly) and uses a .NET Core Web API to commuincate with a SQL Database and external APIs.
 
@@ -35,6 +44,10 @@ Our backlog is ordered according to the expected workflow of the user that will 
 * Assigned to sprint
 * Additional details (if applicable)
 
+## CI/CD
+CI pipelines: https://dev.azure.com/SWE6813-Team1/Tracr/_build?view=folders  
+CD releases: https://dev.azure.com/SWE6813-Team1/Tracr/_release?_a=releases
+
 # Contributors
 * Tyler Sharkey - Product Owner/Developer
 * Jonathan Gamble (Team Lead) - Scrum Master/Developer
@@ -46,3 +59,6 @@ Our backlog is ordered according to the expected workflow of the user that will 
 
 ## Sprint 1
 All documentation about Sprint 1 can be found in the Sprint 1 folder in this repo. The Documentation.md will provide additional information.
+
+## Sprint 2
+All documentation about Sprint 2 can be found in the Sprint 2 folder in this repo. The Documentation.md will provide additional information.

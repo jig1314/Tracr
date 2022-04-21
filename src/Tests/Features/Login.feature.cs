@@ -93,7 +93,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "FirstName",
                             "LastName",
                             "Email",
@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Gender",
                             "CountryofResidence",
                             "DateofBirth"});
-                table2.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Test",
                             "Name",
                             "testing@gmail.com",
@@ -114,19 +114,19 @@ this.ScenarioInitialize(scenarioInfo);
                             "United States",
                             "01/01/2000"});
 #line 7
- testRunner.Given("I have registered for an account", ((string)(null)), table2, "Given ");
+ testRunner.Given("I have registered for an account", ((string)(null)), table4, "Given ");
 #line hidden
 #line 10
  testRunner.When("I click the log in link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password"});
-                table3.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "testName",
                             "NotR3@Lpw"});
 #line 11
- testRunner.And("I submit the required information", ((string)(null)), table3, "And ");
+ testRunner.And("I submit the required information", ((string)(null)), table5, "And ");
 #line hidden
 #line 14
  testRunner.Then("I have the ability to log in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
