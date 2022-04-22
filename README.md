@@ -62,3 +62,6 @@ All documentation about Sprint 1 can be found in the Sprint 1 folder in this rep
 
 ## Sprint 2
 All documentation about Sprint 2 can be found in the Sprint 2 folder in this repo. The Documentation.md will provide additional information.
+
+## Sprint 3
+All documentation about Sprint 3 can be found in the Sprint 2 folder in this repo. The Documentation.md will provide additional information.
